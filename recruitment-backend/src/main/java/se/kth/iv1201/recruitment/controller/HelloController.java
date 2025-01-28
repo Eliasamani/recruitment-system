@@ -1,4 +1,4 @@
-package com.example.recruitment.controller;
+package se.kth.iv1201.recruitment.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
