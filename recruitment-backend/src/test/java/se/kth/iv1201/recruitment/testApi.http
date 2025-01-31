@@ -1,0 +1,15 @@
+POST  http://localhost:8080/api/register HTTP/1.1
+content-type: application/json
+
+{
+    "id": 1,
+    "firstname": "Joelle",
+    "lastname": "Wilkinson",
+    "personNum": null,
+    "email": null,
+    "password": null,
+    "role": 1,
+    "username": "JoelleWilkinson"
+}
+
+

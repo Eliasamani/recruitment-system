@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name ="person")
-public class Account implements AccountDTO{
+public class Person implements PersonDTO{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,37 +24,37 @@ public class Account implements AccountDTO{
     @Column(name="surname")
     private String lastname;
 
-    @Column(name="pnr")
+    @Column(name="pnr",unique = true)
     private String personNum;
 
     @Column(name="email")
     private String email;
 
-    @Column(name="password")
-    private String password;
-
     @Column(name="role_id")
     private int role;
 
-    @Column(name="username")
+    @Column(name="username", unique = true)
     private String username;
+
+    @Column(name="password")
+    private String password;
 
 
     /**
      * JPA needs this, not for use  
      */
-    protected Account(){
+    protected Person(){
 
     }
 
 
-    public Account(String firstname, String lastname, String personNum, String email, String password, String username) {
+    public Person(String firstname, String lastname, String personNum, String email, String password, String username) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.personNum = personNum;
         this.email = email;
-        this.password = password;
         this.username = username;
+        this.password = password;
         this.role = 1; // set role to applicant
     }
 

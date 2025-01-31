@@ -6,12 +6,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import se.kth.iv1201.recruitment.model.Account;
+import se.kth.iv1201.recruitment.model.Person;
+
 
 
 @Repository
-public interface AccountRepository extends JpaRepository<Account, Long> {
+public interface PersonRepository extends JpaRepository<Person, Long> {
 
     
-   Optional<Account> findUserByUsername(String username);
+  Optional<Person> findPersonByUsername(String username);
+
+  @Override
+  <S extends Person> S save(S entity);
+
 } 
