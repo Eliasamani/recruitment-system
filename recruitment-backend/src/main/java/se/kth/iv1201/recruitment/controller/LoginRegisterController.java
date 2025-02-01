@@ -1,6 +1,7 @@
 package se.kth.iv1201.recruitment.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,22 +25,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class LoginRegisterController {
 
     @Autowired
-    private PersonRepository repository;
+    private PersonRepository repository; // for testing
+
     @Autowired 
     private LoginRegisterService service;
 
-    private Person acc; // for testing
+
     
     @GetMapping("/mytest")
     public List<Person> test() {
         return repository.findAll();
     }
 
-    @GetMapping("/mytest2")
-    public Person test2() {
-        return acc;
-    }
-
+  
 
     @PostMapping(value = "/api/register", consumes = "application/json")
     // change parameter object by defining new one for the from with validation included, 
@@ -52,13 +50,14 @@ public class LoginRegisterController {
     }
 
     @PostMapping(value = "/api/login", consumes = "application/json")
-    public String loginPerson(@RequestBody String username, @RequestBody String password) throws Exception{
-        PersonDTO person = service.findPerson(username);
+    public String loginPerson(@RequestBody Map<String, String> json) throws Exception{
+       
+        PersonDTO person = service.findPerson(json.get("username"));
         if(person == null)
-            throw new Exception();
+            throw new Exception("User Does not exist"); //TODO write custom exceptions
+        System.out.println(person.toString());
 
-
-        return "Logged in";
+        return "Logged in "+person.toString();
     }
     
 

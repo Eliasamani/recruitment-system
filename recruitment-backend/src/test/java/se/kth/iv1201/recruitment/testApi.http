@@ -3,13 +3,23 @@ content-type: application/json
 
 {
     "id": 1,
-    "firstname": "Joelle",
-    "lastname": "Wilkinson",
-    "personNum": null,
-    "email": null,
-    "password": null,
+    "firstname": "test",
+    "lastname": "test",
+    "personNumber": "test",
+    "email": "test",
+    "password": "mytest",
     "role": 1,
-    "username": "JoelleWilkinson"
+    "username": "testuser"
 }
 
+###
+
+POST  http://localhost:8080/api/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "testuser",
+    "password": "mytest"
+
+}
 

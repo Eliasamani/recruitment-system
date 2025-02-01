@@ -1,6 +1,8 @@
 package se.kth.iv1201.recruitment.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 
 import se.kth.iv1201.recruitment.model.Person;
 import se.kth.iv1201.recruitment.model.PersonDTO;
@@ -9,6 +11,7 @@ import se.kth.iv1201.recruitment.repository.PersonRepository;
 /**
  * implement login/register related bussiness logic here
  */
+@Service
 public class LoginRegisterService {
     
     @Autowired
