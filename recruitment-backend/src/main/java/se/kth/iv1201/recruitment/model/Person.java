@@ -48,7 +48,7 @@ public class Person implements PersonDTO{
     }
 
 
-    public Person(String firstname, String lastname, String personNum, String email, String password, String username) {
+    public Person(String firstname, String lastname, String personNum, String email, String username,String password)  {
         this.firstname = firstname;
         this.lastname = lastname;
         this.personNum = personNum;

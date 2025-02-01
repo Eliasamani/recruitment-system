@@ -14,7 +14,7 @@ import se.kth.iv1201.recruitment.model.Person;
 public interface PersonRepository extends JpaRepository<Person, Long> {
 
     
-  Optional<Person> findPersonByUsername(String username);
+  <S extends Person> S findPersonByUsername(String username);
 
   @Override
   <S extends Person> S save(S entity);
