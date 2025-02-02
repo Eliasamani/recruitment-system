@@ -1,0 +1,68 @@
+name: build and deploy
+on: 
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4.2.2
+        with:
+          sparse_checkout: .
+      - name: setup_java
+        uses: actions/setup-java@v4.7.0
+        with:
+          java-version: '21'
+          java-package: 'jdk'
+          distribution: 'temurin'
+      - name: setup_node
+        uses: actions/setup-node@v4.2.0
+      - name: setup_db
+        env:
+          PGPASSWORD: postgres
+        run: |
+          sudo apt-get install -y postgresql-client
+          psql -U postgres -h postgres -d postgres -f $GITHUB_WORKSPACE/existing-database.sql
+          
+      - name: build 
+        if: ${{success()}}
+        env: 
+          DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
+        run: |
+          
+          cd $GITHUB_WORKSPACE
+          mkdir build
+          cd recruitment-backend/
+          ./mvnw package
+          cd target
+          cp *.jar ../../build/
+          cd ../../recruitment-frontend/
+          npm ci
+          npm run build
+          cp -r build/. ../build
+      - name: save_build
+        uses: actions/upload-artifact@v4.6.0
+        with:
+          name: saved_build
+          path: $GITHUB_WORKSPACE/build
+      
+          
+          
+      
+
+
+      
+      
+        
+          
