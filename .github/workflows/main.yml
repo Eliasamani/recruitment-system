@@ -46,24 +46,20 @@ jobs:
         run: |
           
           cd $GITHUB_WORKSPACE
-          mkdir build
-          cd recruitment-backend/
-          ./mvnw package
-          cd target
-          cp *.jar ../../build/
-          cd ../../recruitment-frontend/
+          cd recruitment-frontend/
           npm ci
           npm run build
-          cp -r build/. ../build
-          cd ..
-          ls -la
-          cd build 
-          ls -la
+          cp -r build/. ../recruitment-backend/src/main/resources/static
+          cd ../recruitment-backend/
+          ./mvnw package
+
+          
+
       - name: save_build
         uses: actions/upload-artifact@v4.6.0
         with:
           name: saved_build
-          path: build
+          path: recruitment-backend/target/*.jar
       
           
           
