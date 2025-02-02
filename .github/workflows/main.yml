@@ -20,6 +20,7 @@ jobs:
         uses: actions/checkout@v4.2.2
         with:
           sparse_checkout: .
+          ref: deploytest
       - name: setup_java
         uses: actions/setup-java@v4.7.0
         with:
