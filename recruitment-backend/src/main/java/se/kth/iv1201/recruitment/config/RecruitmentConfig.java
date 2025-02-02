@@ -15,11 +15,12 @@ public class RecruitmentConfig {
 public DataSource getDataSource() throws URISyntaxException{
 
 
+        //DATABASE_URL environment variable needs to be in format postgres://<username>:<password>@<host>/<dbname> 
         String postEnv = System.getenv("DATABASE_URL");
         URI postURI = new URI(postEnv);
         DataSourceBuilder dataSb = DataSourceBuilder.create();
         dataSb.driverClassName("org.postgresql.Driver");
-        dataSb.url("jdbc:postgresql://"+postEnv.split("@")[1]+"?sslmode=require");
+        dataSb.url("jdbc:postgresql://"+postEnv.split("@")[1]+"?sslmode=prefer");
         dataSb.password(postURI.getUserInfo().split(":")[1]);
         dataSb.username(postURI.getUserInfo().split(":")[0]);
 
