@@ -27,9 +27,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf->csrf.disable()).authorizeHttpRequests(auth -> auth
-            .requestMatchers("/", "/api/login", "/api/register","/index.html","/static/**","/*.png","/*.json","/*.ico","/*.txt").permitAll() // ✅ Allow public access
-            .requestMatchers("/api/protected").hasRole("RECRUITER") // ✅ Ensure role is checked correctly
-            .anyRequest().authenticated())
+            .requestMatchers("/", "/api/login", "/api/register","/index.html","/static/**","/*.png","/*.json","/*.ico","/*.txt","/error").permitAll() // ✅ Allow public access
+            .requestMatchers("/api/protected").hasRole("RECRUITER")) // ✅ Ensure role is checked correctly
             .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, personRepository), UsernamePasswordAuthenticationFilter.class)            .formLogin(login -> login.loginPage("/")
             .permitAll()); // ✅ Pass repository
         return http.build();

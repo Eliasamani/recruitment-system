@@ -12,12 +12,22 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    @Value("${jwt.secret}")
     private String secret;
 
     private static final long EXPIRATION_TIME = 86400000; // 1 day
 
+    public JwtUtil() {
+        if (System.getenv("DATABASE_URL").length() >42) {
+            this.secret = System.getenv("DATABASE_URL").substring(10,42);
+        }
+        else {
+            this.secret = System.getenv("DATABASE_URL");
+        }
+    }
+
     public String generateToken(String username) {
+
+
         SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         return Jwts.builder()
                 .subject(username)
