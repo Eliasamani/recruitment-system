@@ -4,6 +4,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -14,7 +16,6 @@ import se.kth.iv1201.recruitment.repository.PersonRepository;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -55,16 +56,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         LOGGER.info("JwtAuthenticationFilter: Authenticated user - " + username);
 
         // Fetch role_id from database
-        Optional<Person> optionalPerson = personRepository.findPersonByUsername(username);
+        Person person = personRepository.findPersonByUsername(username);
 
-        if (optionalPerson.isEmpty()) {
+        if (person == null) {
             LOGGER.warning("JwtAuthenticationFilter: User not found in database!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("User not found");
             return;
         }
 
-        Person person = optionalPerson.get();
+       
         int roleId = person.getRole(); // Get role_id from database
 
         // Map role_id to Spring Security role

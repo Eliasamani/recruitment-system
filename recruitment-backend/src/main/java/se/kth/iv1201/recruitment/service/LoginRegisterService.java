@@ -33,7 +33,7 @@ public class LoginRegisterService {
                                   String email, String username, String password) throws Exception {
 
         // ✅ Use Optional to check if the username exists
-        if (repository.findPersonByUsername(username).isPresent()) {
+        if (repository.findPersonByUsername(username) == null) {
             throw new Exception("User already exists"); // TODO: Replace with a specific exception
         }
 
@@ -49,7 +49,6 @@ public class LoginRegisterService {
      * @return The found PersonDTO, or null if no user is found.
      */
     public PersonDTO findPerson(String username) {
-        Optional<Person> optionalPerson = repository.findPersonByUsername(username);
-        return optionalPerson.orElse(null); // ✅ Return the PersonDTO or null if not found
+        return repository.findPersonByUsername(username); // ✅ Return the PersonDTO or null if not found
     }
 }
