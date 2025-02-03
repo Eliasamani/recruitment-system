@@ -1,5 +1,6 @@
 package se.kth.iv1201.recruitment.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,13 @@ import se.kth.iv1201.recruitment.service.LoginRegisterService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import se.kth.iv1201.recruitment.security.JwtUtil;
+
+
+
 
 /**
  * Controller for Login and Register post APIs
@@ -29,6 +37,9 @@ public class LoginRegisterController {
 
     @Autowired 
     private LoginRegisterService service;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
 
     
@@ -57,7 +68,17 @@ public class LoginRegisterController {
             throw new Exception("User Does not exist"); //TODO write custom exceptions
         System.out.println(person.toString());
 
-        return "Logged in "+person.toString();
+         // Compare password hashes
+        //PasswordEncoder encoder = new BCryptPasswordEncoder();
+        //if (!encoder.matches(json.get("password"), person.getPassword())) {
+        //    throw new Exception("Invalid credentials");
+        //}
+
+        // Generate JWT Token
+        return jwtUtil.generateToken(person.getUsername()).toString();
+
+
+        //return "Logged in "+person.toString();
     }
     
 
