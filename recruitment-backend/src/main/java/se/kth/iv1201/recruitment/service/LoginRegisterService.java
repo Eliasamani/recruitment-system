@@ -33,7 +33,7 @@ public class LoginRegisterService {
                                   String email, String username, String password) throws Exception {
 
         // ✅ Use Optional to check if the username exists
-        if (repository.findPersonByUsername(username) == null) {
+        if (repository.findPersonByUsername(username) != null) {
             throw new Exception("User already exists"); // TODO: Replace with a specific exception
         }
 

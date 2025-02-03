@@ -25,7 +25,7 @@ public class Person implements PersonDTO{
     private String lastname;
 
     @Column(name="pnr",unique = true)
-    private String personNum;
+    private String personNumber;
 
     @Column(name="email")
     private String email;
@@ -51,7 +51,7 @@ public class Person implements PersonDTO{
     public Person(String firstname, String lastname, String personNum, String email, String username,String password)  {
         this.firstname = firstname;
         this.lastname = lastname;
-        this.personNum = personNum;
+        this.personNumber = personNum;
         this.email = email;
         this.username = username;
         this.password = password;
@@ -90,12 +90,12 @@ public class Person implements PersonDTO{
 
 
     public String getPersonNum() {
-        return personNum;
+        return personNumber;
     }
 
 
     public void setPersonNum(String personNum) {
-        this.personNum = personNum;
+        this.personNumber = personNum;
     }
 
 
@@ -141,7 +141,7 @@ public class Person implements PersonDTO{
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", personNum=" + personNum
+        return "User [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", personNum=" + personNumber
                 + ", email=" + email + ", password=" + password + ", role=" + role + ", username=" + username + "]";
     }
     

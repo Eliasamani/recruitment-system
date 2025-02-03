@@ -1,16 +1,18 @@
 package se.kth.iv1201.recruitment.controller;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 
 
 
 /**
  * form for user registration
  * also handles validation
+ * 
+ * Username, personNumber and mail are necessary fields
  */
 public class RegisterForm {
-    // Add more constraints later
+    
     @NotBlank(message = "Username is left empty ")
     private String username;
     
@@ -20,7 +22,8 @@ public class RegisterForm {
     private String firstname;
     private String lastname;
     
-    // @Pattern --> think about this
+   
+    @Email(message = "invalid email format")
     @NotBlank(message = "Email field is empty")
     private String email;
 
