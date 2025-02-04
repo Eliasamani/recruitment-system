@@ -77,7 +77,7 @@ jobs:
         uses: docker/setup-docker-action@v4.1.0
       - name: setup_heroku
         run: |
-          sudo sh -c (curl https://cli-assets.heroku.com/install-ubuntu.sh | sh)        
+          curl https://cli-assets.heroku.com/install-ubuntu.sh | sh     
 
       - name: deploy
         if: ${{success()}}
