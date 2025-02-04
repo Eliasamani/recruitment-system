@@ -81,7 +81,7 @@ jobs:
       - name: deploy
         if: ${{success()}}
         env:
-          HEROKU_API_KEY: ${{ secretes.HEROKU_API }}
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API }}
         run: |
           cd $GITHUB_WORKSPACE
           docker buildx build --provenance false --platform linux/amd64 -t registry.heroku.com/iv1201-recr/web .
