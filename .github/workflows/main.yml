@@ -49,7 +49,7 @@ jobs:
           cd recruitment-frontend/
           npm ci
           npm run build
-          cp -r build/. ../recruitment-backend/src/main/resources/static
+          cp -r build/. ../recruitment-backend/src/main/resources/public
           cd ../recruitment-backend/
           ./mvnw package
 
