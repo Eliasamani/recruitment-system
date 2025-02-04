@@ -22,7 +22,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4.2.2
         with:
-          ref: deploytest
+          ref: feature-login
       - name: setup_java
         uses: actions/setup-java@v4.7.0
         with:
@@ -59,8 +59,35 @@ jobs:
         uses: actions/upload-artifact@v4.6.0
         with:
           name: saved_build
-          path: recruitment-backend/target/*.jar
-      
+          path: $GITHUB_WORKSPACE/recruitment-backend/target/*.jar
+  deploy:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4.2.2
+        with:
+          ref: feature-login
+      - name: get_build
+        uses: actions/download-artifact@v4.1.8
+        with:
+          Name: saved_build
+          path: $GITHUB_WORKSPACE/recruitment-backend/target/
+      - name: setup_docker 
+        uses: docker/setup-docker-action@v4.1.0
+      - name: setup_heroku
+        run: |
+          sudo sh -c (curl https://cli-assets.heroku.com/install-ubuntu.sh | sh)        
+
+      - name: deploy
+        if: ${{success()}}
+        env:
+          HEROKU_API_KEY: ${{ secretes.HEROKU_API }}
+        run: |
+          cd $GITHUB_WORKSPACE
+          docker buildx build --provenance false --platform linux/amd64 -t registry.heroku.com/iv1201-recr/web .
+          docker push registry.heroku.com/iv1201-recr/web 
+          heroku container:release web --app=iv1201-recr 
           
-          
-      
+        
+        
+        
