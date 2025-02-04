@@ -59,7 +59,7 @@ jobs:
         uses: actions/upload-artifact@v4.6.0
         with:
           name: saved_build
-          path: $GITHUB_WORKSPACE/recruitment-backend/target/*.jar
+          path: recruitment-backend/target/*.jar
   deploy:
     runs-on: ubuntu-24.04
     needs: build
@@ -72,7 +72,7 @@ jobs:
         uses: actions/download-artifact@v4.1.8
         with:
           Name: saved_build
-          path: $GITHUB_WORKSPACE/recruitment-backend/target/
+          path: recruitment-backend/target/
       - name: setup_docker 
         uses: docker/setup-docker-action@v4.1.0
       - name: setup_heroku
