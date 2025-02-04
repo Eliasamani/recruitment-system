@@ -85,6 +85,7 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API }}
         run: |
           cd $GITHUB_WORKSPACE
+          docker login --username=_ --password="$HEROKU_API_KEY" registry.heroku.com
           docker buildx build --provenance false --platform linux/amd64 -t registry.heroku.com/iv1201-recr/web .
           docker push registry.heroku.com/iv1201-recr/web 
           heroku container:release web --app=iv1201-recr 
