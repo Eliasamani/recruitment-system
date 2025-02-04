@@ -75,7 +75,7 @@ public class LoginRegisterController {
         //}
 
         // Generate JWT Token
-        return jwtUtil.generateToken(person.getUsername()).toString();
+        return "Bearer "+jwtUtil.generateToken(person.getUsername()).toString();
 
 
         //return "Logged in "+person.toString();
