@@ -2,16 +2,17 @@ package se.kth.iv1201.recruitment.config;
 
 import java.util.Arrays;
 import java.util.List;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 import se.kth.iv1201.recruitment.repository.PersonRepository;
 import se.kth.iv1201.recruitment.security.JwtAuthenticationFilter;
 import se.kth.iv1201.recruitment.security.JwtUtil;
@@ -20,13 +21,12 @@ import se.kth.iv1201.recruitment.security.JwtUtil;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtUtil jwtUtil;
-    private final PersonRepository personRepository; // ✅ Inject PersonRepository
+  private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(JwtUtil jwtUtil, PersonRepository personRepository) {
-        this.jwtUtil = jwtUtil;
-        this.personRepository = personRepository;
-    }
+  public SecurityConfig(JwtUtil jwtUtil, PersonRepository personRepository) {
+    this.jwtAuthenticationFilter =
+      new JwtAuthenticationFilter(jwtUtil, personRepository);
+  }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -47,4 +47,55 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+    /* 
+    @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http)
+    throws Exception {
+    http
+      .csrf(csrf -> csrf.disable())
+      .sessionManagement(session ->
+        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      )
+      .authorizeHttpRequests(auth ->
+        auth
+          .requestMatchers(
+            "/",
+            "/api/login",
+            "/api/register",
+            "/index.html",
+            "/static/**",
+            "/*.png",
+            "/*.json",
+            "/*.ico",
+            "/*.txt",
+            "/error"
+          )
+          .permitAll()
+          .requestMatchers("/api/protected")
+          .hasRole("RECRUITER")
+          .anyRequest()
+          .authenticated()
+      )
+      .addFilterBefore(
+        jwtAuthenticationFilter,
+        UsernamePasswordAuthenticationFilter.class
+      )
+      .formLogin(login -> login.loginPage("/").permitAll());
+
+    return http.build();
+  }
+
+  @Bean
+  public CorsFilter corsFilter() {
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    CorsConfiguration config = new CorsConfiguration();
+    config.setAllowCredentials(true);
+    config.setAllowedOrigins(List.of("http://localhost:8081"));
+    config.setAllowedMethods(
+      List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")
+    );
+    config.setAllowedHeaders(
+      List.of(
+        "Authorization",
+*/
 }

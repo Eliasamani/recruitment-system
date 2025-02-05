@@ -18,11 +18,15 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.logging.Logger;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger LOGGER = Logger.getLogger(JwtAuthenticationFilter.class.getName());
     private final JwtUtil jwtUtil;
-    private final PersonRepository personRepository; // ✅ Inject repository to fetch user
+    private final PersonRepository personRepository;
 
     public JwtAuthenticationFilter(JwtUtil jwtUtil, PersonRepository personRepository) {
         this.jwtUtil = jwtUtil;
@@ -35,55 +39,50 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         LOGGER.info("JwtAuthenticationFilter: Request received for " + request.getRequestURI());
 
-        String token = request.getHeader("Authorization");
+        String token = null;
 
-        if (token == null || !token.startsWith("Bearer ")) {
-            LOGGER.warning("JwtAuthenticationFilter: No JWT token found in request");
+        // Retrieve JWT from cookies
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        if (token == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        token = token.substring(7); // Remove "Bearer " prefix
         String username = jwtUtil.validateToken(token);
-
         if (username == null) {
-            LOGGER.warning("JwtAuthenticationFilter: Invalid JWT token");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Invalid JWT Token");
             return;
         }
 
-        LOGGER.info("JwtAuthenticationFilter: Authenticated user - " + username);
-
-        // Fetch role_id from database
+            // Fetch user details and set authentication context
         Person person = personRepository.findPersonByUsername(username);
-
         if (person == null) {
-            LOGGER.warning("JwtAuthenticationFilter: User not found in database!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("User not found");
             return;
         }
-
-       
-        int roleId = person.getRole(); // Get role_id from database
-
-        // Map role_id to Spring Security role
-        String role = switch (roleId) {
+        
+        String role = switch (person.getRole()) {
             case 1 -> "ROLE_RECRUITER";
             case 2 -> "ROLE_USER";
-            default -> "ROLE_DEFAULT"; // Fallback role
+            default -> "ROLE_DEFAULT";
         };
-
-        LOGGER.info("JwtAuthenticationFilter: Assigned role - " + role);
 
         User principal = new User(username, "", Collections.singletonList(new SimpleGrantedAuthority(role)));
 
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
-
+    
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         filterChain.doFilter(request, response);
     }
 }
