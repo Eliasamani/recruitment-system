@@ -6,8 +6,8 @@ export const SignInFormModel = {
 export const SignupFormModel = {
   username: '',
   password: '',
-  firstName: '',
-  lastName: '',
-  personnummer: '',
+  firstname: '',
+  lastname: '',
+  personNumber: '',
   email: '',
   };

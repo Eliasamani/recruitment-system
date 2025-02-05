@@ -46,12 +46,19 @@ export default function SignupPresenter() {
     if (!validate()) return;
 
     try {
-      const response = await fetch('/api/register', {
+      const response = await fetch(process.env.REACT_APP_API_URL+'/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          firstname:formData.firstName,
+          lastname:formData.lastname,
+          personNumber:formData.personNumber,
+          username:formData.username,
+          email:formData.email,
+          password:formData.password
+      }),
       });
 
       if (!response.ok) throw new Error('Registration failed');
