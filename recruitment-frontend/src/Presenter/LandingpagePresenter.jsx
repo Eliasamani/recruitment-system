@@ -1,4 +1,3 @@
-// /src/Presenter/LandingPresenter.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import LandingpageView from '../View/LandingpageView.jsx';
