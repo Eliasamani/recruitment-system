@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import SignupView from '../View/SignupView.jsx'; // Corrected import
+import SignupView from '../View/SignupView.jsx'; 
 import { SignupFormModel } from '../model.jsx';
 
 export default function SignupPresenter() {
   const [formData, setFormData] = useState(SignupFormModel);
   const [errors, setErrors] = useState({});
   const [submissionError, setSubmissionError] = useState('');
+  const [loading, setLoading] = useState(false); // Added loading state
 
   // onChange handler
   const onChange = (e) => {
@@ -45,8 +46,11 @@ export default function SignupPresenter() {
     e.preventDefault();
     if (!validate()) return;
 
+    setLoading(true); // Start loading
+    setSubmissionError(''); // Reset submission error
+
     try {
-      const response = await fetch(process.env.REACT_APP_API_URL+'/api/register', {
+      const response = await fetch(process.env.REACT_APP_API_URL + '/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -61,11 +65,17 @@ export default function SignupPresenter() {
       }),
       });
 
-      if (!response.ok) throw new Error('Registration failed');
-      console.log('Registration successful');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Registration failed');
+      }
     } catch (error) {
       console.error('Registration error:', error);
-      setSubmissionError(error instanceof Error ? error.message : 'An unexpected error occurred');
+      setSubmissionError(
+        error instanceof Error ? error.message : 'An unexpected error occurred'
+      );
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -74,6 +84,7 @@ export default function SignupPresenter() {
       formData={formData}
       errors={errors}
       submissionError={submissionError}
+      loading={loading} // Pass loading state to the View
       onChange={onChange}
       onSubmit={onSubmit}
     />
