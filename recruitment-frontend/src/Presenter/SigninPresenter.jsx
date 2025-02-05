@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import SigninView from '../View/SinginView.jsx';
+import SigninView from '../View/SigninView.jsx';
 import { SignInFormModel } from '../model.jsx';
 
   export default function SigninPresenter () {
