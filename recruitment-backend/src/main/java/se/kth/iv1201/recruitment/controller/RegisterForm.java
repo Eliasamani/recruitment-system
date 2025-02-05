@@ -33,7 +33,7 @@ public class RegisterForm {
     @NotBlank(message = "Email field is empty")
     private String email;
 
-    @Pattern(regexp = "\\d{8}-\\d{4}", message = "invalid person number format, Expected:YYYYMMDD-NNNN")
+    @Pattern(regexp = "^\\d{8}-\\d{4}$", message = "invalid person number format, Expected:YYYYMMDD-NNNN")
     @NotBlank(message = "person number field is empty")
     private String personNumber;
 

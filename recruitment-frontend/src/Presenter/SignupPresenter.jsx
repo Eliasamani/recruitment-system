@@ -18,17 +18,17 @@ export default function SignupPresenter() {
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required.';
-    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required.';
-    if (!formData.personnummer.trim()) newErrors.personnummer = 'Personnummer is required.';
+    if (!formData.firstname.trim()) newErrors.firstname = 'First name is required.';
+    if (!formData.lastname.trim()) newErrors.lastname = 'Last name is required.';
+    if (!formData.personNumber.trim()) newErrors.personNumber = 'Personnumber is required.';
     if (!formData.username.trim()) newErrors.username = 'Username is required.';
     if (!formData.email.trim()) newErrors.email = 'Email is required.';
     if (!formData.password.trim()) newErrors.password = 'Password is required.';
 
     // Personnummer validation
-    const personnummerRegex = /^\d{6}-\d{4}$/;
-    if (formData.personnummer && !personnummerRegex.test(formData.personnummer)) {
-      newErrors.personnummer = 'Invalid format (expected YYMMDD-XXXX)';
+    const personNumberRegex = /^\d{8}-\d{4}$/;
+    if (formData.personNumber && !personNumberRegex.test(formData.personNumber)) {
+      newErrors.personNumber = 'Invalid format (expected YYMMDD-XXXX)';
     }
 
     // Email validation
@@ -52,7 +52,7 @@ export default function SignupPresenter() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          firstname:formData.firstName,
+          firstname:formData.firstname,
           lastname:formData.lastname,
           personNumber:formData.personNumber,
           username:formData.username,
