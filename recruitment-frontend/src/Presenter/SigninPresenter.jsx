@@ -74,7 +74,6 @@ export default function SigninPresenter() {
 
       console.log("Login successful");
       setIsAuthenticated(true); // Update the state
-      window.location.href = process.env.REACT_APP_API_URL+"/api/logout";
     } catch (error) {
       console.error("Login error:", error);
       setSubmissionError(

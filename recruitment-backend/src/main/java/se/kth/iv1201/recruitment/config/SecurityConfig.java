@@ -23,15 +23,21 @@ public class SecurityConfig {
 
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+  private JwtUtil jwtUtil;
+  private PersonRepository personRepository;
+
   public SecurityConfig(JwtUtil jwtUtil, PersonRepository personRepository) {
+    this.jwtUtil = jwtUtil;
+    this.personRepository = personRepository;
     this.jwtAuthenticationFilter =
       new JwtAuthenticationFilter(jwtUtil, personRepository);
   }
 
+  
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf->csrf.disable()).authorizeHttpRequests(auth -> auth
-            .requestMatchers("/", "/api/login", "/api/register","/index.html","/static/**","/*.png","/*.json","/*.ico","/*.txt","/error").permitAll() // ✅ Allow public access
+            .requestMatchers("/", "/api/session","/api/login", "/api/register","/index.html","/static/**","/*.png","/*.json","/*.ico","/*.txt","/error").permitAll() // ✅ Allow public access
             .requestMatchers("/api/protected").hasRole("RECRUITER")) // ✅ Ensure role is checked correctly
             .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, personRepository), UsernamePasswordAuthenticationFilter.class)            .formLogin(login -> login.loginPage("/")
             .permitAll()); // ✅ Pass repository
@@ -40,6 +46,7 @@ public class SecurityConfig {
     @Bean
     UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(true); // denna behövdes
         configuration.setAllowedOrigins(List.of("http://localhost:3000","https://iv1201-recr-0486e0c122b1.herokuapp.com/","https://recruitment.jontek.xyz/"));
         configuration.setAllowedMethods(List.of("GET","POST"));
         configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
@@ -87,15 +94,14 @@ public class SecurityConfig {
 
   @Bean
   public CorsFilter corsFilter() {
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    CorsConfiguration config = new CorsConfiguration();
-    config.setAllowCredentials(true);
-    config.setAllowedOrigins(List.of("http://localhost:8081"));
-    config.setAllowedMethods(
-      List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")
-    );
-    config.setAllowedHeaders(
-      List.of(
-        "Authorization",
-*/
+      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+      CorsConfiguration config = new CorsConfiguration();
+      config.setAllowCredentials(true);
+      config.setAllowedOrigins(List.of("http://localhost:8081")); // ✅ Allow React frontend
+      config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+      config.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin"));
+      source.registerCorsConfiguration("/**", config);
+      return new CorsFilter(source);
+  }
+      */
 }
