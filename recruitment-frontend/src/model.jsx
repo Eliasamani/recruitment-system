@@ -4,10 +4,10 @@ export const SignInFormModel = {
   };
 
 export const SignupFormModel = {
-  username: '',
-  password: '',
   firstname: '',
   lastname: '',
   personNumber: '',
+  username: '',
   email: '',
-  };
+  password: ''
+};

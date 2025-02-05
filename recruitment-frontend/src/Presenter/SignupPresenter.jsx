@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import SignupView from '../View/SignupView.jsx'; 
 import { SignupFormModel } from '../model.jsx';
 
@@ -6,30 +7,31 @@ export default function SignupPresenter() {
   const [formData, setFormData] = useState(SignupFormModel);
   const [errors, setErrors] = useState({});
   const [submissionError, setSubmissionError] = useState('');
-  const [loading, setLoading] = useState(false); // Added loading state
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   // onChange handler
   const onChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: value,
     }));
   };
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.firstname.trim()) newErrors.firstname = 'First name is required.';
-    if (!formData.lastname.trim()) newErrors.lastname = 'Last name is required.';
+    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required.';
+    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required.';
     if (!formData.personNumber.trim()) newErrors.personNumber = 'Personnumber is required.';
     if (!formData.username.trim()) newErrors.username = 'Username is required.';
     if (!formData.email.trim()) newErrors.email = 'Email is required.';
     if (!formData.password.trim()) newErrors.password = 'Password is required.';
 
-    // Personnummer validation
+    // Personnumber validation
     const personNumberRegex = /^\d{8}-\d{4}$/;
-    if (formData.personNumber && !personNumberRegex.test(formData.personNumber)) {
-      newErrors.personNumber = 'Invalid format (expected YYMMDD-XXXX)';
+    if (formData.personNumber && !personNumberRegex.test(formData.personNumber.trim())) {
+      newErrors.personNumber = 'Invalid format (expected YYYYMMDD-XXXX)';
     }
 
     // Email validation
@@ -45,10 +47,8 @@ export default function SignupPresenter() {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-
     setLoading(true); // Start loading
     setSubmissionError(''); // Reset submission error
-
     try {
       const response = await fetch(process.env.REACT_APP_API_URL + '/api/register', {
         method: 'POST',
@@ -56,19 +56,20 @@ export default function SignupPresenter() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          firstname:formData.firstname,
-          lastname:formData.lastname,
-          personNumber:formData.personNumber,
-          username:formData.username,
-          email:formData.email,
-          password:formData.password
-      }),
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          personNumber: formData.personNumber,
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+        }),
       });
-
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Registration failed');
       }
+      // Redirect to Signin page with username as a query parameter
+      navigate(`/signin?username=${encodeURIComponent(formData.username)}`);
     } catch (error) {
       console.error('Registration error:', error);
       setSubmissionError(

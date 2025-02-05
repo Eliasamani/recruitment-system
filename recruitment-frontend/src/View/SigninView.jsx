@@ -1,6 +1,5 @@
 
   import React from 'react';
-  import { SignInFormModel } from '../model.jsx';
   import { Link } from 'react-router-dom';
   
   const SigninView = ({ formData, errors, submissionError, onChange, onSubmit }) => (
