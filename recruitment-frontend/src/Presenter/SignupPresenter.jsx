@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import SignupView from '../View/SingupView.jsx'; // Ensure the filename is correct
+import SignupView from '../View/SignupView.jsx'; // Corrected import
 import { SignupFormModel } from '../model.jsx';
 
 export default function SignupPresenter() {
   const [formData, setFormData] = useState(SignupFormModel);
   const [errors, setErrors] = useState({});
-  const [submissionError, setSubmissionError] = useState(''); // Added this line
+  const [submissionError, setSubmissionError] = useState('');
 
-  // Fixed onChange handler
+  // onChange handler
   const onChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -65,7 +65,6 @@ export default function SignupPresenter() {
       console.log('Registration successful');
     } catch (error) {
       console.error('Registration error:', error);
-      // Optionally update submissionError here if desired
       setSubmissionError(error instanceof Error ? error.message : 'An unexpected error occurred');
     }
   };

@@ -12,7 +12,7 @@ const SignupView = ({ formData, errors, onChange, onSubmit }) => (
       <input
         type="text"
         name="firstName"
-        value={formData.firstname}
+        value={formData.firstName}
         onChange={onChange}
         placeholder="firstName"
       />
@@ -23,7 +23,7 @@ const SignupView = ({ formData, errors, onChange, onSubmit }) => (
       <input
         type="text"
         name="lastName"
-        value={formData.lastname}
+        value={formData.lastName}
         onChange={onChange}
         placeholder="lastName"
 
@@ -36,7 +36,7 @@ const SignupView = ({ formData, errors, onChange, onSubmit }) => (
       <input
         type="text"
         name="personnummer"
-        value={formData.personNumber}
+        value={formData.personnummer}
         onChange={onChange}
         placeholder="YYMMDD-XXXX"
       />
