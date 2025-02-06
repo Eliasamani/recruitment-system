@@ -39,7 +39,7 @@ public class LoginRegisterControllerTest {
     void testLoginWithValidCredentials() throws Exception {
         MvcResult result = mockMvc.perform(post("/api/login")
                 .header("Content-Type", "application/json")
-                .content("{\"username\":\"AustinMueller\"}"))
+                .content("{\"username\":\"TestRecruiter\", \"password\":\"testpassword\"}"))
                .andExpect(status().isOk()) // Expect successful login
                .andReturn();
         
@@ -69,12 +69,12 @@ public class LoginRegisterControllerTest {
      */
     @Test
     void testSessionValidationWithCorrectToken() throws Exception {
-        String token = jwtUtil.generateToken("AustinMueller"); // Generate a JWT for testing
+        String token = jwtUtil.generateToken("TestRecruiter"); // Generate a JWT for testing
         MockCookie jwtCookie = new MockCookie("jwt", token);
         
         mockMvc.perform(get("/api/session").cookie(jwtCookie))
                .andExpect(status().isOk()) // Expect successful authentication
-               .andExpect(content().string(containsString("AustinMueller"))); // Expect the correct username
+               .andExpect(content().string(containsString("TestRecruiter"))); // Expect the correct username
     }
 
     /**
@@ -97,7 +97,7 @@ public class LoginRegisterControllerTest {
      */
     @Test
     void testLogoutClearsJwtCookie() throws Exception {
-        String token = jwtUtil.generateToken("AustinMueller"); // Generate a JWT for testing
+        String token = jwtUtil.generateToken("TestRecruiter"); // Generate a JWT for testing
         MockCookie jwtCookie = new MockCookie("jwt", token);
     
         mockMvc.perform(post("/api/logout").cookie(jwtCookie))
