@@ -57,8 +57,8 @@ public class LoginRegisterControllerTest {
     void testLoginWithInvalidCredentials() throws Exception {
         mockMvc.perform(post("/api/login")
                 .header("Content-Type", "application/json")
-                .content("{\"username\":\"NonExistentUser\"}"))
-               .andExpect(status().isUnauthorized()); // Expect failure due to invalid user
+                .content("{\"username\":\"TestRecruiter\", \"password\":\"wrongpassword\"}"))
+               .andExpect(status().isUnauthorized()); // Expect failure due to invalid password
     }
 
     /**
