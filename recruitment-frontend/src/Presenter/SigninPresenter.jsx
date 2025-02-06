@@ -88,9 +88,9 @@ export default function SigninPresenter() {
       setIsAuthenticated(true); // Update the state
 
       // Redirect based on the user's role
-      if (role === 'Candidate') {
+      if (role === 2) {
         navigate('/candidate'); // Redirect to Candidate page
-      } else if (role === 'Recruiter') {
+      } else if (role === 1) {
         navigate('/recruiter'); // Redirect to Recruiter page
       }
     } catch (error) {
