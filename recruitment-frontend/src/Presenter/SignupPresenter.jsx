@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import SignupView from '../View/SignupView.jsx'; 
+import { useNavigate } from 'react-router-dom';
+import SignupView from '../View/SignupView.jsx';
 import { SignupFormModel } from '../model.jsx';
 
 export default function SignupPresenter() {
@@ -8,7 +8,7 @@ export default function SignupPresenter() {
   const [errors, setErrors] = useState({});
   const [submissionError, setSubmissionError] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   // onChange handler
   const onChange = (e) => {
@@ -21,8 +21,9 @@ export default function SignupPresenter() {
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.firstname.trim()) newErrors.firstName = 'First name is required.';
-    if (!formData.lastname.trim()) newErrors.lastName = 'Last name is required.';
+
+    if (!formData.firstname.trim()) newErrors.firstname = 'First name is required.';
+    if (!formData.lastname.trim()) newErrors.lastname = 'Last name is required.';
     if (!formData.personNumber.trim()) newErrors.personNumber = 'Personnumber is required.';
     if (!formData.username.trim()) newErrors.username = 'Username is required.';
     if (!formData.email.trim()) newErrors.email = 'Email is required.';
@@ -47,8 +48,10 @@ export default function SignupPresenter() {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
+
     setLoading(true); // Start loading
     setSubmissionError(''); // Reset submission error
+
     try {
       const response = await fetch(process.env.REACT_APP_API_URL + '/api/register', {
         method: 'POST',
@@ -64,10 +67,12 @@ export default function SignupPresenter() {
           password: formData.password,
         }),
       });
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Registration failed');
       }
+
       // Redirect to Signin page with username as a query parameter
       navigate(`/signin?username=${encodeURIComponent(formData.username)}`);
     } catch (error) {
@@ -85,7 +90,7 @@ export default function SignupPresenter() {
       formData={formData}
       errors={errors}
       submissionError={submissionError}
-      loading={loading} // Pass loading state to the View
+      loading={loading}
       onChange={onChange}
       onSubmit={onSubmit}
     />
