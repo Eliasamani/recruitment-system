@@ -4773,8 +4773,8 @@ COPY public.person (person_id, name, surname, pnr, email, password, role_id, use
 898	Robert	Gutierrez	20040318-5722	r_gutierrez@finnsinte.se	\N	2	\N
 899	Odysseus	Decker	20030715-5825	o.decker@finnsinte.se	\N	2	\N
 900	Simon	Gallagher	20040911-1699	sgallagher8213@finnsinte.se	\N	2	\N
-901	Mock	Recruiter	\N	\N	mockpass	1	Mockrecruiter
-902	Mock	Applicant	99991212-9999	mockapplicant@finnsinte.se	mockpass	2	mockapplicant
+901	Recruiter	Test	\N	\N	$2a$12$CCb.uQs0FAO4/WPEdkwFF.bipuL6CGJ35F2CjkXecMg6DHZyAbhtq	1	TestRecruiter
+902	Applicant	Test	19990101-0101	appltest@test.com	$2a$12$CCb.uQs0FAO4/WPEdkwFF.bipuL6CGJ35F2CjkXecMg6DHZyAbhtq	2	TestApplicant
 \.
 
 
