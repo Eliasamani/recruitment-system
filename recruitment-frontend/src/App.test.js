@@ -1,9 +1,13 @@
-/*import { render, screen } from '@testing-library/react';
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import App from './App';
+test('renders App without crashing', () => {
+  render(
+    <MemoryRouter>
+      <App />
+    </MemoryRouter>
+  );
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
 });
-*/
