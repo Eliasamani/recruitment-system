@@ -9,4 +9,4 @@ ARG JAR_FILE=recruitment-backend/target/*.jar
 COPY ${JAR_FILE} app.jar
 
 
-CMD SPRING_PORT=$PORT; java -jar /app.jar
+CMD export SPRING_PORT=$PORT; java -jar /app.jar
