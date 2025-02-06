@@ -19,8 +19,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.logging.Logger;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Cookie;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {

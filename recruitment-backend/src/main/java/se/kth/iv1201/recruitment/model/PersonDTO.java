@@ -17,8 +17,8 @@ public interface PersonDTO {
 
 
     public enum roles {
-        APPLICANT,
+        NO_ROLE,
         RECRUITER,
-        NO_ROLE
+        APPLICANT
       }
 }

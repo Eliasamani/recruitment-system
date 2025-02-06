@@ -2,16 +2,19 @@ package se.kth.iv1201.recruitment.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import se.kth.iv1201.recruitment.model.Person;
 import se.kth.iv1201.recruitment.model.PersonDTO;
 import se.kth.iv1201.recruitment.repository.PersonRepository;
+import org.springframework.transaction.annotation.Propagation;
 
-import java.util.Optional;
 
 /**
  * Implements login/register related business logic.
  */
 @Service
+@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
 public class LoginRegisterService {
 
     @Autowired

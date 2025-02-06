@@ -2,7 +2,6 @@ package se.kth.iv1201.recruitment.controller;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -13,12 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.mock.web.MockCookie;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
+
 import se.kth.iv1201.recruitment.security.JwtUtil;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Import(JwtUtil.class)
+@Transactional
 public class ContentControllerTest {
 
   @Autowired
@@ -27,6 +28,51 @@ public class ContentControllerTest {
   @Autowired
   private JwtUtil jwtUtil;
 
+  /**
+   * Tests that the get endpoint for login simply returns the word login
+   * Expects:
+  * - HTTP 200 OK status
+  * - Response containing the word login.   
+  */
+  @Test
+  void testCorrectApiLoginGetWithNotLoggedIn() throws Exception{
+      mockMvc.perform(get("/api/login")).andExpect(status().isOk()).andExpect(content().string(containsString("login")));
+  }
+  /**
+   * Tests that the get endpoint for login simply returns the word login also when logged in
+   * Expects:
+  * - HTTP 200 OK status
+  * - Response containing the word login.   
+  */
+  @Test
+  void testCorrectApiLoginGetWithLoggedIn() throws Exception{
+      String token = jwtUtil.generateToken("TestApplicant");
+      MockCookie jwtCookie = new MockCookie("jwt", token);
+      mockMvc.perform(get("/api/login").cookie(jwtCookie)).andExpect(status().isOk()).andExpect(content().string(containsString("login")));
+  }
+  /**
+   * Tests that the get endpoint for register simply returns the word register
+   * Expects:
+  * - HTTP 200 OK status
+  * - Response containing the word login.   
+  */
+  @Test
+  void testCorrectApiRegisterGetWithNotLoggedIn() throws Exception{
+      mockMvc.perform(get("/api/register")).andExpect(status().isOk()).andExpect(content().string(containsString("register")));
+  }
+  /**
+   * Tests that the get endpoint for register simply returns the word register also when logged in
+   * Expects:
+  * - HTTP 200 OK status
+  * - Response containing the word login.   
+  */
+  @Test
+  void testCorrectApiRegisterGetWithLoggedIn() throws Exception{
+      String token = jwtUtil.generateToken("TestApplicant");
+      MockCookie jwtCookie = new MockCookie("jwt", token);
+      mockMvc.perform(get("/api/register").cookie(jwtCookie)).andExpect(status().isOk()).andExpect(content().string(containsString("register")));
+
+  }
   /**
    * Tests accessing the protected API endpoint without authentication.
    * Expects:
@@ -45,6 +91,7 @@ public class ContentControllerTest {
    * - HTTP 403 Forbidden status (user lacks required permissions).
    */
   @Test
+
   void testCorrectApiProtectedGetWithNonAuthorizedUser() throws Exception {
     String token = jwtUtil.generateToken("TestApplicant");
     MockCookie jwtCookie = new MockCookie("jwt", token);
