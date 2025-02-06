@@ -21,9 +21,9 @@ export default function SigninPresenter() {
       if (response.ok) {
         const userData = await response.json();
         const role = userData.role; // Get the user's role
-        if (role === 'Candidate') {
+        if (role === 2) {
           navigate('/candidate'); // Redirect to Candidate page
-        } else if (role === 'Recruiter') {
+        } else if (role === 1) {
           navigate('/recruiter'); // Redirect to Recruiter page
         }
         setIsAuthenticated(true); // User is logged in
