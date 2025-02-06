@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
  * Implements login/register related business logic.
  */
 @Service
-@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
+@Transactional(rollbackFor = Exception.class)
 public class LoginRegisterService {
 
     @Autowired
@@ -37,7 +37,7 @@ public class LoginRegisterService {
 
         // ✅ Use Optional to check if the username exists
         if (repository.findPersonByUsername(username) != null) {
-            throw new Exception("User already exists"); // TODO: Replace with a specific exception
+            throw new UserAlreadyExistsException("User already exists");
         }
 
         // ✅ Create and save the new person

@@ -1,9 +1,13 @@
 package se.kth.iv1201.recruitment.controller;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.util.Map;
+
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +19,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.persistence.EntityManager;
 import se.kth.iv1201.recruitment.security.JwtUtil;
+import se.kth.iv1201.recruitment.model.PersonDTO;
+import se.kth.iv1201.recruitment.repository.PersonRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -25,9 +32,13 @@ public class LoginRegisterControllerTest {
     
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private EntityManager entityManager;
 
     @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    private PersonRepository repository;
 
     /**
      * Tests the login endpoint with valid credentials.
@@ -105,5 +116,26 @@ public class LoginRegisterControllerTest {
                .andExpect(content().string(containsString("Logged out successfully"))) // Expect logout message
                .andExpect(cookie().value("jwt", ""))  // Ensure JWT cookie is cleared
                .andExpect(cookie().maxAge("jwt", 0)); // Ensure the cookie expires immediately
+    }
+    @Test
+    void testRegisterCorrectFormat() throws Exception {
+
+
+        String userName = String.valueOf(System.currentTimeMillis());
+        String contentdata = "{\"firstname\":\"name\",\"lastname\":\"name\",\"personNumber\":\"19991212-4444\",\"username\":\""+userName+"\",\"email\":\"email@example.com\",\"password\":\"password\"}";
+        mockMvc.perform(post("/api/register").header("Content-Type", "application/json").content(contentdata)).andExpect(status().isOk()).andExpect(content().string(containsString("ACCOUNT CREATED")));
+        PersonDTO person = repository.findPersonByUsername(userName); 
+        if(person == null){
+            // we got problem
+            fail("The registered acc was not persisted in db");
+        }
+
+    }
+    @Test
+    void testRegisterAlreadyExistingUser() throws Exception {
+        String userName = "TestRecruiter";
+        String contentdata = "{\"firstname\":\"name\",\"lastname\":\"name\",\"personNumber\":\"19991212-4444\",\"username\":\""+userName+"\",\"email\":\"email@example.com\",\"password\":\"password\"}";
+        
+        mockMvc.perform(post("/api/register").header("Content-Type", "application/json").content(contentdata)).andExpect(status().isBadRequest()).andExpect(content().string(containsString("{\"message\":\"Username already exists\"}")));
     }
 }

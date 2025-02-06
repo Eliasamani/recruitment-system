@@ -18,14 +18,19 @@ import org.springframework.web.bind.annotation.RestController;
 import se.kth.iv1201.recruitment.model.Person;
 import se.kth.iv1201.recruitment.model.PersonDTO;
 import se.kth.iv1201.recruitment.repository.PersonRepository;
+import se.kth.iv1201.recruitment.security.JwtAuthenticationFilter;
 import se.kth.iv1201.recruitment.security.JwtUtil;
 import se.kth.iv1201.recruitment.service.LoginRegisterService;
+import se.kth.iv1201.recruitment.service.UserAlreadyExistsException;
+import java.util.logging.Logger;
+
 
 /**
  * Controller for Login and Register post APIs
  */
 @RestController
 public class LoginRegisterController {
+  private static final Logger LOGGER = Logger.getLogger(LoginRegisterController.class.getName());
 
   @Autowired
   private PersonRepository repository; // for testing
@@ -46,19 +51,24 @@ public class LoginRegisterController {
   @PostMapping(value = "/api/register", consumes = "application/json")
   // change parameter object by defining new one for the from with validation included,
   // decouples validation during creation of person obj, validaion more related to presentation
-  public String registerPerson(@Valid @RequestBody RegisterForm regform)
+  public ResponseEntity<String> registerPerson(@Valid @RequestBody RegisterForm regform)
     throws Exception {
-    service.createPerson(
-      regform.getFirstname(),
-      regform.getLastname(),
-      regform.getPersonNumber(),
-      regform.getEmail(),
-      regform.getUsername(),
-      encoder.encode(regform.getPassword())
-    );
+      try {
+      service.createPerson(
+        regform.getFirstname(),
+        regform.getLastname(),
+        regform.getPersonNumber(),
+        regform.getEmail(),
+        regform.getUsername(),
+        encoder.encode(regform.getPassword())
+      );
+      } catch (UserAlreadyExistsException e) {
+        return ResponseEntity.status(400).body("{\"message\":\"Username already exists\"}");
+      }
+
     // Do acc creation logic in service as this is Business logic related
 
-    return "ACCOUNT CREATED";
+    return ResponseEntity.ok("ACCOUNT CREATED");
   }
 
   @PostMapping(value = "/api/login", consumes = "application/json")
@@ -108,7 +118,7 @@ public class LoginRegisterController {
 
     // Log if token is missing
     if (token == null) {
-      System.out.println("No JWT found in cookies!");
+      LOGGER.warning("No JWT found in cookies!");
       return ResponseEntity
         .status(401)
         .body(Map.of("error", "Not authenticated"));
@@ -117,11 +127,11 @@ public class LoginRegisterController {
     // Validate JWT Token
     String username = jwtUtil.validateToken(token);
     if (username == null) {
-      System.out.println("Invalid JWT token!");
+      LOGGER.severe("Invalid JWT token!");
       return ResponseEntity.status(403).body(Map.of("error", "Invalid token"));
     }
 
-    System.out.println("User authenticated: " + username);
+    LOGGER.info("User authenticated: " + username);
     return ResponseEntity.ok(Map.of("username", username));
   }
 
