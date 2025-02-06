@@ -6,7 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.criteria.CriteriaBuilder.Case;
+
 
 
 
@@ -48,7 +48,19 @@ public class Person implements PersonDTO{
 
     }
 
-
+    /**
+     * Creates a new instance wiht specified params. Note that any 
+     * new instance created will have role APPLICANT. 
+     * 
+     * Person number and username must be unique for 
+     * each person persisted the database.
+     * @param firstname
+     * @param lastname
+     * @param personNum
+     * @param email
+     * @param username
+     * @param password
+     */
     public Person(String firstname, String lastname, String personNum, String email, String username,String password)  {
         this.firstname = firstname;
         this.lastname = lastname;
@@ -56,7 +68,7 @@ public class Person implements PersonDTO{
         this.email = email;
         this.username = username;
         this.password = password;
-        this.role = 2; // set role to applicant
+        this.role = roles.APPLICANT.ordinal(); // set role to applicant
     }
 
 
