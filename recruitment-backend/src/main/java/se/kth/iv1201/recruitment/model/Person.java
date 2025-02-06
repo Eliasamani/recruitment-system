@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.criteria.CriteriaBuilder.Case;
 
 
 
@@ -119,10 +120,23 @@ public class Person implements PersonDTO{
     }
 
 
-    public int getRole() {
-        return role;
-    }
+     public int getRole() {
+         return role;
+     }
 
+    public roles getRoleType(){
+        switch (role) {
+            case 1:
+                return roles.RECRUITER;
+        
+            case 2:
+                return roles.APPLICANT;
+
+            default:
+                return roles.NO_ROLE;
+        }
+    }
+  
 
     public void setRole(int role) {
         this.role = role;

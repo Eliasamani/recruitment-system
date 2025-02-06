@@ -12,5 +12,13 @@ public interface PersonDTO {
     public String getEmail();
     public String getPassword();
     public int getRole();
+    public roles getRoleType();
     public String getUsername();
+
+
+    public enum roles {
+        APPLICANT,
+        RECRUITER,
+        NO_ROLE
+      }
 }

@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.filter.OncePerRequestFilter;
 import se.kth.iv1201.recruitment.model.Person;
+import se.kth.iv1201.recruitment.model.PersonDTO;
 import se.kth.iv1201.recruitment.repository.PersonRepository;
 
 import java.io.IOException;
@@ -71,9 +72,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         
-        String role = switch (person.getRole()) {
-            case 1 -> "ROLE_RECRUITER";
-            case 2 -> "ROLE_USER";
+        String role = switch (person.getRoleType()) {
+            case PersonDTO.roles.RECRUITER -> "ROLE_RECRUITER";
+            case PersonDTO.roles.APPLICANT -> "ROLE_USER";
             default -> "ROLE_DEFAULT";
         };
 
