@@ -122,9 +122,9 @@ public class LoginRegisterController {
     return ResponseEntity.ok(Map.of("username", username));
   }
 
-  @PostMapping("/api/logout")
-  public ResponseEntity<?> logout(HttpServletResponse response) {
-    Cookie jwtCookie = new Cookie("jwt", null);
+@PostMapping("/api/logout")
+public ResponseEntity<?> logout(HttpServletResponse response) {
+    Cookie jwtCookie = new Cookie("jwt", "");
     jwtCookie.setHttpOnly(true);
     jwtCookie.setSecure(true);
     jwtCookie.setPath("/");
@@ -132,5 +132,5 @@ public class LoginRegisterController {
     response.addCookie(jwtCookie);
 
     return ResponseEntity.ok("Logged out successfully");
-  }
+}
 }

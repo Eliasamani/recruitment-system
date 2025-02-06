@@ -34,15 +34,23 @@ public class SecurityConfig {
   }
 
   
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf->csrf.disable()).authorizeHttpRequests(auth -> auth
-            .requestMatchers("/", "/api/session","/api/login", "/api/register","/index.html","/static/**","/*.png","/*.json","/*.ico","/*.txt","/error").permitAll() // ✅ Allow public access
-            .requestMatchers("/api/protected").hasRole("RECRUITER")) // ✅ Ensure role is checked correctly
-            .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, personRepository), UsernamePasswordAuthenticationFilter.class)            .formLogin(login -> login.loginPage("/")
-            .permitAll()); // ✅ Pass repository
-        return http.build();
-    }
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+      http.csrf(csrf -> csrf.disable())
+          .authorizeHttpRequests(auth -> auth
+              .requestMatchers("/", "/api/session", "/api/login", "/api/register", 
+                               "/index.html", "/static/**", "/*.png", "/*.json", "/*.ico", "/*.txt", "/error")
+              .permitAll() // Public endpoints
+              .requestMatchers("/api/logout").authenticated() // Only authenticated users can logout
+              .requestMatchers("/api/protected").hasRole("RECRUITER") // Only recruiters can access protected route
+              .anyRequest().authenticated()
+          )
+          .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) //Ensure JWT authentication happens before Spring Security's built-in authentication filter
+          .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); //Disable session storage, making authentication fully stateless (JWT required for every request)
+  
+      return http.build();
+  }
+  
     @Bean
     UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -54,54 +62,4 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-    /* 
-    @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http)
-    throws Exception {
-    http
-      .csrf(csrf -> csrf.disable())
-      .sessionManagement(session ->
-        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-      )
-      .authorizeHttpRequests(auth ->
-        auth
-          .requestMatchers(
-            "/",
-            "/api/login",
-            "/api/register",
-            "/index.html",
-            "/static/**",
-            "/*.png",
-            "/*.json",
-            "/*.ico",
-            "/*.txt",
-            "/error"
-          )
-          .permitAll()
-          .requestMatchers("/api/protected")
-          .hasRole("RECRUITER")
-          .anyRequest()
-          .authenticated()
-      )
-      .addFilterBefore(
-        jwtAuthenticationFilter,
-        UsernamePasswordAuthenticationFilter.class
-      )
-      .formLogin(login -> login.loginPage("/").permitAll());
-
-    return http.build();
-  }
-
-  @Bean
-  public CorsFilter corsFilter() {
-      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-      CorsConfiguration config = new CorsConfiguration();
-      config.setAllowCredentials(true);
-      config.setAllowedOrigins(List.of("http://localhost:8081")); // ✅ Allow React frontend
-      config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-      config.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin"));
-      source.registerCorsConfiguration("/**", config);
-      return new CorsFilter(source);
-  }
-      */
 }
