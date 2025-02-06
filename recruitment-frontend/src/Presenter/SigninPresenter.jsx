@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import SigninView from '../View/SigninView';
 import { SignInFormModel } from '../model';
-
+import { useCallback } from 'react';
 export default function SigninPresenter() {
   const [formData, setFormData] = useState(SignInFormModel);
   const [errors, setErrors] = useState({});
@@ -11,11 +11,10 @@ export default function SigninPresenter() {
   const navigate = useNavigate(); // Initialize useNavigate
 
   // Check if user is logged in when the page loads
-  useEffect(() => {
-    checkAuthStatus();
-  }, []);
 
-  const checkAuthStatus = async () => {
+  
+
+  const checkAuthStatus = useCallback(async () => {
     try {
       const response = await fetch(process.env.REACT_APP_API_URL + '/api/session', { credentials: 'include' });
       if (response.ok) {
@@ -33,7 +32,11 @@ export default function SigninPresenter() {
     } catch (error) {
       setIsAuthenticated(false);
     }
-  };
+  }, [navigate]); // Memoize checkAuthStatus using useCallback
+  
+  useEffect(() => {
+    checkAuthStatus();
+  }, [checkAuthStatus]); // Now useEffect correctly includes checkAuthStatus 
 
   const onChange = (e) => {
     const { name, value } = e.target;
