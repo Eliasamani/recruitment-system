@@ -42,7 +42,7 @@ jobs:
         if: ${{success()}}
         env: 
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
-          PORT: 8080
+          SPRING_PORT: 8080
         run: |
           
           cd $GITHUB_WORKSPACE
