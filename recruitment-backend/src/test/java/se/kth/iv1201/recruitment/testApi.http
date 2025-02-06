@@ -2,14 +2,13 @@ POST  http://localhost:8080/api/register HTTP/1.1
 content-type: application/json
 
 {
-    "id": 1,
+   
     "firstname": "test",
-    "lastname": "test",
-    "personNumber": "test",
-    "email": "test",
+    "lastname": "aa",
+    "personNumber": "12345678-1236",
+    "email": "aa.test@test.se",
     "password": "mytest",
-    "role": 1,
-    "username": "testuser"
+    "username": "testuser3"
 }
 
 ###

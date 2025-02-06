@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,6 +37,8 @@ public class LoginRegisterController {
   @Autowired
   private JwtUtil jwtUtil;
 
+  private   PasswordEncoder encoder = new BCryptPasswordEncoder();
+
   @GetMapping("/mytest")
   public List<Person> test() {
     return repository.findAll();
@@ -52,7 +55,7 @@ public class LoginRegisterController {
       regform.getPersonNumber(),
       regform.getEmail(),
       regform.getUsername(),
-      regform.getPassword()
+      encoder.encode(regform.getPassword())
     );
     // Do acc creation logic in service as this is Business logic related
 
@@ -66,14 +69,15 @@ public class LoginRegisterController {
   ) throws Exception {
     PersonDTO person = service.findPerson(json.get("username"));
     if (person == null) {
-      return ResponseEntity.status(401).body("User does not exist");
+      return  ResponseEntity.status(401).body("User does not exist");
     }
 
     // Compare password hashes
-    //PasswordEncoder encoder = new BCryptPasswordEncoder();
-    //if (!encoder.matches(json.get("password"), person.getPassword())) {
-    //    throw new Exception("Invalid credentials");
-    //}
+  
+    if (!encoder.matches(json.get("password"), person.getPassword())) {
+      return  ResponseEntity.status(401).body("Invalid password");
+      // throw new Exception("Invalid credentials");
+    }
 
     // Generate JWT Token
     String jwt = jwtUtil.generateToken(person.getUsername());
@@ -86,7 +90,7 @@ public class LoginRegisterController {
     jwtCookie.setMaxAge(7 * 24 * 60 * 60); // 7 days expiration
 
     response.addCookie(jwtCookie);
-    return ResponseEntity.ok("Login successful");
+    return new ResponseEntity(person, HttpStatusCode.valueOf(200));
   }
 
   @GetMapping("/api/session")

@@ -55,7 +55,7 @@ public class Person implements PersonDTO{
         this.email = email;
         this.username = username;
         this.password = password;
-        this.role = 1; // set role to applicant
+        this.role = 2; // set role to applicant
     }
 
 

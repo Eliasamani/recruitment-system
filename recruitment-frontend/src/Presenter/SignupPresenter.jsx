@@ -21,8 +21,8 @@ export default function SignupPresenter() {
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required.';
-    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required.';
+    if (!formData.firstname.trim()) newErrors.firstName = 'First name is required.';
+    if (!formData.lastname.trim()) newErrors.lastName = 'Last name is required.';
     if (!formData.personNumber.trim()) newErrors.personNumber = 'Personnumber is required.';
     if (!formData.username.trim()) newErrors.username = 'Username is required.';
     if (!formData.email.trim()) newErrors.email = 'Email is required.';
@@ -56,8 +56,8 @@ export default function SignupPresenter() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          firstName: formData.firstName,
-          lastName: formData.lastName,
+          firstname: formData.firstname,
+          lastname: formData.lastname,
           personNumber: formData.personNumber,
           username: formData.username,
           email: formData.email,
