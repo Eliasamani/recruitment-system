@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../Reusablecomponent/Header.jsx'; // Import the reusable Header
 
 
-export default function LandingPageView ({ onLoginClick, onGetStartedClick, onCompanyClick }) {
+const LandingPageView = ({ onLoginClick, onGetStartedClick, onCompanyClick }) => {
   return (
     <div className="landing-page">
       {/* Use the reusable Header component */}
@@ -19,3 +19,4 @@ export default function LandingPageView ({ onLoginClick, onGetStartedClick, onCo
     </div>
   );
 };
+export default LandingPageView;
