@@ -32,6 +32,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.personRepository = personRepository;
     }
 
+    /**
+     * Checks if the request contains a valid JWT token, and if so, sets the authentication context according to role.
+     * If no JWT token is present, or if the token is invalid, the request is passed to the next filter in the chain
+     * without setting the authentication context.
+     * @param request The request being processed
+     * @param response The response being constructed
+     * @param filterChain The filter chain to pass the request to if the token is invalid or not present
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {

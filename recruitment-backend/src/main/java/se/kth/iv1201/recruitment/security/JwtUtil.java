@@ -24,6 +24,13 @@ public class JwtUtil {
         }
     }
 
+    /**
+     * Generates a JWT token for the specified username.
+     * 
+     * @param username the username for which the token is to be generated
+     * @return a JWT token as a String
+     */
+
     public String generateToken(String username) {
 
 
@@ -36,6 +43,12 @@ public class JwtUtil {
                 .compact();
     }
 
+    /**
+     * Validates a JWT token, returning the subject (i.e. the username) if the token is valid, or null if the token is invalid.
+     * 
+     * @param token the JWT token to validate
+     * @return the subject of the token if valid, or null if invalid
+     */
     public String validateToken(String token) {
         try {
             SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
