@@ -1,0 +1,24 @@
+POST  http://localhost:8080/api/register HTTP/1.1
+content-type: application/json
+
+{
+   
+    "firstname": "test",
+    "lastname": "aa",
+    "personNumber": "12345678-1236",
+    "email": "aa.test@test.se",
+    "password": "mytest",
+    "username": "testuser3"
+}
+
+###
+
+POST  http://localhost:8080/api/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "testuser",
+    "password": "mytest"
+
+}
+

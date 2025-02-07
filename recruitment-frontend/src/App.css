@@ -1,38 +1,345 @@
+/* /src/App.css */
+
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', Arial, sans-serif; /* Use a modern font */
+  background-color: #f4f6f8; /* Soft background for the entire site */
+  color: #333;
+  line-height: 1.6;
+}
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+/* Landing Page Styles */
+.landing-page {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
+  background: linear-gradient(135deg, #ffffff, #f7f7f7); /* Gradient background */
+}
+
+/* Header Styles */
+.landing-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 10;
+  transition: all 0.3s ease; /* Smooth transitions */
+}
+
+.landing-header:hover {
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+.header-left {
+  flex: 1;
+}
+
+.logo {
+  height: 40px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.1) rotate(-5deg); /* Slight rotation and enlargement */
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.company-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #007bff;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.company-name:hover {
+  color: #0056b3;
+  transform: translateY(-2px); /* Slight lift effect */
+}
+
+.login-btn,
+.get-started-btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 25px; /* Rounded buttons */
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.login-btn {
+  background: none;
+  border: 2px solid #007bff;
+  color: #007bff;
+}
+
+.login-btn:hover {
+  background-color: #007bff;
+  color: #ffffff;
+  border-color: #0056b3;
+}
+
+.get-started-btn {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.get-started-btn:hover {
+  background-color: #0056b3;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Body Styles */
+.landing-body {
+  flex: 1;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.landing-body h1 {
+  font-size: 2.8rem;
+  color: #333;
+  margin-bottom: 1rem;
+  animation: fadeIn 1s ease-in-out; /* Fade-in animation */
 }
 
-@keyframes App-logo-spin {
+.landing-body p {
+  font-size: 1.2rem;
+  color: #555;
+  max-width: 600px;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+@keyframes fadeIn {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+  }
+}
+
+/* Form Styles */
+form {
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+form:hover {
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+button[type="button"] {
+  padding: 0.6rem 1rem;
+  background-color: transparent;
+  border: 1px solid #007bff;
+  color: #007bff;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button[type="button"]:hover {
+  background-color: #007bff;
+  color: #ffffff;
+  border-color: #0056b3;
+}
+
+/* Candidate & Recruiter Page Styles */
+.candidate-page,
+.recruiter-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.candidate-header,
+.recruiter-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.candidate-header h1,
+.recruiter-header h1 {
+  font-size: 2.5rem;
+  color: #333;
+}
+
+.candidate-body,
+.recruiter-body {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.candidate-body:hover,
+.recruiter-body:hover {
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.user-info,
+.recruiter-info {
+  margin-bottom: 2rem;
+}
+
+.user-info h2,
+.recruiter-info h2,
+.dashboard-content h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.dashboard-content ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.dashboard-content li {
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-content a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.dashboard-content a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Loading & Error States */
+.loading-container,
+.error-container,
+.no-user-container,
+.no-recruiter-container {
+  text-align: center;
+  padding: 2rem;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.loading-container h2 {
+  font-size: 1.5rem;
+  color: #666;
+}
+
+.error-container h2,
+.no-user-container h2,
+.no-recruiter-container h2 {
+  font-size: 1.5rem;
+  color: #d00;
+}
+
+.error-container p,
+.no-user-container p,
+.no-recruiter-container p {
+  color: #d00;
+  font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .landing-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .logo {
+    height: 30px;
+  }
+
+  .company-name {
+    font-size: 1.2rem;
+  }
+
+  .login-btn,
+  .get-started-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .landing-body h1 {
+    font-size: 2rem;
+  }
+
+  .landing-body p {
+    font-size: 1rem;
   }
 }
