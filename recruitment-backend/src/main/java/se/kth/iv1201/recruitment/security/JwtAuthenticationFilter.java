@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.stereotype.Component;
 import se.kth.iv1201.recruitment.model.Person;
 import se.kth.iv1201.recruitment.dto.PersonDTO;
 import se.kth.iv1201.recruitment.repository.PersonRepository;
@@ -22,6 +23,7 @@ import java.util.logging.Logger;
 
 import jakarta.servlet.http.Cookie;
 
+@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger LOGGER = Logger.getLogger(JwtAuthenticationFilter.class.getName());

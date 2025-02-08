@@ -22,17 +22,8 @@ public class SecurityConfig {
 
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-  private JwtTokenProvider jwtTokenProvider;
-  private PersonRepository personRepository;
-
-  public SecurityConfig(
-    JwtTokenProvider jwtTokenProvider,
-    PersonRepository personRepository
-  ) {
-    this.jwtTokenProvider = jwtTokenProvider;
-    this.personRepository = personRepository;
-    this.jwtAuthenticationFilter =
-      new JwtAuthenticationFilter(jwtTokenProvider, personRepository);
+  public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+      this.jwtAuthenticationFilter = jwtAuthenticationFilter;
   }
 
   /**
