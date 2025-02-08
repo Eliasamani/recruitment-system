@@ -4,6 +4,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -11,9 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import se.kth.iv1201.recruitment.dto.PersonDTO;
-import se.kth.iv1201.recruitment.security.JwtTokenProvider;
+import se.kth.iv1201.recruitment.security.JwtProvider;
 import se.kth.iv1201.recruitment.service.UserService;
-
 
 /**
  * Handles authentication-related operations (login, logout, session validation).
@@ -26,16 +26,16 @@ public class AuthController {
     AuthController.class.getName()
   );
 
-  private final JwtTokenProvider jwtTokenProvider;
+  private final JwtProvider jwtProvider;
   private final UserService userService;
   private final PasswordEncoder passwordEncoder;
 
   public AuthController(
-    JwtTokenProvider jwtTokenProvider,
+    JwtProvider jwtProvider,
     UserService userService,
     PasswordEncoder passwordEncoder
   ) {
-    this.jwtTokenProvider = jwtTokenProvider;
+    this.jwtProvider = jwtProvider;
     this.userService = userService;
     this.passwordEncoder = passwordEncoder;
   }
@@ -48,44 +48,63 @@ public class AuthController {
    * @return HTTP response with status 200 (OK) if successful, 401 (Unauthorized) if not
    *         Response body is a JSON object with key "message" and value "Login successful" if successful,
    *         or a JSON object with key "error" and value "User does not exist" or "Invalid password" if not
-   *         The response will also include a secure HTTP-only cookie with the JWT token
+   *         The response will also include a secure HTTP-only cookie with the JWT
    */
   @PostMapping("/login")
   public ResponseEntity<?> login(
     @RequestBody Map<String, String> json,
     HttpServletResponse response
   ) {
-    PersonDTO person = userService.findPerson(json.get("username"));
-    if (person == null) {
+    String username = json.get("username");
+    LOGGER.info("Login attempt for username: " + username);
+
+    try {
+      PersonDTO person = userService.findPerson(username);
+      if (person == null) {
+        LOGGER.warning("Login failed - User does not exist: " + username);
+        return ResponseEntity
+          .status(401)
+          .body(Map.of("error", "User does not exist"));
+      }
+
+      if (
+        !passwordEncoder.matches(json.get("password"), person.getPassword())
+      ) {
+        LOGGER.warning("Login failed - Invalid password for user: " + username);
+        return ResponseEntity
+          .status(401)
+          .body(Map.of("error", "Invalid password"));
+      }
+
+      // Generate JWT
+      String jwt = jwtProvider.generateToken(person.getUsername());
+
+      // Create Secure HTTP-Only Cookie
+      Cookie jwtCookie = new Cookie("jwt", jwt);
+      jwtCookie.setHttpOnly(true);
+      jwtCookie.setSecure(true);
+      jwtCookie.setPath("/");
+      jwtCookie.setMaxAge(7 * 24 * 60 * 60); // 7 days expiration
+
+      response.addCookie(jwtCookie);
+      LOGGER.info("Login successful for user: " + username);
+      return ResponseEntity.ok(Map.of("message", "Login successful"));
+    } catch (Exception e) {
+      LOGGER.log(
+        Level.SEVERE,
+        "Unexpected error during login for user: " + username,
+        e
+      );
       return ResponseEntity
-        .status(401)
-        .body(Map.of("error", "User does not exist"));
+        .status(500)
+        .body(
+          Map.of("error", "An internal error occurred. Please try again later.")
+        );
     }
-
-    if (!passwordEncoder.matches(json.get("password"), person.getPassword())) {
-      return ResponseEntity
-        .status(401)
-        .body(Map.of("error", "Invalid password"));
-    }
-
-    // Generate JWT Token
-    String jwt = jwtTokenProvider.generateToken(person.getUsername());
-
-    // Create Secure HTTP-Only Cookie
-    Cookie jwtCookie = new Cookie("jwt", jwt);
-    jwtCookie.setHttpOnly(true);
-    jwtCookie.setSecure(true);
-    jwtCookie.setPath("/");
-    jwtCookie.setMaxAge(7 * 24 * 60 * 60); // 7 days expiration
-
-    response.addCookie(jwtCookie);
-    return ResponseEntity.ok(
-      Map.of("message", "Login successful", "username", person.getUsername())
-    );
   }
 
   /**
-   * Checks if the user is authenticated by verifying the presence of a valid JWT token in the request.
+   * Checks if the user is authenticated by verifying the presence of a valid JWT in the request.
    * If the user is authenticated, the response body will contain a JSON object with key "username" and value
    * equal to the username of the authenticated user.
    * If the user is not authenticated, the response will have a status of 401 Unauthorized, and the response body
@@ -105,19 +124,20 @@ public class AuthController {
       }
     }
 
-    if (token == null || jwtTokenProvider.validateToken(token) == null) {
+    if (token == null || jwtProvider.validateToken(token) == null) {
+      LOGGER.warning("Session validation failed - No valid token found");
       return ResponseEntity
         .status(401)
         .body(Map.of("error", "Not authenticated"));
     }
 
-    return ResponseEntity.ok(
-      Map.of("username", jwtTokenProvider.validateToken(token))
-    );
+    String username = jwtProvider.validateToken(token);
+    LOGGER.info("Session validated for user: " + username);
+    return ResponseEntity.ok(Map.of("username", username));
   }
 
   /**
-   * Logs out the user by clearing the JWT token from the cookies.
+   * Logs out the user by clearing the JWT from the cookies.
    * @param response The HTTP response object
    * @return HTTP response with status 200 (OK) and a JSON object with key "message" and value "Logged out successfully"
    */
@@ -130,6 +150,7 @@ public class AuthController {
     jwtCookie.setMaxAge(0);
 
     response.addCookie(jwtCookie);
+    LOGGER.info("User logged out successfully");
     return ResponseEntity.ok(Map.of("message", "Logged out successfully"));
   }
 
@@ -142,28 +163,28 @@ public class AuthController {
    * @return Success message if authenticated, otherwise a 403 error message.
    */
   @GetMapping("/protected")
-  public String protectedEndpoint() {
+  public ResponseEntity<?> protectedEndpoint() {
     Authentication authentication = SecurityContextHolder
       .getContext()
       .getAuthentication();
 
     if (authentication == null || !authentication.isAuthenticated()) {
-      LOGGER.warning("AuthController: User is NOT authenticated");
-      return "Forbidden: You are not authenticated!";
+      LOGGER.warning("Unauthorized access attempt to protected resource");
+      return ResponseEntity
+        .status(403)
+        .body(Map.of("error", "Forbidden: You are not authenticated!"));
     }
 
-    LOGGER.info("AuthController: Authentication Object - " + authentication);
     LOGGER.info(
-      "AuthController: Authenticated user - " + authentication.getName()
+      "Protected resource accessed by user: " + authentication.getName()
     );
-    LOGGER.info(
-      "AuthController: User authorities - " + authentication.getAuthorities()
-    );
-
-    return (
-      "Hello " +
-      authentication.getName() +
-      ", you accessed a protected resource!"
+    return ResponseEntity.ok(
+      Map.of(
+        "message",
+        "Hello " +
+        authentication.getName() +
+        ", you accessed a protected resource!"
+      )
     );
   }
 }

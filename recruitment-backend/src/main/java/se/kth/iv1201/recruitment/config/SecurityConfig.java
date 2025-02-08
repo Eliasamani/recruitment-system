@@ -14,7 +14,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import se.kth.iv1201.recruitment.repository.PersonRepository;
 import se.kth.iv1201.recruitment.security.JwtAuthenticationFilter;
-import se.kth.iv1201.recruitment.security.JwtTokenProvider;
+import se.kth.iv1201.recruitment.security.JwtProvider;
 
 @Configuration
 @EnableWebSecurity

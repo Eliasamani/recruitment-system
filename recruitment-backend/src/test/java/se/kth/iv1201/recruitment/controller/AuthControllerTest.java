@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockCookie;
 import org.springframework.test.web.servlet.MockMvc;
 import se.kth.iv1201.recruitment.RecruitmentBackendApplication;
-import se.kth.iv1201.recruitment.security.JwtTokenProvider;
+import se.kth.iv1201.recruitment.security.JwtProvider;
 import se.kth.iv1201.recruitment.service.UserService;
 
 @SpringBootTest(classes = RecruitmentBackendApplication.class)
@@ -23,7 +23,7 @@ public class AuthControllerTest {
   private MockMvc mockMvc;
 
   @Autowired
-  private JwtTokenProvider jwtTokenProvider;
+  private JwtProvider jwtProvider;
 
   @Autowired
   private UserService userService;
@@ -66,12 +66,12 @@ public class AuthControllerTest {
 
   /**
    * Verifies that the session validation endpoint returns the username of the authenticated user
-   * when given a valid JWT token.
+   * when given a valid JWT.
    * @throws Exception
    */
   @Test
   void testSessionValidationWithCorrectToken() throws Exception {
-    String token = jwtTokenProvider.generateToken("TestRecruiter");
+    String token = jwtProvider.generateToken("TestRecruiter");
     MockCookie jwtCookie = new MockCookie("jwt", token);
 
     mockMvc
@@ -81,7 +81,7 @@ public class AuthControllerTest {
   }
 
   /**
-   * Verifies that the session validation endpoint returns a 401 Unauthorized status when no valid JWT token is
+   * Verifies that the session validation endpoint returns a 401 Unauthorized status when no valid JWT cookie is
    * present in the request.
    */
   @Test
@@ -98,7 +98,7 @@ public class AuthControllerTest {
    */
   @Test
   void testLogoutClearsJwtCookie() throws Exception {
-    String token = jwtTokenProvider.generateToken("TestRecruiter");
+    String token = jwtProvider.generateToken("TestRecruiter");
     MockCookie jwtCookie = new MockCookie("jwt", token);
 
     mockMvc
