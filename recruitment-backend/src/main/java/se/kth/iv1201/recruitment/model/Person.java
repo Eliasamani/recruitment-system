@@ -7,6 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import se.kth.iv1201.recruitment.dto.PersonDTO;
+
 
 
 

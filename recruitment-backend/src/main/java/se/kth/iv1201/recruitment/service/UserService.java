@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.kth.iv1201.recruitment.model.Person;
-import se.kth.iv1201.recruitment.model.PersonDTO;
+import se.kth.iv1201.recruitment.dto.PersonDTO;
 import se.kth.iv1201.recruitment.repository.PersonRepository;
 import org.springframework.transaction.annotation.Propagation;
 
@@ -15,10 +15,13 @@ import org.springframework.transaction.annotation.Propagation;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class LoginRegisterService {
+public class UserService {
 
-    @Autowired
-    private PersonRepository repository;
+    private final PersonRepository repository;
+
+    public UserService(PersonRepository repository) {
+        this.repository = repository;
+    }
 
     /**
      * Creates a new person (user) if the username is not already taken.
@@ -35,12 +38,10 @@ public class LoginRegisterService {
     public PersonDTO createPerson(String firstname, String lastname, String personNum, 
                                   String email, String username, String password) throws Exception {
 
-        // ✅ Use Optional to check if the username exists
         if (repository.findPersonByUsername(username) != null) {
             throw new UserAlreadyExistsException("User already exists");
         }
 
-        // ✅ Create and save the new person
         Person newPerson = new Person(firstname, lastname, personNum, email, username, password);
         return repository.save(newPerson);
     }
@@ -52,6 +53,6 @@ public class LoginRegisterService {
      * @return The found PersonDTO, or null if no user is found.
      */
     public PersonDTO findPerson(String username) {
-        return repository.findPersonByUsername(username); // ✅ Return the PersonDTO or null if not found
+        return repository.findPersonByUsername(username);
     }
 }

@@ -12,8 +12,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.filter.OncePerRequestFilter;
 import se.kth.iv1201.recruitment.model.Person;
-import se.kth.iv1201.recruitment.model.PersonDTO;
+import se.kth.iv1201.recruitment.dto.PersonDTO;
 import se.kth.iv1201.recruitment.repository.PersonRepository;
+import se.kth.iv1201.recruitment.security.JwtTokenProvider;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -24,11 +25,11 @@ import jakarta.servlet.http.Cookie;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger LOGGER = Logger.getLogger(JwtAuthenticationFilter.class.getName());
-    private final JwtUtil jwtUtil;
+    private final JwtTokenProvider jwtTokenProvider;
     private final PersonRepository personRepository;
 
-    public JwtAuthenticationFilter(JwtUtil jwtUtil, PersonRepository personRepository) {
-        this.jwtUtil = jwtUtil;
+    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, PersonRepository personRepository) {
+        this.jwtTokenProvider = jwtTokenProvider;
         this.personRepository = personRepository;
     }
 
@@ -65,7 +66,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String username = jwtUtil.validateToken(token);
+        String username = jwtTokenProvider.validateToken(token);
         if (username == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Invalid JWT Token");

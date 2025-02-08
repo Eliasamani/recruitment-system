@@ -9,13 +9,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
-public class JwtUtil {
+public class JwtTokenProvider {
 
     private String secret;
 
     private static final long EXPIRATION_TIME = 86400000; // 1 day
 
-    public JwtUtil() {
+    public JwtTokenProvider() {
         if (System.getenv("DATABASE_URL").length() >42) {
             this.secret = System.getenv("DATABASE_URL").substring(10,42);
         }
