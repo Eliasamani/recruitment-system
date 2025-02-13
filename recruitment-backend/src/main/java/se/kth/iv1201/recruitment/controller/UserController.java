@@ -9,10 +9,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import se.kth.iv1201.recruitment.dto.RegisterForm;
+import se.kth.iv1201.recruitment.model.Competence;
 import se.kth.iv1201.recruitment.model.Person;
+import se.kth.iv1201.recruitment.repository.CompetenceRepository;
 import se.kth.iv1201.recruitment.repository.PersonRepository;
 import se.kth.iv1201.recruitment.service.UserAlreadyExistsException;
 import se.kth.iv1201.recruitment.service.UserService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 /**
  * Controller for user-related API operations.
@@ -29,14 +34,19 @@ public class UserController {
   private final UserService userService;
   private final PasswordEncoder passwordEncoder;
 
+
+  private final CompetenceRepository comp_repository;
+
   public UserController(
     PersonRepository repository,
     UserService userService,
-    PasswordEncoder passwordEncoder
+    PasswordEncoder passwordEncoder,
+    CompetenceRepository comp_repository
   ) {
     this.repository = repository;
     this.userService = userService;
     this.passwordEncoder = passwordEncoder;
+    this.comp_repository = comp_repository;
   }
 
   /**
@@ -55,6 +65,16 @@ public class UserController {
       return ResponseEntity.status(500).build();
     }
   }
+
+
+ 
+  
+  public List<Competence> Competences() {
+  
+      return  comp_repository.findCompetencesByPersonID(11);
+  }
+  
+
 
   /**
    * Handles user registration.
