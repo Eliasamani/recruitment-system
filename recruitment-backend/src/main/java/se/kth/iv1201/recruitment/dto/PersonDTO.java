@@ -1,4 +1,4 @@
-package se.kth.iv1201.recruitment.model;
+package se.kth.iv1201.recruitment.dto;
 
 
 /**

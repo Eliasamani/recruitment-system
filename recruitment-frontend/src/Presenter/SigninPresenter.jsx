@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import SigninView from '../View/SigninView';
 import { SignInFormModel } from '../model';
 import { useCallback } from 'react';
+
 export default function SigninPresenter() {
   const [formData, setFormData] = useState(SignInFormModel);
   const [errors, setErrors] = useState({});
@@ -16,7 +17,7 @@ export default function SigninPresenter() {
 
   const checkAuthStatus = useCallback(async () => {
     try {
-      const response = await fetch(process.env.REACT_APP_API_URL + '/api/session', { credentials: 'include' });
+      const response = await fetch(process.env.REACT_APP_API_URL + '/api/auth/session', { credentials: 'include' });
       if (response.ok) {
         const userData = await response.json();
         const role = userData.role; // Get the user's role
@@ -60,7 +61,7 @@ export default function SigninPresenter() {
     if (!validate()) return;
 
     try {
-      const response = await fetch(process.env.REACT_APP_API_URL + '/api/login', {
+      const response = await fetch(process.env.REACT_APP_API_URL + '/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
