@@ -12,12 +12,20 @@ on:
   
 jobs:
   static_analysis:
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
+      
     strategy:
+      fail-fast: false
       matrix:
         include:
           - language: java-kotlin
             build-mode: none
           - language: javascript-typescript
+            build-mode: none
     runs-on: ubuntu-24.04
     steps:
       - name: checkout
@@ -28,8 +36,11 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
       - name: codeql_analyze
         uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{matrix.language}}"
   test:
     runs-on: ubuntu-24.04
     services:
