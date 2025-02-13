@@ -60,7 +60,7 @@ jobs:
         run: |
           
           cd $GITHUB_WORKSPACE
-          cd recruitment-frontend/
+          cd recruitment-backend/
           ./mvnw test
           
   build:
