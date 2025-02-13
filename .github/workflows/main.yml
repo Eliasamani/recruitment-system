@@ -24,10 +24,12 @@ jobs:
         uses: actions/checkout@v4.2.2
         with:
           ref: main
-      - name: codeql
+      - name: codeql_init
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
+      - name: codeql_analyze
+        uses: github/codeql-action/analyze@v3
   test:
     runs-on: ubuntu-24.04
     services:
