@@ -68,7 +68,7 @@ public class UserController {
 
 
  
-  
+  @GetMapping("/testCompetences")
   public List<Competence> Competences() {
   
       return  comp_repository.findCompetencesByPersonID(11);
