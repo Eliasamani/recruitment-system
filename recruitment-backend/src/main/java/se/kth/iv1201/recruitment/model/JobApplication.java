@@ -1,5 +1,7 @@
 package se.kth.iv1201.recruitment.model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -16,10 +18,11 @@ import jakarta.persistence.Table;
  // TODO Create availibility entity
 public class JobApplication {
  
+    private int person_id;
 
+    private List<Competence> competences;
 
-
-
+    
 
 
 

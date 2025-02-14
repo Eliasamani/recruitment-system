@@ -10,7 +10,6 @@ import se.kth.iv1201.recruitment.model.Competence;
 @Repository
 public interface CompetenceRepository extends JpaRepository<Competence, Long> {
 
-@Query("FROM Competence e \r\n" + //
-    "WHERE e.person_id = ?1")
+@Query("FROM Competence e WHERE e.person_id = ?1")
     List<Competence> findCompetencesByPersonID(long person_id);
 }
