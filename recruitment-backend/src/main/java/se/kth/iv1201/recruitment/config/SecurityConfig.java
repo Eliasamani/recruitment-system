@@ -59,7 +59,7 @@ public class SecurityConfig {
             "/*.ico",
             "/*.txt",
             "/error",
-            "/api/users/testCompetences"
+            "/api/users/test*"
           )
           .permitAll() // Public endpoints
           .requestMatchers("/api/auth/logout")
