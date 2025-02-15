@@ -22,6 +22,7 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
    * @return person with the specified username, if none null will be returned
    */
   <S extends Person> S findPersonByUsername(String username);
+  <S extends Person> S findPersonByEmail(String email);
 
   @Override
   <S extends Person> S save(S entity);

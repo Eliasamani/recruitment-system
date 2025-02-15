@@ -42,6 +42,11 @@ public class ResetToken implements ResetTokenDTO{
         this.resetTokenId = resetTokenId;
     }
 
+    public ResetToken(Person person, int resetToken) {
+        this.person = person;
+        this.resetToken = resetToken;
+    }
+
     public Person getPerson() {
         return person;
     }
