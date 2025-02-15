@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import se.kth.iv1201.recruitment.dto.ResetTokenDTO;
@@ -22,9 +23,8 @@ public class ResetToken implements ResetTokenDTO{
     @Column(name="reset_token_id")
     private long resetTokenId;
 
-    @Id
     @ManyToOne
-    @Column(name = "person_id")
+    @JoinColumn(name = "person_id")
     private Person person;
 
     @Column(name = "reset_token")

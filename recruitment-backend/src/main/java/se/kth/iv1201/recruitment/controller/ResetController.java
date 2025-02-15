@@ -12,7 +12,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import se.kth.iv1201.recruitment.dto.ResetTokenDTO;
-import se.kth.iv1201.recruitment.repository.PersonRepository;
 import se.kth.iv1201.recruitment.service.ResetService;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,12 +25,11 @@ public class ResetController {
 
     private static final Logger LOGGER = Logger.getLogger(ResetController.class.getName());
 
-    private final PersonRepository repository;
+
     private final PasswordEncoder passwordEncoder;
     private final ResetService resetService;
 
-    public ResetController(PersonRepository repository, PasswordEncoder passwordEncoder,ResetService resetService) {
-        this.repository = repository;
+    public ResetController( PasswordEncoder passwordEncoder,ResetService resetService) {
         this.passwordEncoder = passwordEncoder;
         this.resetService = resetService;
 
