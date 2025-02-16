@@ -19,22 +19,33 @@ import lombok.ToString;
  * (both are lists) a person with a person_id
  * 
  */
+
+
+
+
+enum applicationStatus {
+    UNDETERMINED, 
+    APPROVED,
+    REJECTED 
+}
+
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-
-
-// TODO Create availibility entity
+// TODO DTOs for this class and each class within this to allow better encapsulation
 public class JobApplication {
     private long person_id;
     private List<Competence> competences;
     private List<Availability> availabilities;
+    //private applicationStatus status = applicationStatus.UNDETERMINED;
 
 
-
-    
+  
+   
 }
+
+
 
 

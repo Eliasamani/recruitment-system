@@ -34,4 +34,16 @@ public class JobApplicationService {
         return new JobApplication(id,competences,availabilities);
     }
 
+    public void saveApplication(JobApplication application) throws Exception{
+        List<Competence> competences = competenceRepository.findCompetencesByPersonId(application.getPerson_id()); 
+        List<Availability> availabilities = availabilityRepository.findAvailabilitiesByPersonId(application.getPerson_id());
+        if(competences.isEmpty() || availabilities.isEmpty()){
+            competenceRepository.saveAll(application.getCompetences());
+            availabilityRepository.saveAll(application.getAvailabilities());
+        }
+        else{
+            throw new Exception("Either competence oravailibilites is empty");
+        }
+    }
+
 }
