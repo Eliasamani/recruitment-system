@@ -1,5 +1,4 @@
-package se.kth.iv1201.recruitment.model;
-
+package se.kth.iv1201.recruitment.model.resettoken;
 
 import java.util.Date;
 
@@ -13,14 +12,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import se.kth.iv1201.recruitment.dto.ResetTokenDTO;
+import se.kth.iv1201.recruitment.model.person.Person;
 
 @Entity
-@Table(name="reset_token")
-public class ResetToken implements ResetTokenDTO{
+@Table(name = "reset_token")
+public class ResetToken implements ResetTokenDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="reset_token_id")
+    @Column(name = "reset_token_id")
     private long resetTokenId;
 
     @ManyToOne
@@ -66,9 +65,11 @@ public class ResetToken implements ResetTokenDTO{
     public Date getCreateTime() {
         return createTime;
     }
+
     @Override
     public String toString() {
-        return "Reset Token [id=" + resetTokenId + ", person=" + person.getId() + ", resetToken=" + resetTokenId + ", createTime=" + createTime+ "]";
+        return "Reset Token [id=" + resetTokenId + ", person=" + person.getId() + ", resetToken=" + resetTokenId
+                + ", createTime=" + createTime + "]";
     }
-    
+
 }

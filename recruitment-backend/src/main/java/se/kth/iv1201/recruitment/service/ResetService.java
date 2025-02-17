@@ -6,9 +6,9 @@ import java.util.logging.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.kth.iv1201.recruitment.dto.ResetTokenDTO;
-import se.kth.iv1201.recruitment.model.Person;
-import se.kth.iv1201.recruitment.model.ResetToken;
+import se.kth.iv1201.recruitment.model.person.Person;
+import se.kth.iv1201.recruitment.model.resettoken.ResetToken;
+import se.kth.iv1201.recruitment.model.resettoken.ResetTokenDTO;
 import se.kth.iv1201.recruitment.repository.PersonRepository;
 import se.kth.iv1201.recruitment.repository.ResetTokenRepository;
 

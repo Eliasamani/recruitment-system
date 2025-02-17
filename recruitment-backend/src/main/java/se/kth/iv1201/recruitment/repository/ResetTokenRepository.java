@@ -3,8 +3,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.kth.iv1201.recruitment.model.Person;
-import se.kth.iv1201.recruitment.model.ResetToken;
+import se.kth.iv1201.recruitment.model.person.Person;
+import se.kth.iv1201.recruitment.model.resettoken.ResetToken;
 
 @Transactional
 @Repository
