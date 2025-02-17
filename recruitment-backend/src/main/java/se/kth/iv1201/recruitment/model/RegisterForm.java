@@ -1,4 +1,4 @@
-package se.kth.iv1201.recruitment.dto;
+package se.kth.iv1201.recruitment.model;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

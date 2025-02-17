@@ -15,8 +15,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import se.kth.iv1201.recruitment.dto.PersonDTO;
-import se.kth.iv1201.recruitment.model.Person;
+
+import se.kth.iv1201.recruitment.model.person.Person;
+import se.kth.iv1201.recruitment.model.person.PersonDTO;
 import se.kth.iv1201.recruitment.repository.PersonRepository;
 import se.kth.iv1201.recruitment.security.JwtProvider;
 

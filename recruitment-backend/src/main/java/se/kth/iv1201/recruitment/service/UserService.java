@@ -7,8 +7,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import se.kth.iv1201.recruitment.dto.PersonDTO;
-import se.kth.iv1201.recruitment.model.Person;
+
+import se.kth.iv1201.recruitment.model.exception.UserAlreadyExistsException;
+import se.kth.iv1201.recruitment.model.person.Person;
+import se.kth.iv1201.recruitment.model.person.PersonDTO;
 import se.kth.iv1201.recruitment.repository.PersonRepository;
 
 /**

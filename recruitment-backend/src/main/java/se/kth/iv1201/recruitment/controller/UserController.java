@@ -8,10 +8,11 @@ import java.util.logging.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import se.kth.iv1201.recruitment.dto.RegisterForm;
-import se.kth.iv1201.recruitment.model.Person;
+
+import se.kth.iv1201.recruitment.model.RegisterForm;
+import se.kth.iv1201.recruitment.model.exception.UserAlreadyExistsException;
+import se.kth.iv1201.recruitment.model.person.Person;
 import se.kth.iv1201.recruitment.repository.PersonRepository;
-import se.kth.iv1201.recruitment.service.UserAlreadyExistsException;
 import se.kth.iv1201.recruitment.service.UserService;
 
 /**

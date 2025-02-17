@@ -1,4 +1,4 @@
-package se.kth.iv1201.recruitment.model;
+package se.kth.iv1201.recruitment.model.person;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -6,8 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
-import se.kth.iv1201.recruitment.dto.PersonDTO;
 
 
 
