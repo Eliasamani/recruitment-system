@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 @Getter
 @Setter
 @ToString
@@ -20,20 +19,20 @@ import lombok.ToString;
 @NoArgsConstructor
 
 @Entity
-@Table(name="availability")
+@Table(name = "availability")
 public class Availability {
 
     @Id
-    @Column(name="availability_id")
+    @Column(name = "availability_id")
     private long id;
 
-    @Column(name="person_id")
+    @Column(name = "person_id")
     private long person_id;
 
-    @Column(name="from_date")
+    @Column(name = "from_date")
     private Date fromDate;
 
-    @Column(name="to_date")
+    @Column(name = "to_date")
     private Date toDate;
 
 }

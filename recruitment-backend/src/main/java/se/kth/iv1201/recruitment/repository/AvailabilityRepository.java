@@ -8,10 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import se.kth.iv1201.recruitment.model.Availability;
 import se.kth.iv1201.recruitment.model.Competence;
 
-public interface AvailabilityRepository extends JpaRepository<Availability,Long>{
+public interface AvailabilityRepository extends JpaRepository<Availability, Long> {
 
     @Query("FROM Availability e WHERE e.person_id = ?1")
     List<Availability> findAvailabilitiesByPersonId(long person_id);
 }
-
-

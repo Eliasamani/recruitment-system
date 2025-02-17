@@ -19,19 +19,18 @@ import lombok.ToString;
 @NoArgsConstructor
 
 @Entity
-@Table(name="competence_profile")
+@Table(name = "competence_profile")
 public class Competence {
     @Id
-    @Column(name="competence_profile_id")
+    @Column(name = "competence_profile_id")
     private long id;
 
-    @Column(name="person_id")
+    @Column(name = "person_id")
     private long person_id;
 
-
-    @Column(name="competence_id")
+    @Column(name = "competence_id")
     private int competence_type;
 
-    @Column(name="years_of_experience")
+    @Column(name = "years_of_experience")
     private float experience;
 }

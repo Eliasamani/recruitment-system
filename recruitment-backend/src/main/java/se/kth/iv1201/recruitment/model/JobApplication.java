@@ -11,22 +11,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
-
-
 /**
- * Object keeping the competence and the availibility of 
+ * Object keeping the competence and the availibility of
  * (both are lists) a person with a person_id
  * 
  */
 
-
-
-
 enum applicationStatus {
-    UNDETERMINED, 
+    UNDETERMINED,
     APPROVED,
-    REJECTED 
+    REJECTED
 }
 
 @Getter
@@ -34,18 +28,12 @@ enum applicationStatus {
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-// TODO DTOs for this class and each class within this to allow better encapsulation
+// TODO DTOs for this class and each class within this to allow better
+// encapsulation
 public class JobApplication {
     private long person_id;
     private List<Competence> competences;
     private List<Availability> availabilities;
-    //private applicationStatus status = applicationStatus.UNDETERMINED;
+    // private applicationStatus status = applicationStatus.UNDETERMINED;
 
-
-  
-   
 }
-
-
-
-
