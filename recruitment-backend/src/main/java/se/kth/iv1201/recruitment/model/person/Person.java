@@ -1,4 +1,4 @@
-package se.kth.iv1201.recruitment.model;
+package se.kth.iv1201.recruitment.model.person;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -7,55 +7,50 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import se.kth.iv1201.recruitment.dto.PersonDTO;
-
-
-
-
 @Entity
-@Table(name ="person")
-public class Person implements PersonDTO{
+@Table(name = "person")
+public class Person implements PersonDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="person_id")
+    @Column(name = "person_id")
     private long id;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String firstname;
 
-    @Column(name="surname")
+    @Column(name = "surname")
     private String lastname;
 
-    @Column(name="pnr",unique = true)
+    @Column(name = "pnr", unique = true)
     private String personNumber;
 
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
 
-    @Column(name="role_id")
+    @Column(name = "role_id")
     private int role;
 
-    @Column(name="username", unique = true)
+    @Column(name = "username", unique = true)
     private String username;
 
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
 
-
     /**
-     * JPA needs this, not for use  
+     * JPA needs this, not for use
      */
-    protected Person(){
+    protected Person() {
 
     }
 
     /**
-     * Creates a new instance wiht specified params. Note that any 
-     * new instance created will have role APPLICANT. 
+     * Creates a new instance wiht specified params. Note that any
+     * new instance created will have role APPLICANT.
      * 
-     * Person number and username must be unique for 
+     * Person number and username must be unique for
      * each person persisted the database.
+     * 
      * @param firstname
      * @param lastname
      * @param personNum
@@ -63,7 +58,7 @@ public class Person implements PersonDTO{
      * @param username
      * @param password
      */
-    public Person(String firstname, String lastname, String personNum, String email, String username,String password)  {
+    public Person(String firstname, String lastname, String personNum, String email, String username, String password) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.personNumber = personNum;
@@ -73,76 +68,63 @@ public class Person implements PersonDTO{
         this.role = roles.APPLICANT.ordinal(); // set role to applicant
     }
 
-
     public long getId() {
         return id;
     }
-
 
     public void setId(long id) {
         this.id = id;
     }
 
-
     public String getFirstname() {
         return firstname;
     }
-
 
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
 
-
     public String getLastname() {
         return lastname;
     }
-
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
 
-
     public String getPersonNum() {
         return personNumber;
     }
-
 
     public void setPersonNum(String personNum) {
         this.personNumber = personNum;
     }
 
-
     public String getEmail() {
         return email;
     }
-
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-
     public String getPassword() {
         return password;
     }
-
 
     public void setPassword(String password) {
         this.password = password;
     }
 
+    public int getRole() {
+        return role;
+    }
 
-     public int getRole() {
-         return role;
-     }
-
-    public roles getRoleType(){
+    public roles getRoleType() {
         switch (role) {
             case 1:
                 return roles.RECRUITER;
-        
+
             case 2:
                 return roles.APPLICANT;
 
@@ -150,30 +132,23 @@ public class Person implements PersonDTO{
                 return roles.NO_ROLE;
         }
     }
-  
 
     public void setRole(int role) {
         this.role = role;
     }
 
-
     public String getUsername() {
         return username;
     }
 
-
     public void setUsername(String username) {
         this.username = username;
     }
-
 
     @Override
     public String toString() {
         return "User [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", personNum=" + personNumber
                 + ", email=" + email + ", password=" + password + ", role=" + role + ", username=" + username + "]";
     }
-    
-    
-    
 
 }
