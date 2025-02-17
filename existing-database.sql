@@ -111,7 +111,8 @@ CREATE TABLE public.reset_token (
     CACHE 1),
     person_id integer,
     reset_token integer,
-    create_time TIMESTAMP
+    create_time TIMESTAMP WITH TIME ZONE,
+    valid BOOLEAN
 );
 ALTER TABLE ONLY public.reset_token
 ADD CONSTRAINT reset_token_person_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(person_id);

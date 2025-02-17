@@ -1,6 +1,6 @@
 package se.kth.iv1201.recruitment.model.resettoken;
 
-import java.util.Date;
+import java.time.Instant;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -12,33 +12,43 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 import se.kth.iv1201.recruitment.model.person.Person;
 
 @Entity
 @Table(name = "reset_token")
 public class ResetToken implements ResetTokenDTO {
+
+    @Getter
+    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reset_token_id")
     private long resetTokenId;
 
+    @Getter
+    @Setter
     @ManyToOne
     @JoinColumn(name = "person_id")
     private Person person;
 
+    @Getter
+    @Setter
     @Column(name = "reset_token")
     private int resetToken;
 
+    @Getter
     @CreationTimestamp
     @Column(name = "create_time")
-    private Date createTime = new Date();
+    private Instant createTime = Instant.now();
 
-    public long getResetTokenId() {
-        return resetTokenId;
-    }
+    @Getter
+    @Setter
+    @Column(name = "valid")
+    private Boolean valid = true;
 
-    public void setResetTokenId(long resetTokenId) {
-        this.resetTokenId = resetTokenId;
+    protected ResetToken() {
     }
 
     public ResetToken(Person person, int resetToken) {
@@ -46,30 +56,10 @@ public class ResetToken implements ResetTokenDTO {
         this.resetToken = resetToken;
     }
 
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
-
-    public int getResetToken() {
-        return resetToken;
-    }
-
-    public void setResetToken(int resetToken) {
-        this.resetToken = resetToken;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
     @Override
     public String toString() {
-        return "Reset Token [id=" + resetTokenId + ", person=" + person.getId() + ", resetToken=" + resetTokenId
-                + ", createTime=" + createTime + "]";
+        return "ResetToken [resetTokenId=" + resetTokenId + ", person=" + person + ", resetToken=" + resetToken
+                + ", createTime=" + createTime + ", valid=" + valid + "]";
     }
 
 }
