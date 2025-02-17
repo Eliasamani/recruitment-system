@@ -19,7 +19,9 @@ public class DatabaseConfig {
 
     /**
      * Creates a datasource bean using the DATABASE_URL environment variable.
-     * DATABASE_URL should be in the format: postgres://<username>:<password>@<host>/<dbname>
+     * DATABASE_URL should be in the format:
+     * postgres://<username>:<password>@<host>/<dbname>
+     * 
      * @return a DataSource bean
      * @throws URISyntaxException if the DATABASE_URL is not a valid URI
      */
@@ -31,7 +33,7 @@ public class DatabaseConfig {
                 LOGGER.severe("DATABASE_URL environment variable is missing or empty.");
                 throw new URISyntaxException("", "DATABASE_URL is not set");
             }
-            
+
             URI dbUri = new URI(databaseUrl);
             LOGGER.info("Connecting to database at: " + dbUri.getHost());
 
