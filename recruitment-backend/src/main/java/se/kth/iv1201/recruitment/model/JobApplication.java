@@ -8,6 +8,8 @@ import org.hibernate.annotations.NaturalId;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -65,7 +67,14 @@ public class JobApplication {
     @OneToMany()
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
     private List<Availability> availabilities = new ArrayList();
-    // private applicationStatus status = applicationStatus.UNDETERMINED;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "application_status")
+    private Status status;
+
+    public enum Status {
+        UNDETERMINED, APPROVED, REJECTED
+    }
 
     public void addAllAvailabilities(Set<Availability> availabilities) {
         this.availabilities.addAll(availabilities);
@@ -76,7 +85,7 @@ public class JobApplication {
     }
 }
 
-// TODO CREATE JOB_APPLICATION_STATUS TABLE
+// TODO CREATE JOB_APPLICATION_STATUS TABL
 // -> Use it as the table for JobApplication entity
 // -> join person, competences and availibilites on this..
 // check existing db on rwpassword branch line 102 -122
