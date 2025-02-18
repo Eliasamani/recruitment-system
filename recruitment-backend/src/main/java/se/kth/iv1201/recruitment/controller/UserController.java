@@ -19,8 +19,6 @@ import se.kth.iv1201.recruitment.repository.PersonRepository;
 import se.kth.iv1201.recruitment.service.JobApplicationService;
 import se.kth.iv1201.recruitment.model.exception.UserAlreadyExistsException;
 import se.kth.iv1201.recruitment.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Controller for user-related API operations.
@@ -90,9 +88,18 @@ public class UserController {
         return availability_repository.findAvailabilitiesByPersonId(11);
     }
 
+    /**
+     * gets all applications in db
+     * 
+     */
+    @GetMapping("/testFetchAllJobApplications")
+    public List<JobApplication> fetchJobApps() throws Exception {
+        return job_applicationService.getAllApplications();
+    }
+
     @GetMapping("/testJobApplication")
     public JobApplication jobApp() throws Exception {
-        return job_applicationService.findJobApplicationByPersonId(11);
+        return job_applicationService.findJobApplicationbyUsername("test123456");
     }
 
     /**

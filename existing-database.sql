@@ -101,6 +101,21 @@ ALTER TABLE public.competence_profile ALTER COLUMN competence_profile_id ADD GEN
     CACHE 1
 );
 
+CREATE TABLE public.application_status (
+    application_status_id integer NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY(
+    SEQUENCE NAME public.application_status_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1),
+    person_id integer,
+    application_status integer
+);
+ALTER TABLE ONLY public.application_status
+ADD CONSTRAINT application_status_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(person_id);
+ALTER TABLE public.application_status OWNER TO postgres;
+
 
 --
 -- Name: person; Type: TABLE; Schema: public; Owner: postgres
