@@ -4,9 +4,10 @@ import './App.css';
 import LandingpagePresenter from './Presenter/LandingpagePresenter';
 import SigninPresenter from './Presenter/SigninPresenter';
 import SignupPresenter from './Presenter/SignupPresenter';
-import AboutcompanyPresenter from './Presenter/AboutcompanyPresenter';
+import AboutcompanyPresenter from './Presenter/AboutcompanyPresenter';  
 import CandidatepagePresenter from './Presenter/CandidatepagePresenter';
 import RecruiterpagePresenter from './Presenter/RecruiterpagePresenter';
+import RecruiterApplicationPresenter from './Presenter/RecruiterApplicationPresenter';
 
 function App() {
     return (
@@ -18,7 +19,9 @@ function App() {
                     <Route path="/signup" element={<SignupPresenter />} />
                     <Route path="/about" element={<AboutcompanyPresenter />} />
                     <Route path="/candidate" element={<CandidatepagePresenter />} />
-                    <Route path="/recruiter" element={<RecruiterpagePresenter />} />
+                    <Route path="/recruiter/dashboard" element={<RecruiterpagePresenter />} />
+                    <Route path="/recruiter/applications" element={<RecruiterApplicationPresenter />} />
+                    
                 </Routes>
             </div>
         </Router>

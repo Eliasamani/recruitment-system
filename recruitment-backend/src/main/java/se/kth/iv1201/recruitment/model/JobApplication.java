@@ -1,74 +1,38 @@
 package se.kth.iv1201.recruitment.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
-
-import org.hibernate.annotations.NaturalId;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
 import se.kth.iv1201.recruitment.model.person.Person;
-
-/**
- * Object keeping the competence and the availibility of
- * (both are lists) a person with a person_id
- * 
- */
-
-enum applicationStatus {
-    UNDETERMINED,
-    APPROVED,
-    REJECTED
-}
 
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-// TODO DTOs for this class and each class within this to allow better
-// encapsulation
-
 @Entity
-@Table(name = "application_status")
+@Table(name = "job_application")
 public class JobApplication {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "application_status_id")
-    private long status_id;
+    @Column(name = "application_id")
+    private long applicationId;
 
-    // @Column(name = "person_id")
-    // private long applicant_person_id;
-
-    @OneToOne()
+    @OneToOne
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
     private Person person;
 
-    @OneToMany()
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
-    private List<Competence> competences = new ArrayList();
+    private Set<Competence> competences = new HashSet<>();
 
-    @OneToMany()
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
-    private List<Availability> availabilities = new ArrayList();
+    private Set<Availability> availabilities = new HashSet<>();
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "application_status")
     private Status status;
 
@@ -84,8 +48,3 @@ public class JobApplication {
         this.competences.addAll(competences);
     }
 }
-
-// TODO CREATE JOB_APPLICATION_STATUS TABL
-// -> Use it as the table for JobApplication entity
-// -> join person, competences and availibilites on this..
-// check existing db on rwpassword branch line 102 -122
