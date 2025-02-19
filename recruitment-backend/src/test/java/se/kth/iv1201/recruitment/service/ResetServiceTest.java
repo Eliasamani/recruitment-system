@@ -51,7 +51,7 @@ public class ResetServiceTest {
  */
     @Test
     void testGenerateCodeWithCorrectEmail() {
-        ResetTokenDTO genratedToken = resetService.generateToken("appltest@test.com");
+        ResetTokenDTO genratedToken = resetService.generateToken("appltest@example.com");
         assertNotNull(genratedToken);
         assertNotNull(resetTokenRepository.findResetTokenByPersonAndValidTrue(genratedToken.getPerson()));
     }
@@ -60,54 +60,54 @@ public class ResetServiceTest {
  */
     @Test
     void testResetUsernameAndPassword() {
-        assertNotEquals(personRepository.findPersonByEmail("appltest@test.com").getUsername(), "resetUsername");
+        assertNotEquals(personRepository.findPersonByEmail("appltest@example.com").getUsername(), "resetUsername");
         assertFalse(passwordEncoder.matches("resetTestPass",
-                personRepository.findPersonByEmail("appltest@test.com").getPassword()));
+                personRepository.findPersonByEmail("appltest@example.com").getPassword()));
         UserPassResetForm userPassResetForm = new UserPassResetForm();
-        userPassResetForm.setCode(String.valueOf(resetService.generateToken("appltest@test.com").getResetToken()));
-        userPassResetForm.setEmail("appltest@test.com");
+        userPassResetForm.setCode(String.valueOf(resetService.generateToken("appltest@example.com").getResetToken()));
+        userPassResetForm.setEmail("appltest@example.com");
         userPassResetForm.setPassword("resetTestPass");
         userPassResetForm.setUsername("resetUsername");
         resetService.resetUsernameAndPassword(userPassResetForm);
-        assertEquals(personRepository.findPersonByEmail("appltest@test.com").getUsername(), "resetUsername");
+        assertEquals(personRepository.findPersonByEmail("appltest@example.com").getUsername(), "resetUsername");
         assertTrue(passwordEncoder.matches("resetTestPass",
-                personRepository.findPersonByEmail("appltest@test.com").getPassword()));
+                personRepository.findPersonByEmail("appltest@example.com").getPassword()));
     }
 /**
  * Tests that it is possible to reset only password
  */
     @Test
     void testResetUsernameAndPasswordWithOnlyPassword() {
-        assertEquals(personRepository.findPersonByEmail("appltest@test.com").getUsername(), "TestApplicant");
+        assertEquals(personRepository.findPersonByEmail("appltest@example.com").getUsername(), "TestApplicant");
         assertFalse(passwordEncoder.matches("resetTestPass",
-                personRepository.findPersonByEmail("appltest@test.com").getPassword()));
+                personRepository.findPersonByEmail("appltest@example.com").getPassword()));
         UserPassResetForm userPassResetForm = new UserPassResetForm();
-        userPassResetForm.setCode(String.valueOf(resetService.generateToken("appltest@test.com").getResetToken()));
-        userPassResetForm.setEmail("appltest@test.com");
+        userPassResetForm.setCode(String.valueOf(resetService.generateToken("appltest@example.com").getResetToken()));
+        userPassResetForm.setEmail("appltest@example.com");
         userPassResetForm.setPassword("resetTestPass");
         userPassResetForm.setUsername("");
         resetService.resetUsernameAndPassword(userPassResetForm);
-        assertEquals(personRepository.findPersonByEmail("appltest@test.com").getUsername(), "TestApplicant");
+        assertEquals(personRepository.findPersonByEmail("appltest@example.com").getUsername(), "TestApplicant");
         assertTrue(passwordEncoder.matches("resetTestPass",
-                personRepository.findPersonByEmail("appltest@test.com").getPassword()));
+                personRepository.findPersonByEmail("appltest@example.com").getPassword()));
     }
 /**
  * Tests that it is possible to reset only username
  */
     @Test
     void testResetUsernameWithOnlyUsername() {
-        assertNotEquals(personRepository.findPersonByEmail("appltest@test.com").getUsername(), "resetUsername");
+        assertNotEquals(personRepository.findPersonByEmail("appltest@example.com").getUsername(), "resetUsername");
         assertTrue(passwordEncoder.matches("testpassword",
-                personRepository.findPersonByEmail("appltest@test.com").getPassword()));
+                personRepository.findPersonByEmail("appltest@example.com").getPassword()));
         UserPassResetForm userPassResetForm = new UserPassResetForm();
-        userPassResetForm.setCode(String.valueOf(resetService.generateToken("appltest@test.com").getResetToken()));
-        userPassResetForm.setEmail("appltest@test.com");
+        userPassResetForm.setCode(String.valueOf(resetService.generateToken("appltest@example.com").getResetToken()));
+        userPassResetForm.setEmail("appltest@example.com");
         userPassResetForm.setPassword("");
         userPassResetForm.setUsername("resetUsername");
         resetService.resetUsernameAndPassword(userPassResetForm);
-        assertEquals(personRepository.findPersonByEmail("appltest@test.com").getUsername(), "resetUsername");
+        assertEquals(personRepository.findPersonByEmail("appltest@example.com").getUsername(), "resetUsername");
         assertTrue(passwordEncoder.matches("testpassword",
-                personRepository.findPersonByEmail("appltest@test.com").getPassword()));
+                personRepository.findPersonByEmail("appltest@example.com").getPassword()));
     }
 /**
  * Tests that an error is thrown if incorrect email
@@ -115,8 +115,8 @@ public class ResetServiceTest {
     @Test
     void testResetUsernameAndPasswordWithNonExistingEmail() {
         UserPassResetForm userPassResetForm = new UserPassResetForm();
-        userPassResetForm.setCode(String.valueOf(resetService.generateToken("appltest@test.com").getResetToken()));
-        userPassResetForm.setEmail("appltest.test.com");
+        userPassResetForm.setCode(String.valueOf(resetService.generateToken("appltest@example.com").getResetToken()));
+        userPassResetForm.setEmail("appltest.example.com");
         userPassResetForm.setPassword("resetTestPass");
         userPassResetForm.setUsername("resetUsername");
 
@@ -128,8 +128,8 @@ public class ResetServiceTest {
     @Test
     void testResetUsernameAndPasswordWithAlreadyExistingUserName() {
         UserPassResetForm userPassResetForm = new UserPassResetForm();
-        userPassResetForm.setCode(String.valueOf(resetService.generateToken("appltest@test.com").getResetToken()));
-        userPassResetForm.setEmail("appltest@test.com");
+        userPassResetForm.setCode(String.valueOf(resetService.generateToken("appltest@example.com").getResetToken()));
+        userPassResetForm.setEmail("appltest@example.com");
         userPassResetForm.setPassword("resetTestPass");
         userPassResetForm.setUsername("TestRecruiter");
 
@@ -142,7 +142,7 @@ public class ResetServiceTest {
     void testResetUsernameAndPasswordWithIncorrectToken() {
         UserPassResetForm userPassResetForm = new UserPassResetForm();
         userPassResetForm.setCode(String.valueOf(10));
-        userPassResetForm.setEmail("appltest@test.com");
+        userPassResetForm.setEmail("appltest@example.com");
         userPassResetForm.setPassword("resetTestPass");
         userPassResetForm.setUsername("resetUsername");
 
@@ -154,13 +154,13 @@ public class ResetServiceTest {
     @Test
     void testResetUsernameAndPasswordWithInvalidToken() {
         UserPassResetForm userPassResetForm = new UserPassResetForm();
-        ResetTokenDTO resetTokenDTO = resetService.generateToken("appltest@test.com");
+        ResetTokenDTO resetTokenDTO = resetService.generateToken("appltest@example.com");
         ResetToken token = resetTokenRepository.findResetTokenByPersonAndResetToken(
-                personRepository.findPersonByEmail("appltest@test.com"), resetTokenDTO.getResetToken());
+                personRepository.findPersonByEmail("appltest@example.com"), resetTokenDTO.getResetToken());
         token.setValid(false);
         resetTokenDTO = resetTokenRepository.save(token);
         userPassResetForm.setCode(String.valueOf(resetTokenDTO.getResetToken()));
-        userPassResetForm.setEmail("appltest@test.com");
+        userPassResetForm.setEmail("appltest@example.com");
         userPassResetForm.setPassword("resetTestPass");
         userPassResetForm.setUsername("resetUsername");
 
@@ -172,13 +172,13 @@ public class ResetServiceTest {
     @Test
     void testResetUsernameAndPasswordWithExpiredToken() {
         UserPassResetForm userPassResetForm = new UserPassResetForm();
-        ResetTokenDTO resetTokenDTO = resetService.generateToken("appltest@test.com");
+        ResetTokenDTO resetTokenDTO = resetService.generateToken("appltest@example.com");
         ResetToken token = resetTokenRepository.findResetTokenByPersonAndResetToken(
-                personRepository.findPersonByEmail("appltest@test.com"), resetTokenDTO.getResetToken());
+                personRepository.findPersonByEmail("appltest@example.com"), resetTokenDTO.getResetToken());
         token.setCreateTime(Instant.EPOCH);
         resetTokenDTO = resetTokenRepository.save(token);
         userPassResetForm.setCode(String.valueOf(resetTokenDTO.getResetToken()));
-        userPassResetForm.setEmail("appltest@test.com");
+        userPassResetForm.setEmail("appltest@example.com");
         userPassResetForm.setPassword("resetTestPass");
         userPassResetForm.setUsername("resetUsername");
 
