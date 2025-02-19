@@ -21,6 +21,12 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
      * @return person with the specified username, if none null will be returned
      */
     <S extends Person> S findPersonByUsername(String username);
+
+    /**
+     *
+     * @param email email of the person to be found
+     * @return the person that the email is linked to, if none null will be returned
+     */
     <S extends Person> S findPersonByEmail(String email);
 
     @Override

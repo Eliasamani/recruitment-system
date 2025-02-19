@@ -37,6 +37,14 @@ public class ResetController {
 
     }
 
+    /**
+     * Generates a code for the user to reset their username and/or password which
+     * is later sent to their email
+     * 
+     * @param email The users email address
+     * @return Simple message telling the user the email might have been sent, to
+     *         not leak which emails are registred
+     */
     @PostMapping("/code")
     public ResponseEntity<?> generateCode(
             @RequestBody @Valid @Email(message = "invalid email format") @NotBlank(message = "Email field is empty") String email) {
@@ -59,6 +67,15 @@ public class ResetController {
         return ResponseEntity.ok(Map.of("message", "Will have been sent if email was correct"));
     }
 
+    /**
+     * Allows user to use a code and their email to reset their username and/or
+     * password for the website
+     * 
+     * @param userPassResetForm A json object containing username, email, password
+     *                          and code
+     * @return Either success or an error message describing why the function would
+     *         have failed.
+     */
     @PostMapping("/password")
     public ResponseEntity<?> setNewPassword(@RequestBody @Valid UserPassResetForm userPassResetForm) {
         try {

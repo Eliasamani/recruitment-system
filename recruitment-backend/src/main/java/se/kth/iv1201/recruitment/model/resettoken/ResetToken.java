@@ -16,44 +16,50 @@ import lombok.Getter;
 import lombok.Setter;
 import se.kth.iv1201.recruitment.model.person.Person;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "reset_token")
 public class ResetToken implements ResetTokenDTO {
 
-    @Getter
-    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reset_token_id")
     private long resetTokenId;
 
-    @Getter
-    @Setter
     @ManyToOne
     @JoinColumn(name = "person_id")
     private Person person;
 
-    @Getter
-    @Setter
     @Column(name = "reset_token")
     private int resetToken;
 
-    @Getter
     @CreationTimestamp
     @Column(name = "create_time")
-    private Instant createTime = Instant.now();
+    private Instant createTime;
 
-    @Getter
-    @Setter
     @Column(name = "valid")
-    private Boolean valid = true;
+    private Boolean valid;
+
+    /**
+     * Needed by JPA, never actually used
+     */
 
     protected ResetToken() {
     }
 
+    /**
+     * Creates a new reset token where the token is automatically valid, and its
+     * time is set to the current time.
+     * 
+     * @param person     The person the reset token should be linked with
+     * @param resetToken An actual token which the person gets sent to their mail
+     */
     public ResetToken(Person person, int resetToken) {
         this.person = person;
         this.resetToken = resetToken;
+        this.createTime = Instant.now();
+        this.valid = true;
     }
 
     @Override
