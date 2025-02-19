@@ -32,7 +32,7 @@ public class ResetControllerTest {
      */
     @Test
     void testGenerateCodeWithCorrectEmail() throws Exception {
-        mockMvc.perform(post("/api/reset/code").content("appltest@test.com")).andExpect(status().isOk())
+        mockMvc.perform(post("/api/reset/code").content("appltest@example.com")).andExpect(status().isOk())
                 .andExpect(content()
                         .string(containsString("Will have been sent if email was correct")));
     }
@@ -44,7 +44,7 @@ public class ResetControllerTest {
      */
     @Test
     void testGenerateCodeWithNonCorrectEmail() throws Exception {
-        mockMvc.perform(post("/api/reset/code").content("appl11111test@test.com")).andExpect(status().isOk())
+        mockMvc.perform(post("/api/reset/code").content("appl11111test@example.com")).andExpect(status().isOk())
                 .andExpect(content()
                         .string(containsString("Will have been sent if email was correct")));
     }
@@ -56,7 +56,7 @@ public class ResetControllerTest {
      */
     @Test
     void testGenerateCodeWithNonEmailFormat() throws Exception {
-        mockMvc.perform(post("/api/reset/code").content("appl11111test.test.com"))
+        mockMvc.perform(post("/api/reset/code").content("appl11111test.example.com"))
                 .andExpect(status().isBadRequest());
     }
 
@@ -75,9 +75,9 @@ public class ResetControllerTest {
                                 .content(
                                         "{\"username\":\"resetUsername\", \"password\":\"resetTestPass\"}"))
                 .andExpect(status().isUnauthorized());
-        int code = resetService.generateToken("appltest@test.com").getResetToken();
+        int code = resetService.generateToken("appltest@example.com").getResetToken();
         mockMvc.perform(post("/api/reset/password").header("Content-Type", "application/json")
-                .content("{\"email\":\"appltest@test.com\",\"password\":\"resetTestPass\",\"code\":\""
+                .content("{\"email\":\"appltest@example.com\",\"password\":\"resetTestPass\",\"code\":\""
                         + code
                         + "\",\"username\":\"resetUsername\"}"))
                 .andExpect(status().isOk())
@@ -99,9 +99,9 @@ public class ResetControllerTest {
      */
     @Test
     void testUseCodeWithWrongEmail() throws Exception {
-        int code = resetService.generateToken("appltest@test.com").getResetToken();
+        int code = resetService.generateToken("appltest@example.com").getResetToken();
         mockMvc.perform(post("/api/reset/password").header("Content-Type", "application/json")
-                .content("{\"email\":\"appl1111test@test.com\",\"password\":\"resetTestPass\",\"code\":\""
+                .content("{\"email\":\"appl1111test@example.com\",\"password\":\"resetTestPass\",\"code\":\""
                         + code
                         + "\",\"username\":\"resetUsername\"}"))
                 .andExpect(status().isBadRequest())
@@ -116,9 +116,9 @@ public class ResetControllerTest {
      */
     @Test
     void testUseCodeWithWrongFormatEmail() throws Exception {
-        int code = resetService.generateToken("appltest@test.com").getResetToken();
+        int code = resetService.generateToken("appltest@example.com").getResetToken();
         mockMvc.perform(post("/api/reset/password").header("Content-Type", "application/json")
-                .content("{\"email\":\"appltest.test.com\",\"password\":\"resetTestPass\",\"code\":\""
+                .content("{\"email\":\"appltest.example.com\",\"password\":\"resetTestPass\",\"code\":\""
                         + code
                         + "\",\"username\":\"resetUsername\"}"))
                 .andExpect(status().isBadRequest());
@@ -135,7 +135,7 @@ public class ResetControllerTest {
     void testUseCodeWithWrongFormatCode() throws Exception {
         int code = 10;
         mockMvc.perform(post("/api/reset/password").header("Content-Type", "application/json")
-                .content("{\"email\":\"appltest.test.com\",\"password\":\"resetTestPass\",\"code\":\""
+                .content("{\"email\":\"appltest.example.com\",\"password\":\"resetTestPass\",\"code\":\""
                         + code
                         + "\",\"username\":\"resetUsername\"}"))
                 .andExpect(status().isBadRequest());
@@ -147,9 +147,9 @@ public class ResetControllerTest {
      */
     @Test
     void testUseCodeWithExistingUsername() throws Exception {
-        int code = resetService.generateToken("appltest@test.com").getResetToken();
+        int code = resetService.generateToken("appltest@example.com").getResetToken();
         mockMvc.perform(post("/api/reset/password").header("Content-Type", "application/json")
-                .content("{\"email\":\"appltest@test.com\",\"password\":\"resetTestPass\",\"code\":\""
+                .content("{\"email\":\"appltest@example.com\",\"password\":\"resetTestPass\",\"code\":\""
                         + code
                         + "\",\"username\":\"TestRecruiter\"}"))
                 .andExpect(status().isBadRequest())
@@ -167,7 +167,7 @@ public class ResetControllerTest {
     void testUseCodeWithWrongCode() throws Exception {
         int code = 500000;
         mockMvc.perform(post("/api/reset/password").header("Content-Type", "application/json")
-                .content("{\"email\":\"appltest@test.com\",\"password\":\"resetTestPass\",\"code\":\""
+                .content("{\"email\":\"appltest@example.com\",\"password\":\"resetTestPass\",\"code\":\""
                         + code
                         + "\",\"username\":\"resetUsername\"}"))
                 .andExpect(status().isBadRequest())
@@ -189,9 +189,9 @@ public class ResetControllerTest {
                                 .content(
                                         "{\"username\":\"TestApplicant\", \"password\":\"resetTestPass\"}"))
                 .andExpect(status().isUnauthorized());
-        int code = resetService.generateToken("appltest@test.com").getResetToken();
+        int code = resetService.generateToken("appltest@example.com").getResetToken();
         mockMvc.perform(post("/api/reset/password").header("Content-Type", "application/json")
-                .content("{\"email\":\"appltest@test.com\",\"password\":\"resetTestPass\",\"code\":\""
+                .content("{\"email\":\"appltest@example.com\",\"password\":\"resetTestPass\",\"code\":\""
                         + code
                         + "\",\"username\":\"\"}"))
                 .andExpect(status().isOk())
@@ -220,9 +220,9 @@ public class ResetControllerTest {
                                 .content(
                                         "{\"username\":\"resetUsername\", \"password\":\"testpassword\"}"))
                 .andExpect(status().isUnauthorized());
-        int code = resetService.generateToken("appltest@test.com").getResetToken();
+        int code = resetService.generateToken("appltest@example.com").getResetToken();
         mockMvc.perform(post("/api/reset/password").header("Content-Type", "application/json")
-                .content("{\"email\":\"appltest@test.com\",\"password\":\"\",\"code\":\"" + code
+                .content("{\"email\":\"appltest@example.com\",\"password\":\"\",\"code\":\"" + code
                         + "\",\"username\":\"resetUsername\"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Reset successful")));
