@@ -101,7 +101,22 @@ ALTER TABLE public.competence_profile ALTER COLUMN competence_profile_id ADD GEN
     CACHE 1
 );
 
-
+CREATE TABLE public.reset_token (
+    reset_token_id integer NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY(
+    SEQUENCE NAME public.reset_token_reset_token_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1),
+    person_id integer,
+    reset_token integer,
+    create_time TIMESTAMP WITH TIME ZONE,
+    valid BOOLEAN
+);
+ALTER TABLE ONLY public.reset_token
+ADD CONSTRAINT reset_token_person_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(person_id);
+ALTER TABLE public.reset_token OWNER TO postgres;
 --
 -- Name: person; Type: TABLE; Schema: public; Owner: postgres
 --
