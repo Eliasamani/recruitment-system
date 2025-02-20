@@ -1,6 +1,14 @@
 import React from "react";
 
-export default function RecruiterApplicationView({ applications, loading, error, fetchApplicationDetails, expandedApplications, handleStatusChange }) {
+export default function RecruiterApplicationView({
+    applications,
+    loading,
+    error,
+    fetchApplicationDetails,
+    expandedApplications,
+    handleStatusChange,
+    onBack,
+}) {
     if (loading) return <p style={styles.loadingContainer}>Loading applications...</p>;
     if (error) return <p style={styles.errorContainer}>{error}</p>;
 
@@ -13,6 +21,9 @@ export default function RecruiterApplicationView({ applications, loading, error,
 
     return (
         <div style={styles.container}>
+            <button onClick={onBack} style={styles.backButton}>
+                Back to Dashboard
+            </button>
             <h2 style={styles.heading}>Recruiter Applications</h2>
             <table style={styles.table}>
                 <thead>
@@ -27,7 +38,9 @@ export default function RecruiterApplicationView({ applications, loading, error,
                         <React.Fragment key={app.applicationId}>
                             {/* Main Row */}
                             <tr>
-                                <td style={styles.tableCell}>{app.person.firstname} {app.person.lastname}</td>
+                                <td style={styles.tableCell}>
+                                    {app.person.firstname} {app.person.lastname}
+                                </td>
                                 <td style={styles.tableCell}>{app.status}</td>
                                 <td style={styles.actionButtonsContainer}>
                                     <button
@@ -91,7 +104,6 @@ export default function RecruiterApplicationView({ applications, loading, error,
     );
 }
 
-// ✅ Styles
 const styles = {
     container: {
         maxWidth: "900px",
@@ -101,6 +113,15 @@ const styles = {
         padding: "2rem",
         boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
         transition: "all 0.3s ease",
+    },
+    backButton: {
+        padding: "8px 16px",
+        marginBottom: "1rem",
+        cursor: "pointer",
+        backgroundColor: "#6c757d",
+        color: "#fff",
+        border: "none",
+        borderRadius: "4px",
     },
     heading: {
         textAlign: "center",
@@ -124,7 +145,11 @@ const styles = {
         padding: "12px",
         textAlign: "left",
     },
-
+    actionButtonsContainer: {
+        display: "flex",
+        gap: "0.5rem",
+        padding: "12px",
+    },
     showDetailsBtn: {
         padding: "6px 12px",
         borderRadius: "5px",
@@ -135,9 +160,6 @@ const styles = {
         backgroundColor: "#007bff",
         color: "white",
         border: "none",
-    },
-    showDetailsBtnHover: {
-        backgroundColor: "#0056b3",
     },
     approveBtn: {
         backgroundColor: "#28a745",
@@ -150,9 +172,6 @@ const styles = {
         cursor: "pointer",
         transition: "all 0.3s ease",
     },
-    approveBtnHover: {
-        backgroundColor: "#218838",
-    },
     rejectBtn: {
         backgroundColor: "#dc3545",
         color: "white",
@@ -163,9 +182,6 @@ const styles = {
         fontWeight: "600",
         cursor: "pointer",
         transition: "all 0.3s ease",
-    },
-    rejectBtnHover: {
-        backgroundColor: "#c82333",
     },
     detailsContainer: {
         backgroundColor: "#f9f9f9",
@@ -196,4 +212,3 @@ const styles = {
         color: "#d00",
     },
 };
-

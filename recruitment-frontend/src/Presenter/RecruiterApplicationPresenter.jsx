@@ -1,7 +1,10 @@
+// RecruiterApplicationPresenter.jsx
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import RecruiterApplicationView from "../View/RecruiterApplicationView";
 
 export default function RecruiterApplicationPresenter() {
+    const navigate = useNavigate();
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -82,6 +85,9 @@ export default function RecruiterApplicationPresenter() {
         }
     };
 
+    const handleBack = () => {
+        navigate("/recruiter/dashboard");
+    };
 
     return (
         <RecruiterApplicationView
@@ -91,6 +97,7 @@ export default function RecruiterApplicationPresenter() {
             fetchApplicationDetails={fetchApplicationDetails}
             expandedApplications={expandedApplications}
             handleStatusChange={handleStatusChange}
+            onBack={handleBack}
         />
     );
 }
