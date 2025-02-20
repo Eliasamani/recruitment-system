@@ -1,4 +1,3 @@
-// RecruiterDashboardPresenter.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import RecruiterDashboardView from '../View/RecruiterDashboardView';
@@ -23,7 +22,7 @@ export default function RecruiterDashboardPresenter() {
         navigate('/recruiter/applications');
     };
 
-    // Dummy recruiter data for MVP testing
+    // Dummy recruiter data for now
     const dummyRecruiter = {
         firstName: 'John',
         lastName: 'Doe',

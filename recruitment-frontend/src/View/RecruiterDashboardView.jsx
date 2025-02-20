@@ -1,4 +1,3 @@
-// RecruiterDashboardView.jsx
 import React from 'react';
 
 export default function RecruiterDashboardView({ recruiter, loading, error, onLogout, onManageApplications }) {

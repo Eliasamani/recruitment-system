@@ -12,7 +12,6 @@ export default function RecruiterApplicationView({
     if (loading) return <p style={styles.loadingContainer}>Loading applications...</p>;
     if (error) return <p style={styles.errorContainer}>{error}</p>;
 
-    // Mapping of competence IDs to human-readable names
     const competenceMapping = {
         1: "Ticket Sales",
         2: "Lotteries",
