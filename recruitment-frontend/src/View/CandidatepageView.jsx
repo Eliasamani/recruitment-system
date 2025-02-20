@@ -1,55 +1,159 @@
 import React from 'react';
+import '../App.css';
 
-export default function CandidatepageView({ user, loading, error }) {
-    if (loading) {
-        return (
-            <div className="loading-container">
-                <h2>Loading your dashboard...</h2>
-            </div>
-        );
+export default function CandidatepageView({
+  user,
+  competences,
+  status,
+  error,
+  selectedCompetence,
+  yearsOfExperience,
+  expertise,
+  availability,
+  fromDate,
+  toDate,
+  onCompetenceChange,
+  onYearsExperienceChange,
+  onFromDateChange,
+  onToDateChange,
+  onAddExpertise,
+  onAddAvailability,
+  onSubmit,
+  onCancel,
+}) {
+  // Renders status message based on application status
+  const renderStatusMessage = () => {
+    if (status === 'accepted') {
+      return (
+        <div className="success-message">
+          <h3>Your application has been accepted!</h3>
+          <p>We will contact you soon!</p>
+        </div>
+      );
+    } else if (status === 'rejected') {
+      return (
+        <div className="error-message">
+          <h3>Sorry, we chose to go with other candidates.</h3>
+          <p>We will inform you when the new application period opens up.</p>
+        </div>
+      );
+    } else if (
+      status === 'unhandled' ||
+      status === 'Missing Availability' ||
+      status === 'Missing Competence'
+    ) {
+      return (
+        <div className="success-message">
+          <h3>Your application is under review!</h3>
+          <p>We are processing your details and will get back to you shortly.</p>
+        </div>
+      );
+    } else {
+      return (
+        <div className="error-message">
+          <h3>Something went wrong.</h3>
+          <p>Please log out and try again. If the issue persists, contact support.</p>
+        </div>
+      );
     }
+  };
 
-    if (error) {
-        return (
-            <div className="error-container" style={{ color: 'red', textAlign: 'center' }}>
-                <h2>Error</h2>
-                <p>{error}</p>
-            </div>
-        );
-    }
-
-    if (!user) {
-        return (
-            <div className="no-user-container" style={{ textAlign: 'center' }}>
-                <h2>No User Information Available</h2>
-                <p>Please log in again to access your account.</p>
-            </div>
-        );
+  // Render the candidate application form
+  const renderApplicationForm = () => {
+    // If status is not "unsent", show status message
+    if (status !== 'unsent') {
+      return renderStatusMessage();
     }
 
     return (
-        <div className="candidate-page">
-            <header className="candidate-header">
-                <h1>Welcome, {user.firstName} {user.lastName}!</h1>
-            </header>
-            <main className="candidate-body">
-                <section className="user-info">
-                    <h2>Your Account Details</h2>
-                    <p><strong>Email:</strong> {user.email}</p>
-                    {/* Add more user-specific information here */}
-                </section>
+      <>
+        {error && <div className="error-container"><p>{error}</p></div>}
+        <form>
+          <div className="form-group">
+            <label>Select Area of Expertise</label>
+            <select className="form-control" value={selectedCompetence} onChange={onCompetenceChange}>
+              <option value="">Select Expertise</option>
+              {competences.map((competence) => (
+                <option key={competence.competence_id} value={competence.competence_id}>
+                  {competence.name}
+                </option>
+              ))}
+            </select>
+            <input
+              type="number"
+              className="form-control"
+              placeholder="Years of Experience"
+              value={yearsOfExperience}
+              onChange={onYearsExperienceChange}
+            />
+            <button type="button" className="submit-button" onClick={onAddExpertise}>
+              Add Expertise
+            </button>
+          </div>
+        </form>
 
-                <section className="dashboard-content">
-                    <h2>Dashboard Overview</h2>
-                    <p>This is your dashboard where you can view and manage your account details.</p>
-                    {/* Add additional dashboard content or navigation links here */}
-                    <ul>
-                        <li><a href="#profile">Edit Profile</a></li>
-                        <li><a href="#resumes">Manage Resumes</a></li>
-                        <li><a href="#applications">View Job Applications</a></li>
-                    </ul>
-                </section>
-            </main>
+        <div className="expertise-list">
+          <h2>Your Expertise</h2>
+          <ul>
+            {expertise.map((expert, idx) => {
+              const compName =
+                competences.find((comp) => comp.competence_id === expert.competence_id)?.name ||
+                'Competence not found';
+              return <li key={idx}>{compName}: {expert.years_of_experience} years</li>;
+            })}
+          </ul>
         </div>
+
+        <form>
+          <div className="form-group">
+            <label>Select Availability</label>
+            <input
+              type="date"
+              className="form-control"
+              value={fromDate}
+              onChange={onFromDateChange}
+            />
+            <input
+              type="date"
+              className="form-control"
+              value={toDate}
+              onChange={onToDateChange}
+            />
+            <button type="button" className="submit-button" onClick={onAddAvailability}>
+              Add Availability
+            </button>
+          </div>
+        </form>
+
+        <div className="availability-list">
+          <h2>Your Availability</h2>
+          <ul>
+            {availability.map((period, idx) => (
+              <li key={idx}>
+                From: {period.from_date}, To: {period.to_date}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="button-group">
+          <button type="button" className="submit-button" onClick={onSubmit}>
+            Submit Application
+          </button>
+          <button type="button" className="cancel-button" onClick={onCancel}>
+            Cancel
+          </button>
+        </div>
+      </>
     );
+  };
+
+  return (
+    <div className="candidate-form">
+      <div className="candidate-header">
+        <h1>Welcome, {user.username}!</h1>
+      </div>
+      {renderApplicationForm()}
+    </div>
+  );
 }

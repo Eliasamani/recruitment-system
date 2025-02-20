@@ -9,9 +9,7 @@
 
 body {
     font-family: 'Poppins', Arial, sans-serif;
-    /* Use a modern font */
     background-color: #f4f6f8;
-    /* Soft background for the entire site */
     color: #333;
     line-height: 1.6;
 }
@@ -26,7 +24,6 @@ body {
     flex-direction: column;
     min-height: 100vh;
     background: linear-gradient(135deg, #ffffff, #f7f7f7);
-    /* Gradient background */
 }
 
 /* Header Styles */
@@ -40,12 +37,10 @@ body {
     position: relative;
     z-index: 10;
     transition: all 0.3s ease;
-    /* Smooth transitions */
 }
 
 .landing-header:hover {
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-    /* Enhanced shadow on hover */
 }
 
 .header-left {
@@ -60,7 +55,6 @@ body {
 
 .logo:hover {
     transform: scale(1.1) rotate(-5deg);
-    /* Slight rotation and enlargement */
 }
 
 .header-right {
@@ -80,14 +74,12 @@ body {
 .company-name:hover {
     color: #0056b3;
     transform: translateY(-2px);
-    /* Slight lift effect */
 }
 
 .login-btn,
 .get-started-btn {
     padding: 0.6rem 1.2rem;
     border-radius: 25px;
-    /* Rounded buttons */
     font-size: 0.9rem;
     font-weight: 600;
     transition: all 0.3s ease;
@@ -116,7 +108,6 @@ body {
     background-color: #0056b3;
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
     transform: translateY(-2px);
-    /* Slight lift effect */
 }
 
 /* Body Styles */
@@ -134,7 +125,6 @@ body {
     color: #333;
     margin-bottom: 1rem;
     animation: fadeIn 1s ease-in-out;
-    /* Fade-in animation */
 }
 
 .landing-body p {
@@ -146,13 +136,8 @@ body {
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* Form Styles */
@@ -172,7 +157,10 @@ form:hover {
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="number"],
+input[type="date"],
+select {
     width: 100%;
     padding: 0.8rem 1rem;
     margin-bottom: 1rem;
@@ -183,13 +171,17 @@ input[type="password"] {
 }
 
 input[type="text"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus {
     border-color: #007bff;
     outline: none;
     box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
 }
 
-button[type="submit"] {
+button[type="submit"],
+button.submit-button {
     width: 100%;
     padding: 0.8rem 1rem;
     background-color: #007bff;
@@ -202,12 +194,14 @@ button[type="submit"] {
     transition: all 0.3s ease;
 }
 
-button[type="submit"]:hover {
+button[type="submit"]:hover,
+button.submit-button:hover {
     background-color: #0056b3;
     transform: translateY(-2px);
 }
 
-button[type="button"] {
+button[type="button"],
+button.cancel-button {
     padding: 0.6rem 1rem;
     background-color: transparent;
     border: 1px solid #007bff;
@@ -219,7 +213,8 @@ button[type="button"] {
     transition: all 0.3s ease;
 }
 
-button[type="button"]:hover {
+button[type="button"]:hover,
+button.cancel-button:hover {
     background-color: #007bff;
     color: #ffffff;
     border-color: #0056b3;
@@ -229,7 +224,7 @@ button[type="button"]:hover {
 .candidate-page,
 .recruiter-page {
     max-width: 800px;
-    margin: 0 auto;
+    margin: 2rem auto;
     padding: 2rem;
 }
 
@@ -259,38 +254,34 @@ button[type="button"]:hover {
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
-.user-info,
-.recruiter-info {
-    margin-bottom: 2rem;
+.expertise-list,
+.availability-list {
+    margin: 1.5rem 0;
 }
 
-.user-info h2,
-.recruiter-info h2,
-.dashboard-content h2 {
+.expertise-list h2,
+.availability-list h2 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
     color: #555;
 }
 
-.dashboard-content ul {
+.expertise-list ul,
+.availability-list ul {
     list-style-type: none;
     padding: 0;
 }
 
-.dashboard-content li {
+.expertise-list li,
+.availability-list li {
     margin-bottom: 0.5rem;
 }
 
-.dashboard-content a {
-    text-decoration: none;
-    color: #007bff;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.dashboard-content a:hover {
-    color: #0056b3;
-    text-decoration: underline;
+.button-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
 }
 
 /* Loading & Error States */
@@ -305,16 +296,11 @@ button[type="button"]:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.loading-container h2 {
-    font-size: 1.5rem;
-    color: #666;
-}
-
+.loading-container h2,
 .error-container h2,
 .no-user-container h2,
 .no-recruiter-container h2 {
     font-size: 1.5rem;
-    color: #d00;
 }
 
 .error-container p,
@@ -324,6 +310,68 @@ button[type="button"]:hover {
     font-size: 1rem;
 }
 
+/* Two-Column Layout for Candidate Page */
+.candidate-container {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem auto;
+    max-width: 1200px;
+    padding: 1rem;
+}
+
+.candidate-sidebar {
+    flex: 1;
+    max-width: 300px;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.candidate-sidebar:hover {
+    box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+}
+
+.job-item {
+    background-color: #fafafa;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.job-item:hover {
+    background-color: #eee;
+}
+
+.candidate-content {
+    flex: 2;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.candidate-content:hover {
+    box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+}
+
+.job-details {
+    margin-bottom: 2rem;
+}
+
+.no-job-selected {
+    font-style: italic;
+    color: #777;
+}
+
+.status-message {
+    margin-top: 1rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .landing-header {
@@ -331,26 +379,32 @@ button[type="button"]:hover {
         align-items: center;
         gap: 1rem;
     }
-
     .logo {
         height: 30px;
     }
-
     .company-name {
         font-size: 1.2rem;
     }
-
     .login-btn,
     .get-started-btn {
         padding: 0.5rem 1rem;
         font-size: 0.8rem;
     }
-
     .landing-body h1 {
         font-size: 2rem;
     }
-
     .landing-body p {
         font-size: 1rem;
+    }
+
+    .candidate-container {
+        flex-direction: column;
+    }
+    .candidate-sidebar {
+        max-width: 100%;
+        margin-bottom: 1rem;
+    }
+    .candidate-content {
+        max-width: 100%;
     }
 }

@@ -59,51 +59,60 @@ export default function SigninPresenter() {
         e.preventDefault();
         setSubmissionError('');
         if (!validate()) return;
-
+      
         try {
-            const response = await fetch(process.env.REACT_APP_API_URL + '/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: formData.username,
-                    password: formData.password,
-                }),
-                credentials: 'include', // Include cookies
-            });
-
-            if (!response.ok) {
-                let errorMessage = 'Login failed';
-                try {
-                    const errorData = await response.clone().json();
-                    errorMessage = errorData.error || 'Login failed';
-                } catch {
-                    errorMessage = await response.text();
-                }
-                throw new Error(errorMessage);
+          const response = await fetch(process.env.REACT_APP_API_URL + '/api/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              username: formData.username,
+              password: formData.password,
+            }),
+            credentials: 'include',
+          });
+      
+          if (!response.ok) {
+            let errorMessage = 'Login failed';
+            try {
+              const errorData = await response.clone().json();
+              errorMessage = errorData.error || 'Login failed';
+            } catch {
+              errorMessage = await response.text();
             }
-
-            // Parse the user's role from the response
-            const userData = await response.json();
-            const role = userData.role;
-
-            console.log('Login successful');
-            setIsAuthenticated(true); // Update the state
-
-            // Redirect based on the user's role
-            if (role === 2) {
-                navigate('/candidate'); // Redirect to Candidate page
-            } else if (role === 1) {
-                navigate('/recruiter'); // Redirect to Recruiter page
-            }
+            throw new Error(errorMessage);
+          }
+      
+          // Parse the user's data from the response
+          const userData = await response.json();
+          
+          // Ensure the user data includes an application_status
+          if (!userData.application_status) {
+            userData.application_status = 'unsent'; // set a default value
+          }
+          
+          // Save user data to localStorage so CandidatepagePresenter can read it
+          localStorage.setItem('user', JSON.stringify(userData));
+      
+          const role = userData.role;
+          console.log('Login successful');
+          setIsAuthenticated(true);
+      
+          // Redirect based on the user's role
+          if (role === 2) {
+            navigate('/candidate');
+          } else if (role === 1) {
+            navigate('/recruiter');
+          }
         } catch (error) {
-            console.error('Login error:', error);
-            setSubmissionError(
-                error instanceof Error ? error.message : 'An unexpected error occurred'
-            );
+          console.error('Login error:', error);
+          setSubmissionError(
+            error instanceof Error ? error.message : 'An unexpected error occurred'
+          );
         }
-    };
+      };
+      
 
     if (isAuthenticated) {
         return null; // Already redirected based on role

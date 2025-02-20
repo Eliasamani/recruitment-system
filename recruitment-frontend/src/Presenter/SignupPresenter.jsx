@@ -1,16 +1,40 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import SignupView from '../View/SignupView.jsx';
-import { SignupFormModel } from '../model.jsx';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import SigninView from '../View/SigninView';
+import { SignInFormModel } from '../model';
 
-export default function SignupPresenter() {
-    const [formData, setFormData] = useState(SignupFormModel);
+export default function SigninPresenter() {
+    const [formData, setFormData] = useState(SignInFormModel);
     const [errors, setErrors] = useState({});
     const [submissionError, setSubmissionError] = useState('');
-    const [loading, setLoading] = useState(false);
-    const navigate = useNavigate(); // Initialize useNavigate
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const navigate = useNavigate();
 
-    // onChange handler
+    // Check if user is logged in when the page loads
+    const checkAuthStatus = useCallback(async () => {
+        try {
+            const response = await fetch(process.env.REACT_APP_API_URL + '/api/auth/session', { credentials: 'include' });
+            if (response.ok) {
+                const userData = await response.json();
+                const role = userData.role;
+                if (role === 2) {
+                    navigate('/candidate'); // Redirect to Candidate page
+                } else if (role === 1) {
+                    navigate('/recruiter'); // Redirect to Recruiter page
+                }
+                setIsAuthenticated(true);
+            } else {
+                setIsAuthenticated(false);
+            }
+        } catch (error) {
+            setIsAuthenticated(false);
+        }
+    }, [navigate]);
+
+    useEffect(() => {
+        checkAuthStatus();
+    }, [checkAuthStatus]);
+
     const onChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
@@ -21,71 +45,71 @@ export default function SignupPresenter() {
 
     const validate = () => {
         const newErrors = {};
-        if (!formData.firstname.trim()) newErrors.firstName = 'First name is required.';
-        if (!formData.lastname.trim()) newErrors.lastName = 'Last name is required.';
-        if (!formData.personNumber.trim()) newErrors.personNumber = 'Personnumber is required.';
-        if (!formData.username.trim()) newErrors.username = 'Username is required.';
-        if (!formData.email.trim()) newErrors.email = 'Email is required.';
-        if (!formData.password.trim()) newErrors.password = 'Password is required.';
-
-        // Personnumber validation
-        const personNumberRegex = /^\d{8}-\d{4}$/;
-        if (formData.personNumber && !personNumberRegex.test(formData.personNumber.trim())) {
-            newErrors.personNumber = 'Invalid format (expected YYYYMMDD-XXXX)';
-        }
-
-        // Email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (formData.email && !emailRegex.test(formData.email)) {
-            newErrors.email = 'Invalid email format';
-        }
-
+        if (!formData.username.trim()) newErrors.username = 'Username is required';
+        if (!formData.password.trim()) newErrors.password = 'Password is required';
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
     const onSubmit = async (e) => {
         e.preventDefault();
+        setSubmissionError('');
         if (!validate()) return;
-        setLoading(true); // Start loading
-        setSubmissionError(''); // Reset submission error
+
         try {
-            const response = await fetch(process.env.REACT_APP_API_URL + '/api/users/register', {
+            const response = await fetch(process.env.REACT_APP_API_URL + '/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    firstname: formData.firstname,
-                    lastname: formData.lastname,
-                    personNumber: formData.personNumber,
                     username: formData.username,
-                    email: formData.email,
                     password: formData.password,
                 }),
+                credentials: 'include',
             });
+
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Registration failed');
+                let errorMessage = 'Login failed';
+                try {
+                    const errorData = await response.clone().json();
+                    errorMessage = errorData.error || 'Login failed';
+                } catch {
+                    errorMessage = await response.text();
+                }
+                throw new Error(errorMessage);
             }
-            // Redirect to Signin page with username as a query parameter
-            navigate(`/signin?username=${encodeURIComponent(formData.username)}`);
+
+            // Parse the user's role from the response
+            const userData = await response.json();
+            const role = userData.role;
+
+            console.log('Login successful');
+            setIsAuthenticated(true);
+
+            // Redirect based on the user's role
+            if (role === 2) {
+                navigate('/candidate');
+            } else if (role === 1) {
+                navigate('/recruiter');
+            }
         } catch (error) {
-            console.error('Registration error:', error);
+            console.error('Login error:', error);
             setSubmissionError(
                 error instanceof Error ? error.message : 'An unexpected error occurred'
             );
-        } finally {
-            setLoading(false); // Stop loading
         }
     };
 
+    if (isAuthenticated) {
+        return null; // Already redirected based on role
+    }
+
     return (
-        <SignupView
+        <SigninView
             formData={formData}
             errors={errors}
             submissionError={submissionError}
-            loading={loading} // Pass loading state to the View
             onChange={onChange}
             onSubmit={onSubmit}
         />
