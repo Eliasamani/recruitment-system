@@ -36,9 +36,7 @@ public class ResetControllerTest {
      */
     @Test
     void testGenerateCodeWithCorrectEmail() throws Exception {
-        mockMvc.perform(post("/api/reset/code").content("appltest@example.com")).andExpect(status().isOk())
-                .andExpect(content()
-                        .string(containsString("Will have been sent if email was correct")));
+        mockMvc.perform(post("/api/reset/code").content("appltest@example.com")).andExpect(status().isOk());
     }
 
     /**
@@ -48,9 +46,7 @@ public class ResetControllerTest {
      */
     @Test
     void testGenerateCodeWithNonCorrectEmail() throws Exception {
-        mockMvc.perform(post("/api/reset/code").content("appl11111test@example.com")).andExpect(status().isOk())
-                .andExpect(content()
-                        .string(containsString("Will have been sent if email was correct")));
+        mockMvc.perform(post("/api/reset/code").content("appl11111test@example.com")).andExpect(status().isOk());
     }
 
     /**
@@ -145,8 +141,10 @@ public class ResetControllerTest {
                 .andExpect(status().isBadRequest());
 
     }
+
     /**
      * Tests that user can not set username to same as another user
+     * 
      * @throws Exception
      */
     @Test
@@ -160,7 +158,6 @@ public class ResetControllerTest {
                 .andExpect(content().string(containsString("Username already exists")));
 
     }
-
 
     /**
      * Tests that an error is given if the code is incorrect

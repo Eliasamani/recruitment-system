@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.kth.iv1201.recruitment.model.exception.UserAlreadyExistsException;
+import se.kth.iv1201.recruitment.model.exception.UserServiceException;
 import se.kth.iv1201.recruitment.model.person.Person;
 import se.kth.iv1201.recruitment.model.person.PersonDTO;
 import se.kth.iv1201.recruitment.repository.PersonRepository;
@@ -16,7 +17,7 @@ import se.kth.iv1201.recruitment.repository.PersonRepository;
  * Implements login/register related business logic.
  */
 @Service
-@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
+@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 public class UserService {
 
     private static final Logger LOGGER = Logger.getLogger(
@@ -38,7 +39,6 @@ public class UserService {
      * @param username  The username of the person.
      * @param password  The password of the person.
      * @return The created PersonDTO object.
-     * @throws Exception If the user already exists.
      */
     public PersonDTO createPerson(
             String firstname,
@@ -46,13 +46,11 @@ public class UserService {
             String personNum,
             String email,
             String username,
-            String password) throws Exception {
+            String password) {
         LOGGER.info("Attempting to create user: " + username);
 
         if (repository.findPersonByUsername(username) != null) {
-            LOGGER.warning(
-                    "User creation failed - Username already exists: " + username);
-            throw new UserAlreadyExistsException("User already exists");
+            throw new UserAlreadyExistsException("User creation failed - Username already exists: " + username);
         }
 
         try {
@@ -67,19 +65,11 @@ public class UserService {
             LOGGER.info("User created successfully: " + username);
             return savedPerson;
         } catch (DataIntegrityViolationException e) {
-            LOGGER.log(
-                    Level.SEVERE,
-                    "Database error while creating user: " + username,
-                    e);
-            throw new Exception(
-                    "Database constraint violation. Please check input values.");
+            throw new UserServiceException(
+                    "Database error while creating user: " + username + " Exception:" + e);
         } catch (Exception e) {
-            LOGGER.log(
-                    Level.SEVERE,
-                    "Unexpected error during user creation: " + username,
-                    e);
-            throw new Exception(
-                    "An unexpected error occurred while creating the user.");
+            throw new UserServiceException(
+                    "Unexpected error during user creation: " + username + " Exception:" + e);
         }
     }
 

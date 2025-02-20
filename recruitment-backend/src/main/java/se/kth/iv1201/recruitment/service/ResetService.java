@@ -27,7 +27,7 @@ import se.kth.iv1201.recruitment.repository.PersonRepository;
 import se.kth.iv1201.recruitment.repository.ResetTokenRepository;
 
 @Service
-@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
+@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 public class ResetService {
     private static final Logger LOGGER = Logger.getLogger(UserService.class.getName());
     private final ResetTokenRepository resetTokenRepository;
@@ -50,7 +50,7 @@ public class ResetService {
 
         Person emailPerson = personRepository.findPersonByEmail(email);
         if (emailPerson == null) {
-            throw new NonExistingEmailException("email: " + email + " did not exist");
+            throw new NonExistingEmailException("email: " + email + " did not exist in generateToken");
         } else {
             List<ResetToken> pastTokens = resetTokenRepository.findResetTokenByPersonAndValidTrue(emailPerson);
             if (pastTokens != null) {
@@ -73,7 +73,8 @@ public class ResetService {
     public PersonDTO resetUsernameAndPassword(UserPassResetForm userPassResetForm) {
         Person personToEdit = personRepository.findPersonByEmail(userPassResetForm.getEmail());
         if (personToEdit == null) {
-            throw new NonExistingEmailException("email: " + userPassResetForm.getEmail() + " did not exist");
+            throw new NonExistingEmailException(
+                    "email: " + userPassResetForm.getEmail() + " did not exist in resetUsernameAndPassword");
         }
 
         ResetToken usedToken = resetTokenRepository.findResetTokenByPersonAndResetToken(personToEdit,
@@ -84,9 +85,9 @@ public class ResetService {
 
             if (!(userPassResetForm.getUsername() == null || userPassResetForm.getUsername() == "")) {
                 if (personRepository.findPersonByUsername(userPassResetForm.getUsername()) != null) {
-                    LOGGER.warning(
-                            "Username reset failed - Username already exists: " + userPassResetForm.getUsername());
-                    throw new UserAlreadyExistsException("User already exists");
+                    throw new UserAlreadyExistsException(
+                            "User with email " + userPassResetForm.getEmail() + "tried to set username to "
+                                    + userPassResetForm.getUsername() + " but it is already taken");
                 }
                 personToEdit.setUsername(userPassResetForm.getUsername());
                 LOGGER.info("Changed " + personToEdit + " username");
@@ -99,17 +100,20 @@ public class ResetService {
             resetTokenRepository.save(usedToken);
             PersonDTO savedPerson = personRepository.save(personToEdit);
             return savedPerson;
+
         } else {
             if (usedToken == null) {
-                throw new IncorrectResetCodeException("Entered code was not found");
+                throw new IncorrectResetCodeException(
+                        "Entered code, " + userPassResetForm.getCode() + " was not found");
             }
             if (!usedToken.getValid()) {
-                throw new IncorrectResetCodeException("Entered code was not valid");
+                throw new IncorrectResetCodeException(
+                        "Entered code, " + userPassResetForm.getCode() + " was not valid");
             }
             if (!(Duration.between(usedToken.getCreateTime(), Instant.now()).getSeconds() <= 900)) {
-                throw new IncorrectResetCodeException("Entered code has expired");
+                throw new IncorrectResetCodeException("Entered code, " + userPassResetForm.getCode() + " has expired");
             } else {
-                throw new IncorrectResetCodeException();
+                throw new IncorrectResetCodeException("Unknown reset code exception occured");
             }
         }
 
@@ -122,22 +126,22 @@ public class ResetService {
      * @param code  A ResetTokenDTO containing the reset code to be sent
      */
     public void sendMail(String email, ResetTokenDTO code) {
-        try{
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        ResetToken codeinfo = resetTokenRepository.findAllById(List.of(code.getResetTokenId())).get(0);
-        Person codePerson = codeinfo.getPerson();
-        simpleMailMessage.setFrom(this.sender);
-        simpleMailMessage.setTo(email);
-        simpleMailMessage.setText(
-                "Hello " + codePerson.getFirstname() + "(" + codePerson.getUsername() + ")" + codePerson.getLastname()
-                        + "\nYour code for resetting your username or password for the recruitment app is: "
-                        + String.valueOf(code.getResetToken()));
-        simpleMailMessage.setSubject("Recruitment App Reset Code");
+        try {
+            SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+            ResetToken codeinfo = resetTokenRepository.findAllById(List.of(code.getResetTokenId())).get(0);
+            Person codePerson = codeinfo.getPerson();
+            simpleMailMessage.setFrom(this.sender);
+            simpleMailMessage.setTo(email);
+            simpleMailMessage.setText(
+                    "Hello " + codePerson.getFirstname() + "(" + codePerson.getUsername() + ")"
+                            + codePerson.getLastname()
+                            + "\nYour code for resetting your username or password for the recruitment app is: "
+                            + String.valueOf(code.getResetToken()));
+            simpleMailMessage.setSubject("Recruitment App Reset Code");
 
-        javaMailSender.send(simpleMailMessage);
-        }
-        catch (MailSendException e){
-            LOGGER.severe(String.valueOf(e));
+            javaMailSender.send(simpleMailMessage);
+        } catch (MailSendException e) {
+            LOGGER.warning(String.valueOf(e));
         }
 
     }

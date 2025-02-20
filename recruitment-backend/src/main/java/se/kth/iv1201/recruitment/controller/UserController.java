@@ -1,8 +1,6 @@
 package se.kth.iv1201.recruitment.controller;
 
-
 import jakarta.validation.Valid;
-
 
 import java.util.Map;
 import java.util.logging.Level;
@@ -41,23 +39,16 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterForm registerForm) {
         LOGGER.info("Received registration request for username: " + registerForm.getUsername());
-        try {
-            userService.createPerson(
-                    registerForm.getFirstname(),
-                    registerForm.getLastname(),
-                    registerForm.getPersonNumber(),
-                    registerForm.getEmail(),
-                    registerForm.getUsername(),
-                    passwordEncoder.encode(registerForm.getPassword()));
-            LOGGER.info("User registered successfully: " + registerForm.getUsername());
-            return ResponseEntity.ok(Map.of("message", "User registered successfully"));
-        } catch (UserAlreadyExistsException e) {
-            LOGGER.warning("Registration failed - Username already exists: " + registerForm.getUsername());
-            return ResponseEntity.status(400).body(Map.of("error", "Username already exists"));
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Unexpected error during registration for user: " + registerForm.getUsername(), e);
-            return ResponseEntity.status(500)
-                    .body(Map.of("error", "An internal error occurred. Please try again later."));
-        }
+
+        userService.createPerson(
+                registerForm.getFirstname(),
+                registerForm.getLastname(),
+                registerForm.getPersonNumber(),
+                registerForm.getEmail(),
+                registerForm.getUsername(),
+                passwordEncoder.encode(registerForm.getPassword()));
+        LOGGER.info("User registered successfully: " + registerForm.getUsername());
+        return ResponseEntity.ok(Map.of("message", "User registered successfully"));
+
     }
 }
