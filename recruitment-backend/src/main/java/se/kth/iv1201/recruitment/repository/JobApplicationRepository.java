@@ -1,15 +1,12 @@
 package se.kth.iv1201.recruitment.repository;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import jakarta.transaction.Transactional;
 import se.kth.iv1201.recruitment.model.JobApplication;
-import se.kth.iv1201.recruitment.model.person.Person;
+
+import java.util.List;
 
 @Repository
 public interface JobApplicationRepository extends JpaRepository<JobApplication, Long> {
@@ -21,7 +18,8 @@ public interface JobApplicationRepository extends JpaRepository<JobApplication, 
     @Modifying
     void deleteByPerson(Person person);
 
-    @Override
+    // Fetch only basic application data (without competences & availabilities)
+    @Query("SELECT ja FROM JobApplication ja " +
+            "JOIN FETCH ja.person p")
     List<JobApplication> findAll();
-
 }
