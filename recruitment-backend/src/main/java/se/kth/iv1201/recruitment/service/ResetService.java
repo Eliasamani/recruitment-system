@@ -8,6 +8,9 @@ import java.util.logging.Logger;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import se.kth.iv1201.recruitment.model.UserPassResetForm;
@@ -29,12 +32,16 @@ public class ResetService {
     private final ResetTokenRepository resetTokenRepository;
     private final PersonRepository personRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JavaMailSender javaMailSender;
+    @Value("${spring.mail.username}")
+    private String sender;
 
     public ResetService(ResetTokenRepository resetTokenRepository, PersonRepository personRepository,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder, JavaMailSender javaMailSender) {
         this.resetTokenRepository = resetTokenRepository;
         this.personRepository = personRepository;
         this.passwordEncoder = passwordEncoder;
+        this.javaMailSender = javaMailSender;
 
     }
 
@@ -105,6 +112,27 @@ public class ResetService {
             }
         }
 
+    }
+
+    /**
+     * Sends an email
+     * 
+     * @param email the specified email address
+     * @param code  A ResetTokenDTO containing the reset code to be sent
+     */
+    public void sendMail(String email, ResetTokenDTO code) {
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        ResetToken codeinfo = resetTokenRepository.findAllById(List.of(code.getResetTokenId())).get(0);
+        Person codePerson = codeinfo.getPerson();
+        simpleMailMessage.setFrom(this.sender);
+        simpleMailMessage.setTo(email);
+        simpleMailMessage.setText(
+                "Hello " + codePerson.getFirstname() + "(" + codePerson.getUsername() + ")" + codePerson.getLastname()
+                        + "\nYour code for resetting your username or password for the recruitment app is: "
+                        + String.valueOf(code.getResetToken()));
+        simpleMailMessage.setSubject("Recruitment App Reset Code");
+
+        javaMailSender.send(simpleMailMessage);
     }
 
 }

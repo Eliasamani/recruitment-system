@@ -51,8 +51,8 @@ public class ResetController {
         LOGGER.info("Recieved password/username reset code request for " + email);
         try {
             ResetTokenDTO resetToken = resetService.generateToken(email);
-            LOGGER.info("Sent code to " + email);
-            System.out.println("Send email containing token: " + resetToken.getResetToken());
+            resetService.sendMail(email, resetToken);
+            LOGGER.info("Sent code " + resetToken.getResetToken() + " to " + email);
 
         } catch (NonExistingEmailException e) {
             LOGGER.warning("Email " + email + "did not exist could not send code");
