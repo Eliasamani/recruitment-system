@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.hibernate.annotations.NaturalId;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -60,11 +61,12 @@ public class JobApplication {
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
     private Person person;
 
-    @OneToMany()
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) // deletions of a jobapplications should also delete
+                                                                // competences & avalibilies
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
     private List<Competence> competences = new ArrayList();
 
-    @OneToMany()
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
     private List<Availability> availabilities = new ArrayList();
 

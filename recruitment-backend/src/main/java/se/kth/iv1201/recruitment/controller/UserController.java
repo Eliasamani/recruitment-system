@@ -1,6 +1,9 @@
 package se.kth.iv1201.recruitment.controller;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -13,10 +16,10 @@ import se.kth.iv1201.recruitment.model.Availability;
 import se.kth.iv1201.recruitment.model.Competence;
 import se.kth.iv1201.recruitment.model.JobApplication;
 import se.kth.iv1201.recruitment.model.person.Person;
-import se.kth.iv1201.recruitment.repository.AvailabilityRepository;
-import se.kth.iv1201.recruitment.repository.CompetenceRepository;
+
 import se.kth.iv1201.recruitment.repository.PersonRepository;
 import se.kth.iv1201.recruitment.service.JobApplicationService;
+import se.kth.iv1201.recruitment.repository.JobApplicationRepository;
 import se.kth.iv1201.recruitment.model.exception.UserAlreadyExistsException;
 import se.kth.iv1201.recruitment.service.UserService;
 
@@ -34,23 +37,23 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
-    private final CompetenceRepository comp_repository;
-    private final AvailabilityRepository availability_repository;
-    private JobApplicationService job_applicationService;
+    private final JobApplicationService jobApplicationService;
+
+    private final JobApplicationRepository JobApplicationRepository;
 
     public UserController(
             PersonRepository repository,
             UserService userService,
             PasswordEncoder passwordEncoder,
-            CompetenceRepository comp_repository,
-            AvailabilityRepository availability_repository,
-            JobApplicationService job_applicationService) {
+
+            JobApplicationService jobApplicationService,
+            JobApplicationRepository jobApplicationRepository) {
         this.repository = repository;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
-        this.comp_repository = comp_repository;
-        this.availability_repository = availability_repository;
-        this.job_applicationService = job_applicationService;
+
+        this.jobApplicationService = jobApplicationService;
+        this.JobApplicationRepository = jobApplicationRepository;
     }
 
     /**
@@ -72,34 +75,34 @@ public class UserController {
     }
 
     /**
-     * Temporary test endpoint to return all competences of a user 11 (for testing
-     * purposes).
-     * 
-     * @return List of all persons in the database.
-     */
-    @GetMapping("/testCompetences")
-    public List<Competence> Competences() {
-
-        return comp_repository.findCompetencesByPersonId(11);
-    }
-
-    @GetMapping("/testAvalibility")
-    public List<Availability> availabilities() {
-        return availability_repository.findAvailabilitiesByPersonId(11);
-    }
-
-    /**
      * gets all applications in db
      * 
      */
     @GetMapping("/testFetchAllJobApplications")
     public List<JobApplication> fetchJobApps() throws Exception {
-        return job_applicationService.getAllApplications();
+        return jobApplicationService.getAllApplications();
     }
 
     @GetMapping("/testJobApplication")
     public JobApplication jobApp() throws Exception {
-        return job_applicationService.findJobApplicationbyUsername("test123456");
+        return jobApplicationService.findJobApplicationbyUsername("test123456");
+    }
+
+    @GetMapping("/testApplicationSave")
+    public JobApplication saveApp() throws Exception {
+        Person pers = repository.findPersonByUsername("test123");
+        List<Competence> competences = new ArrayList();
+
+        competences.add(new Competence(1, 2));
+        competences.add(new Competence(2, 3));
+        return jobApplicationService.saveApplication(pers, competences, null);
+    }
+
+    @GetMapping("/testApplicationDelete")
+    public String getMethodName() {
+        Person person = repository.findPersonByUsername("test123");
+        this.JobApplicationRepository.deleteByPerson(person);
+        return "Deleted test123 jobapplication";
     }
 
     /**
