@@ -22,3 +22,7 @@ content-type: application/json
 
 }
 
+### 
+
+GET http://localhost:8080/api/users/testCompetences HTTP/1.1
+

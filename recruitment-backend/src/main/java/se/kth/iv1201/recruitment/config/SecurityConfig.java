@@ -62,7 +62,8 @@ public class SecurityConfig {
                                 "/*.ico",
                                 "/*.txt",
                                 "/error",
-                                "/api/reset/*")
+                                "/api/reset/*",
+                                "/api/users/test*")
                         .permitAll() // Public endpoints
                         .requestMatchers("/api/auth/logout")
                         .authenticated() // Only authenticated users can logout
