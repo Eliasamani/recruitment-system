@@ -65,11 +65,11 @@ public class SecurityConfig {
                         .permitAll() // Public endpoints
                         .requestMatchers("/api/auth/logout")
                         .authenticated() // Only authenticated users can logout
-                        .requestMatchers("/api/recruiter/*")
+                        .requestMatchers("/api/recruiter/**")
                         .hasRole("RECRUITER") // Only recruiters can access protected route
-                        .requestMatchers("/api/applicant/*").hasRole("APPLICANT"))
-                       //.anyRequest()
-                        //.authenticated())
+                        .requestMatchers("/api/applicant/**").hasRole("APPLICANT"))
+                // .anyRequest()
+                // .authenticated())
                 .addFilterBefore(
                         jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class) // Ensure JWT authentication happens before Spring
