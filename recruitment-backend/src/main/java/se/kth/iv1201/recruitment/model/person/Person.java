@@ -2,12 +2,24 @@ package se.kth.iv1201.recruitment.model.person;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@ToString
 @Table(name = "person")
 public class Person implements PersonDTO {
 
@@ -28,21 +40,15 @@ public class Person implements PersonDTO {
     @Column(name = "email")
     private String email;
 
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "role_id")
-    private int role;
+    private roles role;
 
     @Column(name = "username", unique = true)
     private String username;
 
     @Column(name = "password")
     private String password;
-
-    /**
-     * JPA needs this, not for use
-     */
-    protected Person() {
-
-    }
 
     /**
      * Creates a new instance wiht specified params. Note that any
@@ -65,90 +71,7 @@ public class Person implements PersonDTO {
         this.email = email;
         this.username = username;
         this.password = password;
-        this.role = roles.APPLICANT.ordinal(); // set role to applicant
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getPersonNum() {
-        return personNumber;
-    }
-
-    public void setPersonNum(String personNum) {
-        this.personNumber = personNum;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getRole() {
-        return role;
-    }
-
-    public roles getRoleType() {
-        switch (role) {
-            case 1:
-                return roles.RECRUITER;
-
-            case 2:
-                return roles.APPLICANT;
-
-            default:
-                return roles.NO_ROLE;
-        }
-    }
-
-    public void setRole(int role) {
-        this.role = role;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    @Override
-    public String toString() {
-        return "User [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", personNum=" + personNumber
-                + ", email=" + email + ", password=" + password + ", role=" + role + ", username=" + username + "]";
+        this.role = roles.APPLICANT; // set role to applicant
     }
 
 }

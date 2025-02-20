@@ -153,11 +153,11 @@ public class AuthController {
         userData.put("username", person.getUsername());
         userData.put("firstName", person.getFirstname() != null ? person.getFirstname() : "");
         userData.put("lastName", person.getLastname() != null ? person.getLastname() : "");
-        userData.put("personNumber", person.getPersonNum() != null ? person.getPersonNum() : "");
+        userData.put("personNumber", person.getPersonNumber() != null ? person.getPersonNumber() : "");
         userData.put("email", person.getEmail() != null ? person.getEmail() : "");
-        userData.put("role", person.getRole());
+        userData.put("role", person.getRole().ordinal()); // needs to be ordinal because of how frontend checks it
 
-        LOGGER.info("Session validated for user: " + username + " with role: " + person.getRoleType());
+        LOGGER.info("Session validated for user: " + username + " with role: " + person.getRole());
         return ResponseEntity.ok(userData);
     }
 

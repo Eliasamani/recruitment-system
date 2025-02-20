@@ -90,7 +90,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String role = switch (person.getRoleType()) {
+        String role = switch (person.getRole()) {
             case PersonDTO.roles.RECRUITER -> "ROLE_RECRUITER";
             case PersonDTO.roles.APPLICANT -> "ROLE_USER";
             default -> "ROLE_DEFAULT";

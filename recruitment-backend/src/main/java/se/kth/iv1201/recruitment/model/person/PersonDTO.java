@@ -10,15 +10,13 @@ public interface PersonDTO {
 
     public String getLastname();
 
-    public String getPersonNum();
+    public String getPersonNumber();
 
     public String getEmail();
 
     public String getPassword();
 
-    public int getRole();
-
-    public roles getRoleType();
+    public roles getRole();
 
     public String getUsername();
 
