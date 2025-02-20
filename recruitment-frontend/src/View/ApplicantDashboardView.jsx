@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function CandidatepageView({ user, loading, error }) {
+export default function ApplicantDashboardView({ user, loading, error }) {
     if (loading) {
         return (
             <div className="loading-container">
@@ -28,11 +28,11 @@ export default function CandidatepageView({ user, loading, error }) {
     }
 
     return (
-        <div className="candidate-page">
-            <header className="candidate-header">
+        <div className="applicant-page">
+            <header className="applicant-header">
                 <h1>Welcome, {user.firstName} {user.lastName}!</h1>
             </header>
-            <main className="candidate-body">
+            <main className="applicant-body">
                 <section className="user-info">
                     <h2>Your Account Details</h2>
                     <p><strong>Email:</strong> {user.email}</p>

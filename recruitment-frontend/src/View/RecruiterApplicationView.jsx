@@ -20,9 +20,6 @@ export default function RecruiterApplicationView({
 
     return (
         <div style={styles.container}>
-            <button onClick={onBack} style={styles.backButton}>
-                Back to Dashboard
-            </button>
             <h2 style={styles.heading}>Recruiter Applications</h2>
             <table style={styles.table}>
                 <thead>

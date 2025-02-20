@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RecruiterApplicationView from "../View/RecruiterApplicationView";
+import Header from '../Reusablecomponent/Header';
 import { useAuth } from "../AuthContext";
 
 export default function RecruiterApplicationPresenter() {
@@ -100,20 +101,18 @@ export default function RecruiterApplicationPresenter() {
         }
     };
 
-    const handleBack = () => {
-        navigate("/recruiter/dashboard");
-    };
-
     return (
-        <RecruiterApplicationView
-            recruiter={user}
-            applications={applications}
-            loading={authLoading || appLoading}
-            error={error}
-            fetchApplicationDetails={fetchApplicationDetails}
-            expandedApplications={expandedApplications}
-            handleStatusChange={handleStatusChange}
-            onBack={handleBack}
-        />
+        <div>
+            <Header />
+            <RecruiterApplicationView
+                recruiter={user}
+                applications={applications}
+                loading={authLoading || appLoading}
+                error={error}
+                fetchApplicationDetails={fetchApplicationDetails}
+                expandedApplications={expandedApplications}
+                handleStatusChange={handleStatusChange}
+            />
+        </div>
     );
 }

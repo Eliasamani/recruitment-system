@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import CandidatepageView from '../View/CandidatepageView';
+import ApplicantDashboardView from '../View/ApplicantDashboardView';
+import Header from '../Reusablecomponent/Header';
 
-export default function CandidatepagePresenter() {
+export default function ApplicantDashboardPresenter() {
     const [user, setUser] = useState(null); // Holds the user information
     const [loading, setLoading] = useState(true); // Loading indicator
     const [error, setError] = useState(''); // Error message, if any
@@ -33,10 +34,13 @@ export default function CandidatepagePresenter() {
     }, []); // Empty dependency array ensures this runs once on mount
 
     return (
-        <CandidatepageView
-            user={user}
-            loading={loading}
-            error={error}
-        />
+        <div>
+            <Header />
+            <ApplicantDashboardView
+                user={user}
+                loading={loading}
+                error={error}
+            />
+        </div>
     );
 }

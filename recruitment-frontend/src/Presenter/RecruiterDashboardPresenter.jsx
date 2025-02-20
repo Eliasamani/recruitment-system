@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import RecruiterDashboardView from '../View/RecruiterDashboardView';
+import Header from '../Reusablecomponent/Header';
 import { useAuth } from '../AuthContext';
 
 export default function RecruiterDashboardPresenter() {
@@ -30,12 +31,15 @@ export default function RecruiterDashboardPresenter() {
     }
 
     return (
-        <RecruiterDashboardView
-            recruiter={user}
-            loading={loading}
-            error={!user && !loading ? 'User not found or unauthorized' : null}
-            onLogout={handleLogout}
-            onManageApplications={handleManageApplications}
-        />
+        <div>
+            <Header />
+            <RecruiterDashboardView
+                recruiter={user}
+                loading={loading}
+                error={!user && !loading ? 'User not found or unauthorized' : null}
+                onLogout={handleLogout}
+                onManageApplications={handleManageApplications}
+            />
+        </div>
     );
 }
