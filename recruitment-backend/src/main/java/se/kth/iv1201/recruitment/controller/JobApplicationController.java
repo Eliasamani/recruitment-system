@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/applications")
+@RequestMapping("/api/recruiter/applications")
 public class JobApplicationController {
 
     private final JobApplicationService jobApplicationService;

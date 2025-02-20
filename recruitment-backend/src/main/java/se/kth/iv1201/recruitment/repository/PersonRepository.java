@@ -12,7 +12,7 @@ import se.kth.iv1201.recruitment.model.person.Person;
  */
 
 @Repository
-@Transactional
+@Transactional(propagation = Propagation.MANDATORY,rollbackFor = Exception.class)
 public interface PersonRepository extends JpaRepository<Person, Long> {
 
     /**

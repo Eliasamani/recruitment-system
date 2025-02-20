@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,11 +27,10 @@ public class ResetController {
 
     private static final Logger LOGGER = Logger.getLogger(ResetController.class.getName());
 
-    private final PasswordEncoder passwordEncoder;
     private final ResetService resetService;
 
-    public ResetController(PasswordEncoder passwordEncoder, ResetService resetService) {
-        this.passwordEncoder = passwordEncoder;
+    public ResetController(ResetService resetService) {
+
         this.resetService = resetService;
 
     }

@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import se.kth.iv1201.recruitment.model.UserPassResetForm;
-import se.kth.iv1201.recruitment.model.exception.IncorrectResetCodeException;
 import se.kth.iv1201.recruitment.model.exception.IncorrectResetCodeException;
 import se.kth.iv1201.recruitment.model.exception.NonExistingEmailException;
 import se.kth.iv1201.recruitment.model.exception.UserAlreadyExistsException;
@@ -23,7 +23,7 @@ import se.kth.iv1201.recruitment.repository.PersonRepository;
 import se.kth.iv1201.recruitment.repository.ResetTokenRepository;
 
 @Service
-@Transactional(rollbackFor = Exception.class)
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
 public class ResetService {
     private static final Logger LOGGER = Logger.getLogger(UserService.class.getName());
     private final ResetTokenRepository resetTokenRepository;

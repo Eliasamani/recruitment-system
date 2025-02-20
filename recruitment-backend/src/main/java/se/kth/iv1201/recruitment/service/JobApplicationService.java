@@ -9,11 +9,13 @@ import se.kth.iv1201.recruitment.model.Competence;
 import se.kth.iv1201.recruitment.model.JobApplication;
 import se.kth.iv1201.recruitment.model.person.Person;
 import se.kth.iv1201.recruitment.repository.JobApplicationRepository;
+import org.springframework.transaction.annotation.Propagation;
+
 
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
 public class JobApplicationService {
 
     @Autowired
