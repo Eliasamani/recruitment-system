@@ -62,17 +62,18 @@ export default function SigninPresenter() {
         if (!validate()) return;
 
         try {
-            const response = await fetch(process.env.REACT_APP_API_URL + '/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: formData.username,
-                    password: formData.password,
-                }),
-                credentials: 'include', // Include cookies
-            });
+            const response = await fetch(
+                process.env.REACT_APP_API_URL + '/api/auth/login',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: formData.username,
+                        password: formData.password,
+                    }),
+                    credentials: 'include', // Include cookies
+                }
+            );
 
             if (!response.ok) {
                 let errorMessage = 'Login failed';
@@ -85,19 +86,9 @@ export default function SigninPresenter() {
                 throw new Error(errorMessage);
             }
 
-            // Parse the user's role from the response
-            const userData = await response.json();
-            const role = userData.role;
-
             console.log('Login successful');
-            setIsAuthenticated(true); // Update the state
-
-            // Redirect based on the user's role
-            if (role === 2) {
-                navigate('/candidate'); // Redirect to Candidate page
-            } else if (role === 1) {
-                navigate('/recruiter'); // Redirect to Recruiter page
-            }
+            // Instead of trying to parse a role (which isn’t returned), simply re-check authentication.
+            await checkAuthStatus();
         } catch (error) {
             console.error('Login error:', error);
             setSubmissionError(
@@ -105,10 +96,6 @@ export default function SigninPresenter() {
             );
         }
     };
-
-    if (isAuthenticated) {
-        return null; // Already redirected based on role
-    }
 
     return (
         <SigninView

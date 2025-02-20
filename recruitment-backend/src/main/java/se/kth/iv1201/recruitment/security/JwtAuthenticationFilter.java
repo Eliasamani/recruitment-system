@@ -17,7 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import se.kth.iv1201.recruitment.model.person.Person;
 import se.kth.iv1201.recruitment.model.person.PersonDTO;
-import se.kth.iv1201.recruitment.repository.PersonRepository;
+import se.kth.iv1201.recruitment.service.UserService;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -25,13 +25,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static final Logger LOGGER = Logger.getLogger(
             JwtAuthenticationFilter.class.getName());
     private final JwtProvider jwtProvider;
-    private final PersonRepository personRepository;
+    private final UserService userService;
 
     public JwtAuthenticationFilter(
             JwtProvider jwtProvider,
-            PersonRepository personRepository) {
+            UserService userService) {
         this.jwtProvider = jwtProvider;
-        this.personRepository = personRepository;
+        this.userService = userService;
     }
 
     /**
@@ -82,7 +82,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         // Fetch user details and set authentication context
-        Person person = personRepository.findPersonByUsername(username);
+        PersonDTO person = userService.findPerson(username);
         if (person == null) {
             LOGGER.warning("Authentication failed - User not found: " + username);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

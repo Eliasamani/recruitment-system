@@ -6,7 +6,7 @@ import SigninPresenter from './Presenter/SigninPresenter';
 import SignupPresenter from './Presenter/SignupPresenter';
 import AboutcompanyPresenter from './Presenter/AboutcompanyPresenter';  
 import CandidatepagePresenter from './Presenter/CandidatepagePresenter';
-import RecruiterpagePresenter from './Presenter/RecruiterpagePresenter';
+import RecruiterDashboardPresenter from './Presenter/RecruiterDashboardPresenter';
 import RecruiterApplicationPresenter from './Presenter/RecruiterApplicationPresenter';
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
                     <Route path="/signup" element={<SignupPresenter />} />
                     <Route path="/about" element={<AboutcompanyPresenter />} />
                     <Route path="/candidate" element={<CandidatepagePresenter />} />
-                    <Route path="/recruiter/dashboard" element={<RecruiterpagePresenter />} />
+                    <Route path="/recruiter/dashboard" element={<RecruiterDashboardPresenter />} />
                     <Route path="/recruiter/applications" element={<RecruiterApplicationPresenter />} />
                     
                 </Routes>

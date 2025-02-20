@@ -8,9 +8,8 @@ export default function SignupPresenter() {
     const [errors, setErrors] = useState({});
     const [submissionError, setSubmissionError] = useState('');
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate();
 
-    // onChange handler
     const onChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
