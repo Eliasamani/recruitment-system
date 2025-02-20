@@ -11,8 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.Instant;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +39,8 @@ public class ResetServiceTest {
     private PersonRepository personRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private JavaMailSender javaMailSender;
 /**
  * Tests that an exception is thrown if the email doesn't exist
  */

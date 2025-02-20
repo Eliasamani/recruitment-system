@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -121,6 +122,7 @@ public class ResetService {
      * @param code  A ResetTokenDTO containing the reset code to be sent
      */
     public void sendMail(String email, ResetTokenDTO code) {
+        try{
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         ResetToken codeinfo = resetTokenRepository.findAllById(List.of(code.getResetTokenId())).get(0);
         Person codePerson = codeinfo.getPerson();
@@ -133,6 +135,11 @@ public class ResetService {
         simpleMailMessage.setSubject("Recruitment App Reset Code");
 
         javaMailSender.send(simpleMailMessage);
+        }
+        catch (MailSendException e){
+            LOGGER.severe(String.valueOf(e));
+        }
+
     }
 
 }

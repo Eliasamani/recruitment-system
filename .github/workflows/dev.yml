@@ -80,6 +80,10 @@ jobs:
         env: 
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
           SPRING_PORT: 8080
+          RECR_EMAIL_HOST: ${{secrets.RECR_EMAIL_HOST}}
+          RECR_EMAIL_PORT: ${{secrets.RECR_EMAIL_PORT}}
+          RECR_EMAIL: ${{secrets.RECR_EMAIL}}
+          RECR_EMAIL_PWORD: ${{secrets.RECR_EMAIL_PWORD}}
         run: |
           
           cd $GITHUB_WORKSPACE
