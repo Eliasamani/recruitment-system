@@ -126,16 +126,30 @@ public class AuthController {
             }
         }
 
-        if (token == null || jwtProvider.validateToken(token) == null) {
-            LOGGER.warning("Session validation failed - No valid token found");
-            return ResponseEntity
-                    .status(401)
+        if (token == null) {
+            LOGGER.warning("Session validation failed - No token found");
+            return ResponseEntity.status(401)
                     .body(Map.of("error", "Not authenticated"));
         }
 
         String username = jwtProvider.validateToken(token);
-        LOGGER.info("Session validated for user: " + username);
-        return ResponseEntity.ok(Map.of("username", username));
+        if (username == null) {
+            LOGGER.warning("Session validation failed - Token invalid");
+            return ResponseEntity.status(401)
+                    .body(Map.of("error", "Not authenticated"));
+        }
+
+        PersonDTO person = userService.findPerson(username);
+        if (person == null) {
+            LOGGER.warning("Session validation failed - User not found: " + username);
+            return ResponseEntity.status(401)
+                    .body(Map.of("error", "Not authenticated"));
+        }
+
+        int role = person.getRole();
+
+        LOGGER.info("Session validated for user: " + username + " with role: " + role);
+        return ResponseEntity.ok(Map.of("username", username, "role", role));
     }
 
     /**
