@@ -1,10 +1,13 @@
 package se.kth.iv1201.recruitment.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.annotations.NaturalId;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -47,11 +50,11 @@ public class JobApplication {
                                                                                         // delete
     // competences & avalibilies
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
-    private Set<Competence> competences = new HashSet<>();
+    private List<Competence> competences = new ArrayList();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
-    private Set<Availability> availabilities = new HashSet<>();
+    private List<Availability> availabilities = new ArrayList();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "application_status")
@@ -61,11 +64,11 @@ public class JobApplication {
         UNDETERMINED, APPROVED, REJECTED
     }
 
-    public void addAllAvailabilities(Set<Availability> availabilities) {
+    public void addAllAvailabilities(List<Availability> availabilities) {
         this.availabilities.addAll(availabilities);
     }
 
-    public void addAllCompetences(Set<Competence> competences) {
+    public void addAllCompetences(List<Competence> competences) {
         this.competences.addAll(competences);
     }
 }

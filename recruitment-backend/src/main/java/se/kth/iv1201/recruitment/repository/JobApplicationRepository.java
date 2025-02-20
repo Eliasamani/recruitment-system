@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import se.kth.iv1201.recruitment.model.JobApplication;
+import se.kth.iv1201.recruitment.model.person.Person;
 
 import java.util.List;
 

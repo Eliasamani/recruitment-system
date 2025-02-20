@@ -1,11 +1,13 @@
 package se.kth.iv1201.recruitment.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.kth.iv1201.recruitment.model.Availability;
 import se.kth.iv1201.recruitment.model.Competence;
 import se.kth.iv1201.recruitment.model.JobApplication;
+import se.kth.iv1201.recruitment.model.person.Person;
 import se.kth.iv1201.recruitment.repository.JobApplicationRepository;
 
 import java.util.List;
@@ -13,12 +15,6 @@ import java.util.List;
 @Service
 @Transactional
 public class JobApplicationService {
-
-    @Autowired
-    private final CompetenceRepository competenceRepository;
-
-    @Autowired
-    private final AvailabilityRepository availabilityRepository;
 
     @Autowired
     private final JobApplicationRepository applicationRepository;
