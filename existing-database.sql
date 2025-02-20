@@ -100,9 +100,10 @@ ALTER TABLE public.competence_profile ALTER COLUMN competence_profile_id ADD GEN
     NO MAXVALUE
     CACHE 1
 );
-CREATE TABLE public.application_status (
-    application_status_id integer NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY(
-    SEQUENCE NAME public.application_status_id_seq
+
+CREATE TABLE public.job_application (
+    application_id integer NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY(
+    SEQUENCE NAME public.job_application_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -111,9 +112,9 @@ CREATE TABLE public.application_status (
     person_id integer,
     application_status integer
 );
-ALTER TABLE ONLY public.application_status
-ADD CONSTRAINT application_status_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(person_id);
-ALTER TABLE public.application_status OWNER TO postgres;
+ALTER TABLE ONLY public.job_application
+ADD CONSTRAINT job_application_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(person_id);
+ALTER TABLE public.job_application OWNER TO postgres;
 
 
 CREATE TABLE public.reset_token (

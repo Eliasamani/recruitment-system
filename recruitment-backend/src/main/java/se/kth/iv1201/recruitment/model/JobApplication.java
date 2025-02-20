@@ -56,7 +56,7 @@ public class JobApplication {
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
     private List<Availability> availabilities = new ArrayList();
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "application_status")
     private Status status;
 
