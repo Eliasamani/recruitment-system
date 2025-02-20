@@ -11,7 +11,7 @@ export default function RecruiterApplicationPresenter() {
         const fetchApplications = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/applications`, {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/recruiter/applications`, {
                     credentials: "include",
                 });
 
@@ -39,7 +39,7 @@ export default function RecruiterApplicationPresenter() {
         }
 
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/applications/${applicationId}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/recruiter/applications/${applicationId}`, {
                 credentials: "include",
             });
 
@@ -61,7 +61,7 @@ export default function RecruiterApplicationPresenter() {
 
     const handleStatusChange = async (id, status) => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/applications/${id}/update-status`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/recruiter/applications/${id}/update-status`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status }),
