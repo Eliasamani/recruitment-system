@@ -8,9 +8,11 @@ import AboutcompanyPresenter from './Presenter/AboutcompanyPresenter';
 import CandidatepagePresenter from './Presenter/CandidatepagePresenter';
 import RecruiterDashboardPresenter from './Presenter/RecruiterDashboardPresenter';
 import RecruiterApplicationPresenter from './Presenter/RecruiterApplicationPresenter';
+import { AuthProvider } from './AuthContext';
 
 function App() {
     return (
+        <AuthProvider>
         <Router>
             <div className="App">
                 <Routes>
@@ -25,6 +27,7 @@ function App() {
                 </Routes>
             </div>
         </Router>
+        </AuthProvider>
     );
 }
 

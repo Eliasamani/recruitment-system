@@ -1,39 +1,39 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import RecruiterDashboardView from '../View/RecruiterDashboardView';
+import { useAuth } from '../AuthContext';
 
 export default function RecruiterDashboardPresenter() {
+    const { user, loading, logout } = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = async () => {
-        try {
-            const response = await fetch(process.env.REACT_APP_API_URL + '/api/auth/logout', { method: 'POST', credentials: 'include' });
-            if (response.ok) {
-                navigate('/signin');
-            } else {
-                console.error('Logout failed');
-            }
-        } catch (err) {
-            console.error('Error during logout:', err);
-        }
+        await logout();
+        navigate('/signin');
     };
 
     const handleManageApplications = () => {
         navigate('/recruiter/applications');
     };
 
-    // Dummy recruiter data for now
-    const dummyRecruiter = {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.doe@example.com'
-    };
+    // Once loading is finished:
+    if (!loading) {
+        if (!user) {
+            // No user is logged in; redirect to sign in.
+            navigate('/signin');
+            return null;
+        } else if (user.role !== 1) {
+            // User is logged in but not a recruiter; redirect to unauthorized.
+            navigate('/unauthorized');
+            return null;
+        }
+    }
 
     return (
         <RecruiterDashboardView
-            recruiter={dummyRecruiter}
-            loading={false}
-            error={null}
+            recruiter={user}
+            loading={loading}
+            error={!user && !loading ? 'User not found or unauthorized' : null}
             onLogout={handleLogout}
             onManageApplications={handleManageApplications}
         />

@@ -3,6 +3,8 @@ package se.kth.iv1201.recruitment.controller;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -146,10 +148,17 @@ public class AuthController {
                     .body(Map.of("error", "Not authenticated"));
         }
 
-        int role = person.getRole();
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("id", person.getId());
+        userData.put("username", person.getUsername());
+        userData.put("firstName", person.getFirstname() != null ? person.getFirstname() : "");
+        userData.put("lastName", person.getLastname() != null ? person.getLastname() : "");
+        userData.put("personNumber", person.getPersonNum() != null ? person.getPersonNum() : "");
+        userData.put("email", person.getEmail() != null ? person.getEmail() : "");
+        userData.put("role", person.getRole());
 
-        LOGGER.info("Session validated for user: " + username + " with role: " + role);
-        return ResponseEntity.ok(Map.of("username", username, "role", role));
+        LOGGER.info("Session validated for user: " + username + " with role: " + person.getRoleType());
+        return ResponseEntity.ok(userData);
     }
 
     /**

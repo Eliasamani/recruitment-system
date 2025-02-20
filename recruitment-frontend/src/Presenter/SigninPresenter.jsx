@@ -1,51 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import SigninView from '../View/SigninView';
 import { SignInFormModel } from '../model';
-import { useCallback } from 'react';
+import { useAuth } from '../AuthContext';
 
 export default function SigninPresenter() {
     const [formData, setFormData] = useState(SignInFormModel);
     const [errors, setErrors] = useState({});
     const [submissionError, setSubmissionError] = useState('');
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const navigate = useNavigate(); // Initialize useNavigate
+    const { user, login, loading } = useAuth();
+    const navigate = useNavigate();
 
-    // Check if user is logged in when the page loads
-
-
-
-    const checkAuthStatus = useCallback(async () => {
-        try {
-            const response = await fetch(process.env.REACT_APP_API_URL + '/api/auth/session', { credentials: 'include' });
-            if (response.ok) {
-                const userData = await response.json();
-                const role = userData.role; // Get the user's role
-                console.log('User Role:', userData.role, typeof userData.role);
-                if (role === 2) {
-                    navigate('/candidate'); // Redirect to Candidate page
-                } else if (role === 1) {
-                    navigate('/recruiter/dashboard'); // Redirect to Recruiter page
-                }
-                setIsAuthenticated(true); // User is logged in
-            } else {
-                setIsAuthenticated(false); // User is not logged in
-            }
-        } catch (error) {
-            setIsAuthenticated(false);
-        }
-    }, [navigate]); // Memoize checkAuthStatus using useCallback
-
+    // Auto-redirect if user is authenticated and loading is finished
     useEffect(() => {
-        checkAuthStatus();
-    }, [checkAuthStatus]); // Now useEffect correctly includes checkAuthStatus 
+        if (!loading && user) {
+            if (user.role === 2) {
+                navigate('/candidate');
+            } else if (user.role === 1) {
+                navigate('/recruiter/dashboard');
+            }
+        }
+    }, [user, loading, navigate]);
 
     const onChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
     const validate = () => {
@@ -60,40 +39,16 @@ export default function SigninPresenter() {
         e.preventDefault();
         setSubmissionError('');
         if (!validate()) return;
-
         try {
-            const response = await fetch(
-                process.env.REACT_APP_API_URL + '/api/auth/login',
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        username: formData.username,
-                        password: formData.password,
-                    }),
-                    credentials: 'include', // Include cookies
-                }
-            );
-
-            if (!response.ok) {
-                let errorMessage = 'Login failed';
-                try {
-                    const errorData = await response.clone().json();
-                    errorMessage = errorData.error || 'Login failed';
-                } catch {
-                    errorMessage = await response.text();
-                }
-                throw new Error(errorMessage);
+            const success = await login(formData.username, formData.password);
+            if (!success) {
+                setSubmissionError('Login failed');
+                return;
             }
-
-            console.log('Login successful');
-            // Instead of trying to parse a role (which isn’t returned), simply re-check authentication.
-            await checkAuthStatus();
+            // No need to manually redirect here—the useEffect listening to "user" will handle it.
         } catch (error) {
             console.error('Login error:', error);
-            setSubmissionError(
-                error instanceof Error ? error.message : 'An unexpected error occurred'
-            );
+            setSubmissionError(error instanceof Error ? error.message : 'An unexpected error occurred');
         }
     };
 
