@@ -101,22 +101,9 @@ ALTER TABLE public.competence_profile ALTER COLUMN competence_profile_id ADD GEN
     CACHE 1
 );
 
-CREATE TABLE public.reset_token (
-    reset_token_id integer NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY(
-    SEQUENCE NAME public.reset_token_reset_token_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1),
-    person_id integer,
-    reset_token integer,
-    create_time TIMESTAMP WITH TIME ZONE,
-    valid BOOLEAN
-);
-ALTER TABLE ONLY public.reset_token
-ADD CONSTRAINT reset_token_person_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(person_id);
-ALTER TABLE public.reset_token OWNER TO postgres;
+
+
+
 --
 -- Name: person; Type: TABLE; Schema: public; Owner: postgres
 --
@@ -147,6 +134,7 @@ ALTER TABLE public.person ALTER COLUMN person_id ADD GENERATED ALWAYS AS IDENTIT
     NO MAXVALUE
     CACHE 1
 );
+
 
 
 --
@@ -4910,7 +4898,65 @@ ALTER TABLE ONLY public.person
     ADD CONSTRAINT person_role_id_fkey FOREIGN KEY (role_id) REFERENCES public.role(role_id);
 
 
---
--- PostgreSQL database dump complete
---
 
+
+
+CREATE TABLE public.reset_token (
+    reset_token_id integer NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY(
+    SEQUENCE NAME public.reset_token_reset_token_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1),
+    person_id integer,
+    reset_token integer,
+    create_time TIMESTAMP WITH TIME ZONE,
+    valid BOOLEAN
+);
+ALTER TABLE ONLY public.reset_token
+ADD CONSTRAINT reset_token_person_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(person_id);
+ALTER TABLE public.reset_token OWNER TO postgres;
+
+
+CREATE TABLE public.job_application (
+    application_id integer NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY(
+    SEQUENCE NAME public.job_application_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1),
+    person_id integer,
+    application_status integer
+);
+ALTER TABLE ONLY public.job_application
+ADD CONSTRAINT job_application_id_fkey FOREIGN KEY (person_id) REFERENCES public.person(person_id);
+ALTER TABLE public.job_application OWNER TO postgres;
+
+CREATE TABLE public.application_status (
+    application_status_id integer NOT NULL,
+    name character varying(255)
+);
+
+ALTER TABLE ONLY public.application_status
+    ADD CONSTRAINT application_status_pk PRIMARY KEY (application_status_id);
+
+
+ALTER TABLE public.application_status OWNER TO postgres;
+
+ALTER TABLE ONLY public.job_application
+    ADD CONSTRAINT job_application_application_status_fkey FOREIGN KEY (application_status) REFERENCES public.application_status(application_status_id);
+
+COPY public.application_status (application_status_id, name) FROM stdin;
+0	Unhandled
+1	Accepted
+2	Rejected
+\.
+
+INSERT INTO public.job_application (person_id, application_status)
+SELECT DISTINCT p.person_id, 0
+FROM public.person p
+JOIN public.competence_profile cp ON p.person_id = cp.person_id
+JOIN public.availability a ON p.person_id = a.person_id
+WHERE p.role_id = 2;

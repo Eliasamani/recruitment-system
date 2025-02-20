@@ -11,12 +11,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockCookie;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
 import se.kth.iv1201.recruitment.RecruitmentBackendApplication;
 import se.kth.iv1201.recruitment.security.JwtProvider;
 import se.kth.iv1201.recruitment.service.UserService;
 
 @SpringBootTest(classes = RecruitmentBackendApplication.class)
 @AutoConfigureMockMvc
+@Transactional
 public class AuthControllerTest {
 
     @Autowired

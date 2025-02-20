@@ -2,7 +2,6 @@ package se.kth.iv1201.recruitment.service;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -17,7 +16,7 @@ import se.kth.iv1201.recruitment.repository.PersonRepository;
  * Implements login/register related business logic.
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
 public class UserService {
 
     private static final Logger LOGGER = Logger.getLogger(

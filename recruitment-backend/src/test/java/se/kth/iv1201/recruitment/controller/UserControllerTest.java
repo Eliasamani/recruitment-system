@@ -10,12 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
 import se.kth.iv1201.recruitment.RecruitmentBackendApplication;
 import se.kth.iv1201.recruitment.model.person.PersonDTO;
 import se.kth.iv1201.recruitment.repository.PersonRepository;
 
 @SpringBootTest(classes = RecruitmentBackendApplication.class)
 @AutoConfigureMockMvc
+@Transactional
 public class UserControllerTest {
 
     @Autowired

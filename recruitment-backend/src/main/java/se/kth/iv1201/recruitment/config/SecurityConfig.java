@@ -12,9 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import se.kth.iv1201.recruitment.repository.PersonRepository;
 import se.kth.iv1201.recruitment.security.JwtAuthenticationFilter;
-import se.kth.iv1201.recruitment.security.JwtProvider;
 
 @Configuration
 @EnableWebSecurity
@@ -62,14 +60,16 @@ public class SecurityConfig {
                                 "/*.ico",
                                 "/*.txt",
                                 "/error",
-                                "/api/reset/*")
+                                "/api/reset/*",
+                                "/api/users/test*")
                         .permitAll() // Public endpoints
                         .requestMatchers("/api/auth/logout")
                         .authenticated() // Only authenticated users can logout
-                        .requestMatchers("/api/auth/protected")
+                        .requestMatchers("/api/recruiter/*")
                         .hasRole("RECRUITER") // Only recruiters can access protected route
-                        .anyRequest()
-                        .authenticated())
+                        .requestMatchers("/api/applicant/*").hasRole("APPLICANT"))
+                       //.anyRequest()
+                        //.authenticated())
                 .addFilterBefore(
                         jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class) // Ensure JWT authentication happens before Spring
