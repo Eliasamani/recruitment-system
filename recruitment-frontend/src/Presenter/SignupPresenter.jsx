@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import SignupView from '../View/SignupView.jsx';
 import { SignupFormModel } from '../model.jsx';
+import Header from '../Reusablecomponent/Header.jsx';
 
 export default function SignupPresenter() {
     const [formData, setFormData] = useState(SignupFormModel);
@@ -80,13 +81,16 @@ export default function SignupPresenter() {
     };
 
     return (
-        <SignupView
-            formData={formData}
-            errors={errors}
-            submissionError={submissionError}
-            loading={loading} // Pass loading state to the View
-            onChange={onChange}
-            onSubmit={onSubmit}
-        />
+        <div>
+            <Header />
+            <SignupView
+                formData={formData}
+                errors={errors}
+                submissionError={submissionError}
+                loading={loading} // Pass loading state to the View
+                onChange={onChange}
+                onSubmit={onSubmit}
+            />
+        </div>
     );
 }

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import SigninView from '../View/SigninView';
 import { SignInFormModel } from '../model';
 import { useAuth } from '../AuthContext';
+import Header from '../Reusablecomponent/Header';
 
 export default function SigninPresenter() {
     const [formData, setFormData] = useState(SignInFormModel);
@@ -15,7 +16,7 @@ export default function SigninPresenter() {
     useEffect(() => {
         if (!loading && user) {
             if (user.role === 2) {
-                navigate('/candidate');
+                navigate('/applicant/dashboard');
             } else if (user.role === 1) {
                 navigate('/recruiter/dashboard');
             }
@@ -53,12 +54,15 @@ export default function SigninPresenter() {
     };
 
     return (
-        <SigninView
-            formData={formData}
-            errors={errors}
-            submissionError={submissionError}
-            onChange={onChange}
-            onSubmit={onSubmit}
-        />
+        <div>
+            <Header />
+            <SigninView
+                formData={formData}
+                errors={errors}
+                submissionError={submissionError}
+                onChange={onChange}
+                onSubmit={onSubmit}
+            />
+        </div>
     );
 }

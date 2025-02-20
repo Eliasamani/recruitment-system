@@ -29,26 +29,10 @@ export default function RecruiterDashboardView({ recruiter, loading, error, onLo
 
     return (
         <div className="recruiter-page">
-            <header
-                className="recruiter-header"
-                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-            >
+            <header className="recruiter-header">
                 <h1>
                     Welcome, {recruiter.firstName} {recruiter.lastName}!
                 </h1>
-                <button
-                    onClick={onLogout}
-                    style={{
-                        padding: '8px 16px',
-                        cursor: 'pointer',
-                        backgroundColor: '#f44336',
-                        color: '#fff',
-                        border: 'none',
-                        borderRadius: '4px'
-                    }}
-                >
-                    Logout
-                </button>
             </header>
             <main className="recruiter-body">
                 <section className="recruiter-info">
@@ -62,7 +46,7 @@ export default function RecruiterDashboardView({ recruiter, loading, error, onLo
                 <section className="dashboard-content">
                     <h2>Dashboard Overview</h2>
                     <p>
-                        This is your dashboard where you can manage job postings and candidates.
+                        This is your dashboard where you can manage job postings, applications, and more.
                     </p>
                     <button
                         onClick={onManageApplications}
@@ -80,6 +64,6 @@ export default function RecruiterDashboardView({ recruiter, loading, error, onLo
                     </button>
                 </section>
             </main>
-        </div>
+        </div >
     );
 }
