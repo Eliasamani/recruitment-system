@@ -1,0 +1,11 @@
+
+This is used to fill the application_status tabe with values:
+
+INSERT INTO application_status (person_id)
+Select person_id from person where role_id = 2
+
+
+
+
+also check this website 
+https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/

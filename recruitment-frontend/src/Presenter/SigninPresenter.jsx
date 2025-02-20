@@ -21,10 +21,11 @@ export default function SigninPresenter() {
             if (response.ok) {
                 const userData = await response.json();
                 const role = userData.role; // Get the user's role
+                console.log('User Role:', userData.role, typeof userData.role);
                 if (role === 2) {
                     navigate('/candidate'); // Redirect to Candidate page
                 } else if (role === 1) {
-                    navigate('/recruiter'); // Redirect to Recruiter page
+                    navigate('/recruiter/dashboard'); // Redirect to Recruiter page
                 }
                 setIsAuthenticated(true); // User is logged in
             } else {
