@@ -101,8 +101,8 @@ ALTER TABLE public.competence_profile ALTER COLUMN competence_profile_id ADD GEN
     CACHE 1
 );
 
-CREATE TABLE public.application_status (
-    application_status_id integer NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY(
+CREATE TABLE public.job_application (
+    application_id integer NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY(
     SEQUENCE NAME public.application_status_id_seq
     START WITH 1
     INCREMENT BY 1
