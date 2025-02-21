@@ -1,12 +1,7 @@
 package se.kth.iv1201.recruitment.model.jobApplication;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import org.hibernate.annotations.NaturalId;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,8 +21,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import se.kth.iv1201.recruitment.model.availability.Availability;
+import se.kth.iv1201.recruitment.model.availability.AvailabilityDTO;
 import se.kth.iv1201.recruitment.model.competence.Competence;
+import se.kth.iv1201.recruitment.model.competence.CompetenceDTO;
 import se.kth.iv1201.recruitment.model.person.Person;
+import se.kth.iv1201.recruitment.model.person.PersonDTO;
 
 @Getter
 @Setter
@@ -36,7 +34,7 @@ import se.kth.iv1201.recruitment.model.person.Person;
 @AllArgsConstructor
 @Entity
 @Table(name = "job_application")
-public class JobApplication {
+public class JobApplication implements JobApplicationDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,8 +60,16 @@ public class JobApplication {
     @Column(name = "application_status")
     private Status status;
 
-    public enum Status {
-        UNDETERMINED, APPROVED, REJECTED
+    public PersonDTO getPerson() {
+        return this.person;
+    }
+
+    public List<CompetenceDTO> getCompetences() {
+        return (List<CompetenceDTO>) (List) this.competences;
+    }
+
+    public List<AvailabilityDTO> getAvailabilities() {
+        return (List<AvailabilityDTO>) (List) this.availabilities;
     }
 
     public void addAllAvailabilities(List<Availability> availabilities) {
@@ -73,4 +79,5 @@ public class JobApplication {
     public void addAllCompetences(List<Competence> competences) {
         this.competences.addAll(competences);
     }
+
 }

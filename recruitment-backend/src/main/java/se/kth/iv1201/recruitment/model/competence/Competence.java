@@ -21,7 +21,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "competence_profile")
-public class Competence {
+public class Competence implements CompetenceDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,13 +32,13 @@ public class Competence {
     // private long person_id;
 
     @Column(name = "competence_id")
-    private int competence_type;
+    private int competenceType;
 
     @Column(name = "years_of_experience")
     private float experience;
 
-    public Competence(int competence_type, float experience) {
-        this.competence_type = competence_type;
+    public Competence(int competenceType, float experience) {
+        this.competenceType = competenceType;
         this.experience = experience;
     }
 
