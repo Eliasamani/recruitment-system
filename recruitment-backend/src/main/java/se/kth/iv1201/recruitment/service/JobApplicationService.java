@@ -4,18 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import se.kth.iv1201.recruitment.model.Availability;
-import se.kth.iv1201.recruitment.model.Competence;
-import se.kth.iv1201.recruitment.model.JobApplication;
+import se.kth.iv1201.recruitment.model.availability.Availability;
+import se.kth.iv1201.recruitment.model.competence.Competence;
+import se.kth.iv1201.recruitment.model.jobApplication.JobApplication;
 import se.kth.iv1201.recruitment.model.person.Person;
 import se.kth.iv1201.recruitment.repository.JobApplicationRepository;
 import org.springframework.transaction.annotation.Propagation;
 
-
 import java.util.List;
 
 @Service
-@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
+@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 public class JobApplicationService {
 
     @Autowired

@@ -6,14 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
-import se.kth.iv1201.recruitment.model.JobApplication;
-import se.kth.iv1201.recruitment.model.person.Person;
 
+import se.kth.iv1201.recruitment.model.jobApplication.JobApplication;
+import se.kth.iv1201.recruitment.model.person.Person;
 
 import java.util.List;
 
 @Repository
-@Transactional(propagation = Propagation.MANDATORY,rollbackFor = Exception.class)
+@Transactional(propagation = Propagation.MANDATORY, rollbackFor = Exception.class)
 public interface JobApplicationRepository extends JpaRepository<JobApplication, Long> {
     @Query("FROM JobApplication e WHERE e.person.username = ?1")
     JobApplication findJobApplicationbyUsername(String username);

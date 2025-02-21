@@ -2,7 +2,8 @@ package se.kth.iv1201.recruitment.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import se.kth.iv1201.recruitment.model.JobApplication;
+
+import se.kth.iv1201.recruitment.model.jobApplication.JobApplication;
 import se.kth.iv1201.recruitment.service.JobApplicationService;
 import java.util.List;
 import java.util.Map;

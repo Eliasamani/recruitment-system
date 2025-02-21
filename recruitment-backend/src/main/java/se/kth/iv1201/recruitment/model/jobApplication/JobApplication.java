@@ -1,4 +1,4 @@
-package se.kth.iv1201.recruitment.model;
+package se.kth.iv1201.recruitment.model.jobApplication;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,6 +25,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import se.kth.iv1201.recruitment.model.availability.Availability;
+import se.kth.iv1201.recruitment.model.competence.Competence;
 import se.kth.iv1201.recruitment.model.person.Person;
 
 @Getter

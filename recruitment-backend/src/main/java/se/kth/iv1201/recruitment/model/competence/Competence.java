@@ -1,4 +1,4 @@
-package se.kth.iv1201.recruitment.model;
+package se.kth.iv1201.recruitment.model.competence;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
