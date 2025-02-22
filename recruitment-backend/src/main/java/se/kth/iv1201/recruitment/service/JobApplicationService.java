@@ -7,11 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 import se.kth.iv1201.recruitment.model.availability.Availability;
 import se.kth.iv1201.recruitment.model.competence.Competence;
 import se.kth.iv1201.recruitment.model.jobApplication.JobApplication;
+import se.kth.iv1201.recruitment.model.jobApplication.JobApplicationDTO;
 import se.kth.iv1201.recruitment.model.person.Person;
 import se.kth.iv1201.recruitment.repository.JobApplicationRepository;
 import org.springframework.transaction.annotation.Propagation;
 
 import java.util.List;
+
+// TODO use the DTOs here and in controller
 
 @Service
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
@@ -24,8 +27,8 @@ public class JobApplicationService {
         this.applicationRepository = applicationRepository;
     }
 
-    public List<JobApplication> getAllApplications() {
-        return applicationRepository.findAll();
+    public List<JobApplicationDTO> getAllApplications() {
+        return (List<JobApplicationDTO>) (List) applicationRepository.findAll();
     }
 
     public JobApplication saveApplication(Person person, List<Competence> competences,
@@ -44,7 +47,7 @@ public class JobApplicationService {
 
     // add method for saving an jobapplication given avalibilites & competences
 
-    public JobApplication findApplicationById(long id) {
+    public JobApplicationDTO findApplicationById(long id) {
         return applicationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
     }

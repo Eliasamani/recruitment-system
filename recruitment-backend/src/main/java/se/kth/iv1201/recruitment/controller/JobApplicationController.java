@@ -3,7 +3,7 @@ package se.kth.iv1201.recruitment.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import se.kth.iv1201.recruitment.model.jobApplication.JobApplication;
+import se.kth.iv1201.recruitment.model.jobApplication.JobApplicationDTO;
 import se.kth.iv1201.recruitment.service.JobApplicationService;
 import java.util.List;
 import java.util.Map;
@@ -19,12 +19,12 @@ public class JobApplicationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<JobApplication>> getAllApplications() {
+    public ResponseEntity<List<JobApplicationDTO>> getAllApplications() {
         return ResponseEntity.ok(jobApplicationService.getAllApplications());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<JobApplication> getApplicationDetails(@PathVariable long id) {
+    public ResponseEntity<JobApplicationDTO> getApplicationDetails(@PathVariable long id) {
         return ResponseEntity.ok(jobApplicationService.findApplicationById(id));
     }
 
@@ -33,7 +33,7 @@ public class JobApplicationController {
             @RequestBody Map<String, String> requestBody) {
         try {
             String statusString = requestBody.get("status");
-            JobApplication.Status status = JobApplication.Status.valueOf(statusString.toUpperCase());
+            JobApplicationDTO.Status status = JobApplicationDTO.Status.valueOf(statusString.toUpperCase());
             jobApplicationService.updateApplicationStatus(id, status);
             return ResponseEntity.ok().body(Map.of("message", "Application status updated successfully"));
         } catch (IllegalArgumentException e) {
