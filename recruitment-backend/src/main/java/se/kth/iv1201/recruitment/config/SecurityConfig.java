@@ -60,6 +60,7 @@ public class SecurityConfig {
                                 "/*.ico",
                                 "/*.txt",
                                 "/error",
+                                "/errorPage",
                                 "/api/reset/*",
                                 "/api/users/test*")
                         .permitAll() // Public endpoints
