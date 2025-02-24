@@ -70,6 +70,7 @@ jobs:
         env:
           PGPASSWORD: postgres
         run: |
+          sudo apt-get update
           sudo apt-get install -y postgresql-client
           psql -U postgres -h localhost -d postgres -f $GITHUB_WORKSPACE/existing-database.sql
           
