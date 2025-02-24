@@ -53,7 +53,7 @@ export default function ForgotPasswordPresenter() {
       code: resetCode  // Should be a numeric value within the specified range (e.g. 100000 - 1000000)
     };
     try {
-      const response = await fetch('/api/reset/password', {
+      const response = await fetch(process.env.REACT_APP_API_URL + '/api/reset/password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

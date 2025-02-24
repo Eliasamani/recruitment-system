@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../Components/Header.jsx'; // Adjust path if needed
+import Header from '../Components/Header.jsx'; // Ensure this path is correct
 import ApplicantDashboardView from '../View/ApplicantDashboardView.jsx';
 import { fetchCompetences, submitApplication } from '../Model/model.jsx';
 
@@ -18,7 +18,7 @@ export default function ApplicantDashboardPresenter() {
   const [toDate, setToDate] = useState('');
   const [availability, setAvailability] = useState([]);
 
-  // Fetch competences on mount
+  // Fetch competences from the back-end on mount
   useEffect(() => {
     fetchCompetences()
       .then((data) => setCompetences(data))
@@ -56,14 +56,16 @@ export default function ApplicantDashboardPresenter() {
       setError('Please select a competence and provide years of experience.');
       return;
     }
-    const experience = parseInt(yearsOfExperience, 10);
+    const experience = parseFloat(yearsOfExperience);
     if (isNaN(experience) || experience < 0 || experience > 99) {
       setError('Please enter a valid number of years between 0 and 99.');
       return;
     }
+    // Convert selectedCompetence to a number, as the back-end expects a numeric competence_id
+    const competenceId = parseInt(selectedCompetence, 10);
     setExpertise([
       ...expertise,
-      { competence_id: selectedCompetence, years_of_experience: yearsOfExperience },
+      { competence_id: competenceId, years_of_experience: experience },
     ]);
     setYearsOfExperience('');
     setError('');
