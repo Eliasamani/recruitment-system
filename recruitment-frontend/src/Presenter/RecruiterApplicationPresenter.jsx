@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RecruiterApplicationView from "../View/RecruiterApplicationView";
-import Header from '../Reusablecomponent/Header';
+import Header from '../Components/Header';
 import { useAuth } from "../AuthContext";
 
 export default function RecruiterApplicationPresenter() {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import RecruiterDashboardView from '../View/RecruiterDashboardView';
-import Header from '../Reusablecomponent/Header';
+import Header from '../Components/Header';
 import { useAuth } from '../AuthContext';
 
 export default function RecruiterDashboardPresenter() {
