@@ -74,7 +74,7 @@ public class ResetControllerTest {
                                 .header("Content-Type", "application/json")
                                 .content(
                                         "{\"username\":\"resetUsername\", \"password\":\"resetTestPass\"}"))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isBadRequest());
         int code = resetService.generateToken("appltest@example.com").getResetToken();
         mockMvc.perform(post("/api/reset/password").header("Content-Type", "application/json")
                 .content("{\"email\":\"appltest@example.com\",\"password\":\"resetTestPass\",\"code\":\""
@@ -189,7 +189,7 @@ public class ResetControllerTest {
                                 .header("Content-Type", "application/json")
                                 .content(
                                         "{\"username\":\"TestApplicant\", \"password\":\"resetTestPass\"}"))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isBadRequest());
         int code = resetService.generateToken("appltest@example.com").getResetToken();
         mockMvc.perform(post("/api/reset/password").header("Content-Type", "application/json")
                 .content("{\"email\":\"appltest@example.com\",\"password\":\"resetTestPass\",\"code\":\""
@@ -220,7 +220,7 @@ public class ResetControllerTest {
                                 .header("Content-Type", "application/json")
                                 .content(
                                         "{\"username\":\"resetUsername\", \"password\":\"testpassword\"}"))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isBadRequest());
         int code = resetService.generateToken("appltest@example.com").getResetToken();
         mockMvc.perform(post("/api/reset/password").header("Content-Type", "application/json")
                 .content("{\"email\":\"appltest@example.com\",\"password\":\"\",\"code\":\"" + code

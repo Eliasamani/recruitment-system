@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import io.jsonwebtoken.JwtException;
 import se.kth.iv1201.recruitment.RecruitmentBackendApplication;
 
 @SpringBootTest(classes = RecruitmentBackendApplication.class)
@@ -44,7 +46,7 @@ public class JwtProviderTest {
 
     @Test
     void testValidateInvalidToken() {
-        String username = jwtProvider.validateToken("invalidToken");
-        assertNull(username, "Invalid token should return null");
+        assertThrows(JwtException.class,
+                () -> jwtProvider.validateToken("invalidToken"));
     }
 }

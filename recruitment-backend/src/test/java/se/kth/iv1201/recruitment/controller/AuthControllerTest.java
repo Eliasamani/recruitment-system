@@ -64,7 +64,7 @@ public class AuthControllerTest {
                                 .header("Content-Type", "application/json")
                                 .content(
                                         "{\"username\":\"TestRecruiter\", \"password\":\"wrongpassword\"}"))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isBadRequest());
     }
 
     /**
@@ -94,7 +94,7 @@ public class AuthControllerTest {
     void testSessionValidationWithMissingToken() throws Exception {
         mockMvc
                 .perform(get("/api/auth/session"))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isBadRequest());
     }
 
     /**

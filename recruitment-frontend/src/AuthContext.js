@@ -16,6 +16,9 @@ export const AuthProvider = ({ children }) => {
       if (response.status === 200) {
         const data = await response.json();
         setUser(data);
+      } else if (response.status === 400){
+        // Bad request – we set user as null
+        setUser(null);
       } else if (response.status === 401) {
         // Not authenticated – we set user as null
         setUser(null);

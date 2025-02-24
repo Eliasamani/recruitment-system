@@ -51,26 +51,21 @@ public class JwtProvider {
     }
 
     /**
-     * Validates a JWT, returning the subject (i.e. the username) if the token is
-     * valid, or null if the token is invalid.
+     * Validates a JWT, returning the subject (i.e., the username) if the token is
+     * valid.
+     * Throws a JwtException if the token is invalid, with specific subclasses
+     * indicating the reason.
      *
      * @param token the JWT to validate
-     * @return the subject of the token if valid, or null if invalid
+     * @return the subject of the token if valid
+     * @throws JwtException if the token is invalid (e.g., ExpiredJwtException for
+     *                      expired tokens)
      */
     public String validateToken(String token) {
-        try {
-            SecretKey key = Keys.hmacShaKeyFor(
-                    secret.getBytes(StandardCharsets.UTF_8));
-            JwtParser parser = Jwts.parser().verifyWith(key).build();
-            String username = parser
-                    .parseSignedClaims(token)
-                    .getPayload()
-                    .getSubject();
-            LOGGER.info("JWT successfully validated for user: " + username);
-            return username;
-        } catch (JwtException e) {
-            LOGGER.log(Level.WARNING, "Invalid JWT: " + e.getMessage());
-            return null;
-        }
+        SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        JwtParser parser = Jwts.parser().verifyWith(key).build();
+        String username = parser.parseSignedClaims(token).getPayload().getSubject();
+        LOGGER.info("JWT successfully validated for user: " + username);
+        return username;
     }
 }

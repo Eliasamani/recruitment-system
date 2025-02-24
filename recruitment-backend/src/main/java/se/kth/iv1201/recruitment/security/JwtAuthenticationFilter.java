@@ -34,6 +34,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.userService = userService;
     }
 
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getServletPath();
+        return "/api/auth/session".equals(path);
+    }
+
     /**
      * Checks if the request contains a valid JWT, and if so, sets the
      * authentication context according to role.
