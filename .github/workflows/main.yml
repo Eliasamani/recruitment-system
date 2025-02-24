@@ -160,9 +160,13 @@ jobs:
         uses: actions/upload-artifact@v4.6.0
         with:
           name: saved_build
-          path: |
-            recruitment-backend/target/*.jar
-            prod-database.sql
+          path: recruitment-backend/target/*.jar
+      - name: save_prod_db
+        uses: actions/upload-artifact@v4.6.0
+        with:
+          name: saved_prod_db
+          path: prod-database.sql
+            
   deploy:
     runs-on: ubuntu-24.04
     needs: build
@@ -175,7 +179,7 @@ jobs:
         uses: actions/download-artifact@v4.1.8
         with:
           name: saved_build
-          path: recruitment-backend/target/
+          path: /
       - name: setup_docker 
         uses: docker/setup-docker-action@v4.1.0
       - name: setup_heroku
