@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from '../Reusablecomponent/Header.jsx'; // Import the reusable Header
+import Header from '../Components/Header.jsx'; // Import the reusable Header
 
 
 const LandingPageView = ({ onLoginClick, onGetStartedClick, onCompanyClick }) => {

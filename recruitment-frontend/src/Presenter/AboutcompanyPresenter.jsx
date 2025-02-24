@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from '../Reusablecomponent/Header'; // Import the reusable Header
+import Header from '../Components/Header'; // Import the reusable Header
 
 export default function AboutcompanyPresenter() {
     return (

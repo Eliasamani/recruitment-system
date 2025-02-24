@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import SignupView from '../View/SignupView.jsx';
-import { SignupFormModel } from '../model.jsx';
-import Header from '../Reusablecomponent/Header.jsx';
+import { SignupFormModel } from '../Model/model.jsx';
+import Header from '../Components/Header.jsx';
 
 export default function SignupPresenter() {
     const [formData, setFormData] = useState(SignupFormModel);

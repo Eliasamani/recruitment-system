@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SigninView from '../View/SigninView';
-import { SignInFormModel } from '../model';
+import { SignInFormModel } from '../Model/model';
 import { useAuth } from '../AuthContext';
-import Header from '../Reusablecomponent/Header';
+import Header from '../Components/Header';
 
 export default function SigninPresenter() {
     const [formData, setFormData] = useState(SignInFormModel);
