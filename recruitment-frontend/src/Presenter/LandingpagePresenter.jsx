@@ -7,24 +7,24 @@ export default function LandingpagePresenter() {
 
     // Navigate to the login page
     const onLoginClick = () => {
-      navigate('/signin');
+        navigate('/signin');
     };
-  
+
     // Navigate to the signup page
     const onGetStartedClick = () => {
-      navigate('/signup');
+        navigate('/signup');
     };
-  
+
     // Navigate to the about page when the company name is clicked
     const onCompanyClick = () => {
-      navigate('/about');
+        navigate('/about');
     };
-  
+
     return (
-      <LandingpageView 
-        onLoginClick={onLoginClick} 
-        onGetStartedClick={onGetStartedClick}
-        onCompanyClick={onCompanyClick}
-      />
+        <LandingpageView
+            onLoginClick={onLoginClick}
+            onGetStartedClick={onGetStartedClick}
+            onCompanyClick={onCompanyClick}
+        />
     );
-  };
+};

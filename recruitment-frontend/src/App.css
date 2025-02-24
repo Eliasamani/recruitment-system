@@ -1,288 +1,403 @@
-/* /src/App.css */
+/* =========================
+   GLOBAL & LANDING PAGE
+========================= */
 
 /* Global Styles */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: 'Poppins', Arial, sans-serif; /* Use a modern font */
-  background-color: #f4f6f8; /* Soft background for the entire site */
-  color: #333;
-  line-height: 1.6;
+    font-family: 'Poppins', Arial, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    line-height: 1.6;
 }
 
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 /* Landing Page Styles */
 .landing-page {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #ffffff, #f7f7f7); /* Gradient background */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ffffff, #f7f7f7);
 }
 
-/* Header Styles */
 .landing-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  background-color: #ffffff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 10;
-  transition: all 0.3s ease; /* Smooth transitions */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 10;
+    transition: all 0.3s ease;
 }
 
 .landing-header:hover {
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
 .header-left {
-  flex: 1;
+    flex: 1;
 }
 
 .logo {
-  height: 40px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
+    height: 40px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
 .logo:hover {
-  transform: scale(1.1) rotate(-5deg); /* Slight rotation and enlargement */
+    transform: scale(1.1) rotate(-5deg);
 }
 
 .header-right {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .company-name {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #007bff;
-  cursor: pointer;
-  transition: color 0.3s ease, transform 0.3s ease;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .company-name:hover {
-  color: #0056b3;
-  transform: translateY(-2px); /* Slight lift effect */
+    color: #0056b3;
+    transform: translateY(-2px);
 }
 
 .login-btn,
 .get-started-btn {
-  padding: 0.6rem 1.2rem;
-  border-radius: 25px; /* Rounded buttons */
-  font-size: 0.9rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
+    padding: 0.6rem 1.2rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
 .login-btn {
-  background: none;
-  border: 2px solid #007bff;
-  color: #007bff;
+    background: none;
+    border: 2px solid #007bff;
+    color: #007bff;
 }
 
 .login-btn:hover {
-  background-color: #007bff;
-  color: #ffffff;
-  border-color: #0056b3;
+    background-color: #007bff;
+    color: #ffffff;
+    border-color: #0056b3;
 }
 
 .get-started-btn {
-  background-color: #007bff;
-  color: #ffffff;
-  border: none;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .get-started-btn:hover {
-  background-color: #0056b3;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px); /* Slight lift effect */
+    background-color: #0056b3;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
 }
 
-/* Body Styles */
 .landing-body {
-  flex: 1;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .landing-body h1 {
-  font-size: 2.8rem;
-  color: #333;
-  margin-bottom: 1rem;
-  animation: fadeIn 1s ease-in-out; /* Fade-in animation */
+    font-size: 2.8rem;
+    color: #333;
+    margin-bottom: 1rem;
+    animation: fadeIn 1s ease-in-out;
 }
 
 .landing-body p {
-  font-size: 1.2rem;
-  color: #555;
-  max-width: 600px;
-  text-align: center;
-  margin-bottom: 2rem;
+    font-size: 1.2rem;
+    color: #555;
+    max-width: 600px;
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
-/* Form Styles */
+/* =========================
+    FORMS (e.g. login)
+========================= */
+
 form {
-  max-width: 400px;
-  width: 100%;
-  margin: 0 auto;
-  background-color: #ffffff;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 form:hover {
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
 input[type="text"],
 input[type="password"] {
-  width: 100%;
-  padding: 0.8rem 1rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus {
-  border-color: #007bff;
-  outline: none;
-  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
 }
 
 button[type="submit"] {
-  width: 100%;
-  padding: 0.8rem 1rem;
-  background-color: #007bff;
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 button[type="submit"]:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
+    background-color: #0056b3;
+    transform: translateY(-2px);
 }
 
 button[type="button"] {
-  padding: 0.6rem 1rem;
-  background-color: transparent;
-  border: 1px solid #007bff;
-  color: #007bff;
-  border-radius: 5px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+    padding: 0.6rem 1rem;
+    background-color: transparent;
+    border: 1px solid #007bff;
+    color: #007bff;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 button[type="button"]:hover {
-  background-color: #007bff;
-  color: #ffffff;
-  border-color: #0056b3;
+    background-color: #007bff;
+    color: #ffffff;
+    border-color: #0056b3;
 }
 
-/* Candidate & Recruiter Page Styles */
-.candidate-page,
-.recruiter-page {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
+/* =========================
+   APPLICANT PAGE
+========================= */
+
+.applicant-page {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
 
-.candidate-header,
-.recruiter-header {
+.applicant-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
-.candidate-header h1,
-.recruiter-header h1 {
-  font-size: 2.5rem;
-  color: #333;
-}
-
-.candidate-body,
-.recruiter-body {
-  background-color: #ffffff;
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.candidate-body:hover,
-.recruiter-body:hover {
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-}
-
-.user-info,
-.recruiter-info {
-  margin-bottom: 2rem;
-}
-
-.user-info h2,
-.recruiter-info h2,
-.dashboard-content h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: #555;
-}
-
-.dashboard-content ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.dashboard-content li {
+.applicant-header h1 {
+  font-size: 2rem;
   margin-bottom: 0.5rem;
 }
 
-.dashboard-content a {
-  text-decoration: none;
-  color: #007bff;
+.applicant-header p {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Card-like container for the form */
+.applicant-body {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.applicant-body:hover {
+  box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+}
+
+/* Error container for form errors */
+.error-container {
+  background-color: #ffe5e5;
+  color: #d00;
+  border: 1px solid #d00;
+  border-radius: 5px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Form sections inside applicant form */
+.form-section {
+  margin-bottom: 2rem;
+}
+
+.form-section h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.section-info {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+/* Horizontal layout for input rows */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Each label/input pair is a form-group */
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 120px;
+}
+
+.form-group label {
   font-weight: 600;
-  transition: all 0.3s ease;
+  margin-bottom: 0.4rem;
 }
 
-.dashboard-content a:hover {
-  color: #0056b3;
-  text-decoration: underline;
+.add-button-group {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-end;
 }
 
-/* Loading & Error States */
+/* Inputs, selects, etc. */
+.form-control {
+  padding: 0.6rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* The "Add" buttons */
+.add-button {
+  padding: 0.6rem 1rem;
+  margin-bottom: 0.1rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-button:hover {
+  background-color: #0056b3;
+}
+
+/* Lists for expertise and availability */
+.expertise-list,
+.availability-list {
+  margin-top: 1rem;
+}
+
+.expertise-list ul,
+.availability-list ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.expertise-list li,
+.availability-list li {
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+/* Submit/Cancel buttons at the bottom of the form */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.submit-button,
+.cancel-button {
+  padding: 0.8rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+.cancel-button {
+  background-color: #ccc;
+  color: #333;
+}
+
+.cancel-button:hover {
+  background-color: #aaa;
+}
+
+/* =========================
+   LOADING & ERROR STATES
+========================= */
+
 .loading-container,
 .error-container,
 .no-user-container,
@@ -313,7 +428,9 @@ button[type="button"]:hover {
   font-size: 1rem;
 }
 
-/* Responsive Design */
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
 @media (max-width: 768px) {
   .landing-header {
     flex-direction: column;
@@ -341,5 +458,10 @@ button[type="button"]:hover {
 
   .landing-body p {
     font-size: 1rem;
+  }
+
+  /* For narrower screens, stack form inputs */
+  .form-row {
+    flex-direction: column;
   }
 }

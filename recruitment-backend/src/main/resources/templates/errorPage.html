@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="refresh" content="10; url=/">
+
+    <title>Error</title>
+</head>
+<body>
+    <h1>Error</h1>
+    <p>An unexpected error has occurred, you should be redirected soon.</p>
+    <p><a href="/">If you were not redirected, click here!</a></p>
+    <p>Status Code: <span th:text="${statusCode}">Unknown</span></p>
+    <p>Unless something is terribly wrong you should not have ended up here</p>
+    <p>Please inform us of this error by emailing info@support.recruitment.jontek.xyz</p>
+</body>
+</html>
