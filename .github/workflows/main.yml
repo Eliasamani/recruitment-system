@@ -70,7 +70,6 @@ jobs:
         env:
           PGPASSWORD: postgres
         run: |
-          sudo apt-get update
           sudo apt-get install -y postgresql-client
           psql -U postgres -h localhost -d postgres -f $GITHUB_WORKSPACE/existing-database.sql
           
@@ -94,7 +93,7 @@ jobs:
     needs: [static_analysis,test]
     services:
       postgres:
-        image: postgres
+        image: postgres-16
         env:
           POSTGRES_PASSWORD: postgres
         options: >-
@@ -149,7 +148,8 @@ jobs:
         env:
           PGPASSWORD: postgres
         run: |
-          cd $GITHUB_WORKSPACE
+          sudo apt-get install -y postgresql-client
+          cd $GITHUB_WORKSPACE          
           psql -U postgres -h localhost -d postgres -c "DELETE FROM public.person WHERE person_id IN (901, 902);"
           pg_dump -U postgres -h localhost -d postgres -F p -f prod-database.sql
 
