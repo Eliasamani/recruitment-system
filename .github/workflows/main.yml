@@ -143,12 +143,25 @@ jobs:
           ./mvnw package
 
           
+      - name: export db
+        if: ${{success()}}
+        env:
+          PGPASSWORD: postgres
+        run: |
+          cd $GITHUB_WORKSPACE
+          psql -U postgres -h localhost -d postgres -c "DELETE FROM public.person WHERE person_id IN (901, 902);"
+          pg_dump -U postgres -h localhost -d postgres -F p -f prod-database.sql
+
+
+
 
       - name: save_build
         uses: actions/upload-artifact@v4.6.0
         with:
           name: saved_build
-          path: recruitment-backend/target/*.jar
+          path: |
+            recruitment-backend/target/*.jar
+            prod-database.sql
   deploy:
     runs-on: ubuntu-24.04
     needs: build
@@ -160,7 +173,7 @@ jobs:
       - name: get_build
         uses: actions/download-artifact@v4.1.8
         with:
-          Name: saved_build
+          name: saved_build
           path: recruitment-backend/target/
       - name: setup_docker 
         uses: docker/setup-docker-action@v4.1.0
