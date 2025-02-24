@@ -190,10 +190,6 @@ jobs:
         if: ${{success()}}
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API }}
-          RECR_EMAIL_HOST: ${{secrets.RECR_EMAIL_HOST}}
-          RECR_EMAIL_PORT: ${{secrets.RECR_EMAIL_PORT}}
-          RECR_EMAIL: ${{secrets.RECR_EMAIL}}
-          RECR_EMAIL_PWORD: ${{secrets.RECR_EMAIL_PWORD}}
         run: |
           cd $GITHUB_WORKSPACE
           docker login --username=_ --password="$HEROKU_API_KEY" registry.heroku.com
