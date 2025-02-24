@@ -179,7 +179,7 @@ jobs:
         uses: actions/download-artifact@v4.1.8
         with:
           name: saved_build
-          path: /
+          path: recruitment-backend/target/
       - name: setup_docker 
         uses: docker/setup-docker-action@v4.1.0
       - name: setup_heroku
