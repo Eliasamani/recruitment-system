@@ -14,12 +14,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Represents the time period from which the applicant is availabile
+ */
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Entity
 @Table(name = "availability")
 public class Availability implements AvailabilityDTO {
@@ -28,9 +30,6 @@ public class Availability implements AvailabilityDTO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "availability_id")
     private long id;
-
-    // @Column(name = "person_id")
-    // private long person_id;
 
     @Column(name = "from_date")
     private Date fromDate;
