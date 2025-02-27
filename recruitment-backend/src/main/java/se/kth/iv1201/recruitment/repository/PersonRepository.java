@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 import se.kth.iv1201.recruitment.model.person.Person;
 
 /*
- * Does all database access operations for Person 
+ * Contains all database access operations for Person 
  */
 
 @Repository
-@Transactional(propagation = Propagation.MANDATORY,rollbackFor = Exception.class)
+@Transactional(propagation = Propagation.MANDATORY, rollbackFor = Exception.class)
 public interface PersonRepository extends JpaRepository<Person, Long> {
 
     /**
