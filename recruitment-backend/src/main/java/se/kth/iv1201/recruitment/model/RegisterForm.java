@@ -3,13 +3,19 @@ package se.kth.iv1201.recruitment.model;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * form for user registration
- * also handles validation
+ * backend validation of fields are done here
  * 
- * Username, personNumber and mail are necessary fields
+ * Username, personNumber and mail are obligatory fields
  */
+@Getter
+@Setter
+@ToString
 public class RegisterForm {
 
     @NotBlank(message = "Username is left empty ")
@@ -31,59 +37,5 @@ public class RegisterForm {
     @Pattern(regexp = "^\\d{8}-\\d{4}$", message = "invalid person number format, Expected:YYYYMMDD-NNNN")
     @NotBlank(message = "person number field is empty")
     private String personNumber;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPersonNumber() {
-        return personNumber;
-    }
-
-    public void setPersonNumber(String personNumber) {
-        this.personNumber = personNumber;
-    }
-
-    @Override
-    public String toString() {
-        return "RegisterForm [username=" + username + ", password=" + password + ", firstname=" + firstname
-                + ", lastname=" + lastname + ", email=" + email + ", personNumber=" + personNumber + "]";
-    }
 
 }
