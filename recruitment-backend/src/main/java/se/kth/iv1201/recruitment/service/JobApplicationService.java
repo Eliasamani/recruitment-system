@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.Propagation;
 
 import java.util.List;
 
-// TODO use the DTOs here and in controller
-
 @Service
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 public class JobApplicationService {
@@ -27,10 +25,27 @@ public class JobApplicationService {
         this.applicationRepository = applicationRepository;
     }
 
+    /**
+     * method for getting all the job applications in the system's database
+     * 
+     * @return a list of all existing job applications
+     */
     public List<JobApplicationDTO> getAllApplications() {
         return (List<JobApplicationDTO>) (List) applicationRepository.findAll();
     }
 
+    /**
+     * saves a new job application in to the database
+     * 
+     * @param person         the person that the job application belongs to
+     * @param competences    a list of {@link Competence} competences of the
+     *                       applicant
+     * @param availabilities a list of {@link Availability} availibilites of the
+     *                       applicant
+     * @return
+     * @throws Exception thrown when the provided person already has a job
+     *                   application in the system
+     */
     public JobApplication saveApplication(Person person, List<Competence> competences,
             List<Availability> availabilities) throws Exception {
         if (applicationRepository.findByPerson(person) != null) {
@@ -45,13 +60,24 @@ public class JobApplicationService {
         return applicationRepository.save(application);
     }
 
-    // add method for saving an jobapplication given avalibilites & competences
-
+    /**
+     * fetches the job application of the given id
+     * 
+     * @param id the id of the job applicaiton in the database
+     * @return {@link JobApplicationDTO} with the given id
+     */
     public JobApplicationDTO findApplicationById(long id) {
         return applicationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
     }
 
+    /**
+     * Updates the {@link JobApplication.Status} of the job application with the
+     * given id
+     * 
+     * @param applicationId id of the job application to be updated
+     * @param status        status to be set by the update
+     */
     public void updateApplicationStatus(long applicationId, JobApplication.Status status) {
         JobApplication application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new IllegalArgumentException("Application not found"));

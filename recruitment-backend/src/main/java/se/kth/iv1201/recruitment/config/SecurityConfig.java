@@ -71,23 +71,13 @@ public class SecurityConfig {
                         .requestMatchers("/api/applicant/**").hasRole("APPLICANT"))
                 // .anyRequest()
                 // .authenticated())
-                .addFilterBefore(
-                        jwtAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class) // Ensure JWT authentication happens before Spring
-                                                                    // Security's built-in authentication filter
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // Disable
-                                                                                                               // session
-                                                                                                               // storage,
-                                                                                                               // making
-                                                                                                               // authentication
-                                                                                                               // fully
-                                                                                                               // stateless
-                                                                                                               // (JWT
-                                                                                                               // required
-                                                                                                               // for
-                                                                                                               // every
-                                                                                                               // request)
 
+                // Ensure JWT authentication happens before Spring Security's built-in
+                // authentication filter
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                // Disable session storage, making authentication fully stateless (JWT
+                // requiredfor every request)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
 

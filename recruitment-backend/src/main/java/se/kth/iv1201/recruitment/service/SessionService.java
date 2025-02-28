@@ -28,6 +28,11 @@ public class SessionService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * 
+     * returns a map of objects corresponding to {@link PersonDTO} data that this
+     * session cookie belongs to
+     */
     public Map<String, Object> checkSession(Cookie[] cookies) {
         String token = null;
         for (Cookie cookie : cookies) {
@@ -48,6 +53,8 @@ public class SessionService {
         }
 
         Map<String, Object> userData = new HashMap<>();
+
+        // FIXME why dont we just return a person object here??
         userData.put("id", person.getId());
         userData.put("username", person.getUsername());
         userData.put("firstName", person.getFirstname() != null ? person.getFirstname() : "");
@@ -60,6 +67,12 @@ public class SessionService {
         return userData;
     }
 
+    /**
+     * handles of user login. Returns a jwt cookie upon successful login.
+     * 
+     * @param json a object with two fields: {username, password}
+     * @return a jwt cookie used for session authentication
+     */
     public Cookie login(Map<String, String> json) {
         String username = json.get("username");
         LOGGER.info("Login attempt for username: " + username);
@@ -84,6 +97,11 @@ public class SessionService {
         return jwtCookie;
     }
 
+    /**
+     * remove the current seession cookie
+     * 
+     * @return the cookie with 0 age meaning it is removed upon creation.
+     */
     public Cookie removeCookie() {
         Cookie jwtCookie = new Cookie("jwt", "");
         jwtCookie.setHttpOnly(true);
