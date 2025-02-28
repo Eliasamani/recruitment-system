@@ -3,23 +3,17 @@ package se.kth.iv1201.recruitment.controller;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
-import se.kth.iv1201.recruitment.model.person.PersonDTO;
-import se.kth.iv1201.recruitment.security.JwtProvider;
+import se.kth.iv1201.recruitment.model.LoginForm;
 import se.kth.iv1201.recruitment.service.SessionService;
-import se.kth.iv1201.recruitment.service.UserService;
 
 /**
  * Handles authentication-related operations (login, logout, session
@@ -40,8 +34,8 @@ public class AuthController {
      * the post mapping for login
      */
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> json, HttpServletResponse response) {
-        Cookie jwtCookie = sessionService.login(json);
+    public ResponseEntity<?> login(@Valid @RequestBody LoginForm loginForm, HttpServletResponse response) {
+        Cookie jwtCookie = sessionService.login(loginForm);
         response.addCookie(jwtCookie);
         return ResponseEntity.ok(Map.of("message", "Logged in successfully"));
     }
@@ -52,13 +46,7 @@ public class AuthController {
     @GetMapping("/session")
     public ResponseEntity<?> checkSession(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
-        Map<String, Object> userData = null;
-        if (cookies != null) {
-            userData = sessionService.checkSession(cookies);
-        } else {
-            LOGGER.warning("Session validation failed - No token found");
-            return ResponseEntity.status(400).body(Map.of("error", "Not authenticated"));
-        }
+        Map<String, Object> userData = sessionService.checkSession(cookies);
         return ResponseEntity.ok(userData);
     }
 

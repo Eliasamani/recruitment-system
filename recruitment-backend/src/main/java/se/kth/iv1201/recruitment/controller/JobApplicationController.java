@@ -50,17 +50,11 @@ public class JobApplicationController {
     @PostMapping("/{id}/update-status")
     public ResponseEntity<?> updateApplicationStatus(@PathVariable long id,
             @RequestBody Map<String, String> requestBody) {
-        try {
             String statusString = requestBody.get("status");
             JobApplicationDTO.Status status = JobApplicationDTO.Status.valueOf(statusString.toUpperCase());
             jobApplicationService.updateApplicationStatus(id, status);
             return ResponseEntity.ok().body(Map.of("message", "Application status updated successfully"));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Invalid status value"));
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError()
-                    .body(Map.of("error", "Unexpected error updating application status"));
-        }
+
     }
 
 }

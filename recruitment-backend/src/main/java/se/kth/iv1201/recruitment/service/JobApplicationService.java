@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import se.kth.iv1201.recruitment.model.availability.Availability;
 import se.kth.iv1201.recruitment.model.competence.Competence;
+import se.kth.iv1201.recruitment.model.exception.ApplicationAlreadyExistsException;
+import se.kth.iv1201.recruitment.model.exception.ApplicationNotFoundException;
 import se.kth.iv1201.recruitment.model.jobApplication.JobApplication;
 import se.kth.iv1201.recruitment.model.jobApplication.JobApplicationDTO;
 import se.kth.iv1201.recruitment.model.person.Person;
@@ -13,10 +15,12 @@ import se.kth.iv1201.recruitment.repository.JobApplicationRepository;
 import org.springframework.transaction.annotation.Propagation;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 public class JobApplicationService {
+    private static final Logger LOGGER = Logger.getLogger(JobApplicationService.class.getName());
 
     @Autowired
     private final JobApplicationRepository applicationRepository;
@@ -43,13 +47,11 @@ public class JobApplicationService {
      * @param availabilities a list of {@link Availability} availibilites of the
      *                       applicant
      * @return
-     * @throws Exception thrown when the provided person already has a job
-     *                   application in the system
      */
     public JobApplication saveApplication(Person person, List<Competence> competences,
-            List<Availability> availabilities) throws Exception {
+            List<Availability> availabilities){
         if (applicationRepository.findByPerson(person) != null) {
-            throw new Exception("Application Already Exist");
+            throw new ApplicationAlreadyExistsException("Application Already Exist");
         }
         JobApplication application = new JobApplication();
         application.setPerson(person);
@@ -68,7 +70,7 @@ public class JobApplicationService {
      */
     public JobApplicationDTO findApplicationById(long id) {
         return applicationRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Application not found"));
+                .orElseThrow(() -> new ApplicationNotFoundException("Application "+id+" not found"));
     }
 
     /**
@@ -80,9 +82,10 @@ public class JobApplicationService {
      */
     public void updateApplicationStatus(long applicationId, JobApplication.Status status) {
         JobApplication application = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new IllegalArgumentException("Application not found"));
+                .orElseThrow(() -> new ApplicationNotFoundException("Application "+applicationId+" not found"));
 
         application.setStatus(status);
+        LOGGER.info("Set status "+status+" for application: "+ applicationId);
         applicationRepository.save(application);
     }
 }

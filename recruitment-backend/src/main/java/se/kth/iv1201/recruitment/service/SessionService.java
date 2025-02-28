@@ -10,7 +10,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.Cookie;
+import se.kth.iv1201.recruitment.model.LoginForm;
 import se.kth.iv1201.recruitment.model.exception.InvalidSessionException;
+import se.kth.iv1201.recruitment.model.exception.NoCookiesInRequestException;
 import se.kth.iv1201.recruitment.model.person.PersonDTO;
 import se.kth.iv1201.recruitment.security.JwtProvider;
 
@@ -34,6 +36,10 @@ public class SessionService {
      * session cookie belongs to
      */
     public Map<String, Object> checkSession(Cookie[] cookies) {
+        if (cookies == null) {
+            throw new NoCookiesInRequestException("Session validation failed - No token found");
+        } 
+
         String token = null;
         for (Cookie cookie : cookies) {
             if ("jwt".equals(cookie.getName())) {
@@ -73,12 +79,12 @@ public class SessionService {
      * @param json a object with two fields: {username, password}
      * @return a jwt cookie used for session authentication
      */
-    public Cookie login(Map<String, String> json) {
-        String username = json.get("username");
+    public Cookie login(LoginForm loginForm) {
+        String username = loginForm.getUsername();
         LOGGER.info("Login attempt for username: " + username);
 
         PersonDTO person = userService.findPerson(username);
-        if (person == null || (!passwordEncoder.matches(json.get("password"), person.getPassword()))) {
+        if (person == null || (!passwordEncoder.matches(loginForm.getPassword(), person.getPassword()))) {
             LOGGER.warning("Login failed for " + username);
             throw new BadCredentialsException("Invalid username or password");
         }

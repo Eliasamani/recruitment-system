@@ -3,14 +3,12 @@ package se.kth.iv1201.recruitment.controller;
 import jakarta.validation.Valid;
 
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import se.kth.iv1201.recruitment.model.RegisterForm;
 import se.kth.iv1201.recruitment.service.UserService;
-import se.kth.iv1201.recruitment.model.exception.UserAlreadyExistsException;
 
 /**
  * Controller for user-related API operations.
