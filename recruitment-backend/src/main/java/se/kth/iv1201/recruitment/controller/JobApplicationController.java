@@ -8,6 +8,9 @@ import se.kth.iv1201.recruitment.service.JobApplicationService;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controller for job application related API operations.
+ */
 @RestController
 @RequestMapping("/api/recruiter/applications")
 public class JobApplicationController {
@@ -23,11 +26,27 @@ public class JobApplicationController {
         return ResponseEntity.ok(jobApplicationService.getAllApplications());
     }
 
+    /**
+     * fetch a job application by its id
+     * 
+     * @param id id of the job application to be fetched. Accessed via url
+     *           path
+     * @return a response entity with the job application that has the provided id
+     */
     @GetMapping("/{id}")
     public ResponseEntity<JobApplicationDTO> getApplicationDetails(@PathVariable long id) {
         return ResponseEntity.ok(jobApplicationService.findApplicationById(id));
     }
 
+    /**
+     * update the status of the job application wiht the given id and status.
+     * 
+     * @param id          id of the job application to be updated. Accessed via url
+     *                    path
+     * @param requestBody the json object that provides the new status to be set
+     * @return response entity with the success message or the error message if
+     *         invalid status is given or other error occurs
+     */
     @PostMapping("/{id}/update-status")
     public ResponseEntity<?> updateApplicationStatus(@PathVariable long id,
             @RequestBody Map<String, String> requestBody) {

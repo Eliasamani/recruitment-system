@@ -36,6 +36,9 @@ public class AuthController {
         this.sessionService = sessionService;
     }
 
+    /**
+     * the post mapping for login
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> json, HttpServletResponse response) {
         Cookie jwtCookie = sessionService.login(json);
@@ -43,6 +46,9 @@ public class AuthController {
         return ResponseEntity.ok(Map.of("message", "Logged in successfully"));
     }
 
+    /**
+     * the get method for session
+     */
     @GetMapping("/session")
     public ResponseEntity<?> checkSession(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();

@@ -21,6 +21,9 @@ import se.kth.iv1201.recruitment.service.ResetService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+/**
+ * Controller for user info reset/change related API operations
+ */
 @RestController
 @RequestMapping("/api/reset")
 public class ResetController {
