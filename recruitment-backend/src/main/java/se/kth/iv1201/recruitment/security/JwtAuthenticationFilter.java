@@ -13,6 +13,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import se.kth.iv1201.recruitment.config.SecurityConfig;
@@ -38,8 +40,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
-        return SecurityConfig.PUBLIC_ENDPOINTS.contains(path);
+        PathMatcher pathMatcher = new AntPathMatcher();
+        for (String endpoint: SecurityConfig.PUBLIC_ENDPOINTS) {
+            if (pathMatcher.match(endpoint, path)) {
+                return true;
+            }
+        }
+        return false;
     }
+
 
     /**
      * Checks if the request contains a valid JWT, and if so, sets the
