@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import se.kth.iv1201.recruitment.config.SecurityConfig;
 import se.kth.iv1201.recruitment.model.person.Person;
 import se.kth.iv1201.recruitment.model.person.PersonDTO;
 import se.kth.iv1201.recruitment.service.UserService;
@@ -37,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
-        return "/api/auth/session".equals(path);
+        return SecurityConfig.PUBLIC_ENDPOINTS.contains(path);
     }
 
     /**

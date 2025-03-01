@@ -1,6 +1,8 @@
 package se.kth.iv1201.recruitment.config;
 
 import java.util.List;
+import java.util.Set;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,6 +21,21 @@ import se.kth.iv1201.recruitment.security.JwtAuthenticationFilter;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    public static final Set<String> PUBLIC_ENDPOINTS = Set.of(
+            "/",
+            "/api/auth/session",
+            "/api/auth/login",
+            "/api/users/register",
+            "/index.html",
+            "/static/**",
+            "/*.png",
+            "/*.json",
+            "/*.ico",
+            "/*.txt",
+            "/error",
+            "/errorPage",
+            "/api/reset/*",
+            "/api/users/test*" );
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
@@ -48,21 +65,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/",
-                                "/api/auth/session",
-                                "/api/auth/login",
-                                "/api/users/register",
-                                "/index.html",
-                                "/static/**",
-                                "/*.png",
-                                "/*.json",
-                                "/*.ico",
-                                "/*.txt",
-                                "/error",
-                                "/errorPage",
-                                "/api/reset/*",
-                                "/api/users/test*")
+                        .requestMatchers(PUBLIC_ENDPOINTS.toArray(new String[0]))
                         .permitAll() // Public endpoints
                         .requestMatchers("/api/auth/logout")
                         .authenticated() // Only authenticated users can logout
