@@ -6,7 +6,6 @@ import SigninPresenter from './Presenter/SigninPresenter';
 import SignupPresenter from './Presenter/SignupPresenter';
 import AboutcompanyPresenter from './Presenter/AboutcompanyPresenter';  
 import ApplicantDashboardPresenter from './Presenter/ApplicantDashboardPresenter';
-import RecruiterDashboardPresenter from './Presenter/RecruiterDashboardPresenter';
 import RecruiterApplicationPresenter from './Presenter/RecruiterApplicationPresenter';
 import ForgotPasswordPresenter from './Presenter/ForgotPasswordPresenter';
 import { AuthProvider } from './AuthContext';
@@ -22,7 +21,6 @@ function App() {
                     <Route path="/signup" element={<SignupPresenter />} />
                     <Route path="/about" element={<AboutcompanyPresenter />} />
                     <Route path="/applicant/dashboard" element={<ApplicantDashboardPresenter />} />
-                    <Route path="/recruiter/dashboard" element={<RecruiterDashboardPresenter />} />
                     <Route path="/recruiter/applications" element={<RecruiterApplicationPresenter />} />
                     <Route path="/forgot-password" element={<ForgotPasswordPresenter />} />
                     <Route path="/unauthorized" element={<h1>Unauthorized</h1> } />

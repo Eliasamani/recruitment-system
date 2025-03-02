@@ -1,3 +1,5 @@
+/* This block of code is creating an authentication context in a React application. Here's a breakdown
+of what each part of the code is doing: */
 export const SignInFormModel = {
     username: '',
     password: ''

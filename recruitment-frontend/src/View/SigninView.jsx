@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const SigninView = ({ formData, errors, submissionError, onChange, onSubmit }) => (
+export default function SigninView ({ formData, errors, submissionError, onChange, onSubmit }) {
   <>
     <form onSubmit={onSubmit}>
       <h2>Sign In</h2>
@@ -52,6 +52,5 @@ const SigninView = ({ formData, errors, submissionError, onChange, onSubmit }) =
       </Link>
     </div>
   </>
-);
+};
 
-export default SigninView;
