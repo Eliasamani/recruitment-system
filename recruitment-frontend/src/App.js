@@ -8,7 +8,7 @@ import AboutcompanyPresenter from './Presenter/AboutcompanyPresenter';
 import ApplicantDashboardPresenter from './Presenter/ApplicantDashboardPresenter';
 import RecruiterApplicationPresenter from './Presenter/RecruiterApplicationPresenter';
 import ForgotPasswordPresenter from './Presenter/ForgotPasswordPresenter';
-import { AuthProvider } from './AuthContext';
+import { AuthProvider } from './Model/AuthContext';
 
 function App() {
     return (
