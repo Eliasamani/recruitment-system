@@ -35,7 +35,7 @@ public class SecurityConfig {
             "/error",
             "/errorPage",
             "/api/reset/*",
-            "/api/users/test*" );
+            "/api/users/test*");
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
@@ -67,7 +67,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_ENDPOINTS.toArray(new String[0]))
                         .permitAll() // Public endpoints
-                        .requestMatchers("/api/auth/logout")
+                        .requestMatchers("/api/auth/logout", "/api/users/edit")
                         .authenticated() // Only authenticated users can logout
                         .requestMatchers("/api/recruiter/**")
                         .hasRole("RECRUITER") // Only recruiters can access protected route

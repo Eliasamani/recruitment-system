@@ -16,6 +16,10 @@ import lombok.Getter;
 import lombok.Setter;
 import se.kth.iv1201.recruitment.model.person.Person;
 
+/**
+ * Represents a reset token in the system. A reset token is used to reset a
+ * person's password and username.
+ */
 @Getter
 @Setter
 @Entity

@@ -5,37 +5,28 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-
 /**
- * form for user registration
+ * form for editing user profile
  * backend validation of fields are done here
  * 
- * all fields are obligatory
+ * Username is the only obligatory field
+ * 
  */
 @Getter
 @Setter
-@ToString
-public class RegisterForm {
+public class EditProfileForm {
 
     @NotBlank(message = "Username is left empty ")
     private String username;
 
-    @NotBlank(message = "Password field is empty")
-    private String password;
-
-    @NotBlank(message = "Firstname field is empty")
-    private String firstname;
-
-    @NotBlank(message = "Lastname field is empty")
-    private String lastname;
-
     @Email(message = "invalid email format")
-    @NotBlank(message = "Email field is empty")
     private String email;
 
     @Pattern(regexp = "^\\d{8}-\\d{4}$", message = "invalid person number format, Expected:YYYYMMDD-NNNN")
-    @NotBlank(message = "person number field is empty")
     private String personNumber;
+
+    private String lastname;
+
+    private String firstname;
 
 }
