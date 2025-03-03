@@ -4,6 +4,12 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * form for user login
+ * backend validation of fields are done here
+ * 
+ * all fields are obligatory
+ */
 @Getter
 @Setter
 public class LoginForm {
