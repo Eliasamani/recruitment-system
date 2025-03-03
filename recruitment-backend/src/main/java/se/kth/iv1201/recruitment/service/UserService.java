@@ -113,7 +113,7 @@ public class UserService {
             throw new InvalidSessionException("User edit failed - No token found");
         }
         String usernameToEdit = editProfileForm.getUsername();
-        if (!usernameToEdit.equals(jwtProvider.validateToken(token))) {
+        if (usernameToEdit == null || !usernameToEdit.equals(jwtProvider.validateToken(token))) {
             throw new InvalidSessionException("User edit failed - Logged in user did not match edited user");
         }
         Person personToEdit = repository.findPersonByUsername(usernameToEdit);
