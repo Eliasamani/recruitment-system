@@ -9,12 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockCookie;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.kth.iv1201.recruitment.RecruitmentBackendApplication;
 import se.kth.iv1201.recruitment.model.person.PersonDTO;
 import se.kth.iv1201.recruitment.repository.PersonRepository;
+import se.kth.iv1201.recruitment.security.JwtProvider;
 
 @SpringBootTest(classes = RecruitmentBackendApplication.class)
 @AutoConfigureMockMvc
@@ -26,6 +28,9 @@ public class UserControllerTest {
 
     @Autowired
     private PersonRepository repository;
+
+    @Autowired
+    private JwtProvider jwtProvider;
 
     /**
      * Tests that a user can be registered with the correct format.
@@ -83,6 +88,137 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(
                         content()
-                                .string(containsString("{\"error\":\"Username already exists\"}")));
+                                .string(containsString(
+                                        "{\"error\":\"Username already exists\"}")));
+    }
+
+    @Test
+    void testEditProfileWithAllFields() throws Exception {
+        String contentData = "{\"username\":\"TestRecruiter\",\"email\":\"newEmail@example.com\",\"personNumber\":\"19991212-4444\",\"lastname\":\"newLastName\",\"firstname\":\"newFirstName\"}";
+        String token = jwtProvider.generateToken("TestRecruiter");
+        MockCookie jwtCookie = new MockCookie("jwt", token);
+        mockMvc
+                .perform(
+                        post("/api/users/edit")
+                                .header("Content-Type", "application/json")
+                                .content(contentData).cookie(jwtCookie))
+                .andExpect(status().isOk())
+                .andExpect(
+                        content().string(containsString("User updated successfully")));
+    }
+
+    @Test
+    void testEditProfileWithNoUsername() throws Exception {
+        String contentData = "{\"email\":\"newEmail@example.com\",\"personNumber\":\"19991212-4444\",\"lastname\":\"newLastName\",\"firstname\":\"newFirstName\"}";
+        String token = jwtProvider.generateToken("TestRecruiter");
+        MockCookie jwtCookie = new MockCookie("jwt", token);
+        mockMvc
+                .perform(
+                        post("/api/users/edit")
+                                .header("Content-Type", "application/json")
+                                .content(contentData).cookie(jwtCookie))
+                .andExpect(status().is(400));
+
+    }
+
+    @Test
+    void testEditProfileWithWrongUsername() throws Exception {
+        String contentData = "{\"username\":\"AustinMueller\",\"email\":\"newEmail@example.com\",\"personNumber\":\"19991212-4444\",\"lastname\":\"newLastName\",\"firstname\":\"newFirstName\"}";
+        String token = jwtProvider.generateToken("TestRecruiter");
+        MockCookie jwtCookie = new MockCookie("jwt", token);
+        mockMvc
+                .perform(
+                        post("/api/users/edit")
+                                .header("Content-Type", "application/json")
+                                .content(contentData).cookie(jwtCookie))
+                .andExpect(status().is(400))
+                .andExpect(content().string(containsString("Invalid session")));
+
+    }
+
+    @Test
+    void testEditProfileWithNonExistingSession() throws Exception {
+        String contentData = "{\"username\":\"AustinMueller\",\"email\":\"newEmail@example.com\",\"personNumber\":\"19991212-4444\",\"lastname\":\"newLastName\",\"firstname\":\"newFirstName\"}";
+        mockMvc
+                .perform(
+                        post("/api/users/edit")
+                                .header("Content-Type", "application/json")
+                                .content(contentData))
+                .andExpect(status().is(403));
+
+    }
+
+    @Test
+    void testEditProfileWithOnlyEmail() throws Exception {
+        String contentData = "{\"username\":\"TestRecruiter\",\"email\":\"newEmail@example.com\"}";
+        String token = jwtProvider.generateToken("TestRecruiter");
+        MockCookie jwtCookie = new MockCookie("jwt", token);
+        mockMvc
+                .perform(
+                        post("/api/users/edit")
+                                .header("Content-Type", "application/json")
+                                .content(contentData).cookie(jwtCookie))
+                .andExpect(status().isOk())
+                .andExpect(
+                        content().string(containsString("User updated successfully")));
+    }
+
+    @Test
+    void testEditProfileWithOnlyPersonNumber() throws Exception {
+        String contentData = "{\"username\":\"TestRecruiter\",\"personNumber\":\"19991212-4444\"}";
+        String token = jwtProvider.generateToken("TestRecruiter");
+        MockCookie jwtCookie = new MockCookie("jwt", token);
+        mockMvc
+                .perform(
+                        post("/api/users/edit")
+                                .header("Content-Type", "application/json")
+                                .content(contentData).cookie(jwtCookie))
+                .andExpect(status().isOk())
+                .andExpect(
+                        content().string(containsString("User updated successfully")));
+    }
+
+    @Test
+    void testEditProfileWithOnlyLastName() throws Exception {
+        String contentData = "{\"username\":\"TestRecruiter\",\"lastname\":\"newLastName\"}";
+        String token = jwtProvider.generateToken("TestRecruiter");
+        MockCookie jwtCookie = new MockCookie("jwt", token);
+        mockMvc
+                .perform(
+                        post("/api/users/edit")
+                                .header("Content-Type", "application/json")
+                                .content(contentData).cookie(jwtCookie))
+                .andExpect(status().isOk())
+                .andExpect(
+                        content().string(containsString("User updated successfully")));
+    }
+
+    @Test
+    void testEditProfileWithOnlyFirstName() throws Exception {
+        String contentData = "{\"username\":\"TestRecruiter\",\"firstname\":\"newFirstName\"}";
+        String token = jwtProvider.generateToken("TestRecruiter");
+        MockCookie jwtCookie = new MockCookie("jwt", token);
+        mockMvc
+                .perform(
+                        post("/api/users/edit")
+                                .header("Content-Type", "application/json")
+                                .content(contentData).cookie(jwtCookie))
+                .andExpect(status().isOk())
+                .andExpect(
+                        content().string(containsString("User updated successfully")));
+    }
+
+    @Test
+    void testEditProfileWithAlreadyFilledPersonNumber() throws Exception {
+        String contentData = "{\"username\":\"TestApplicant\",\"personNumber\":\"19991212-4444\"}";
+        String token = jwtProvider.generateToken("TestApplicant");
+        MockCookie jwtCookie = new MockCookie("jwt", token);
+        mockMvc
+                .perform(
+                        post("/api/users/edit")
+                                .header("Content-Type", "application/json")
+                                .content(contentData).cookie(jwtCookie))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("Field already filled")));
     }
 }
