@@ -4,12 +4,18 @@ import SignupView from '../View/SignupView';
 import { SignupFormModel, validateSignupForm, registerUser } from '../Model/SignupModel';
 
 export default function SignupPresenter() {
+    // Form state for user registration.
     const [formData, setFormData] = useState(SignupFormModel);
     const [errors, setErrors] = useState({});
     const [submissionError, setSubmissionError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
+    /**
+     * Handles changes to form input fields.
+     *
+     * @param {Object} event - The event object.
+     */
     const onChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
@@ -17,7 +23,11 @@ export default function SignupPresenter() {
             [name]: value,
         }));
     };
-
+    /**
+     * Handles form submission for user registration.
+     *
+     * @param {Object} event - The event object.
+     */
     const onSubmit = async (e) => {
         e.preventDefault();
         

@@ -1,6 +1,6 @@
 
 export const fetchApplications = async () => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/applications`);
+    const response = await fetch(process.env.REACT_APP_API_URL + '/api/applications');
     if (!response.ok) {
         throw new Error('Failed to fetch applications');
     }

@@ -1,3 +1,10 @@
+/**
+ * ForgotPasswordView.jsx
+ *
+ * This component renders the user interface for the Forgot Password feature.
+ * It displays forms for requesting a reset code and for resetting credentials.
+ * Data and event handlers are received via props.
+ */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Components/Header';

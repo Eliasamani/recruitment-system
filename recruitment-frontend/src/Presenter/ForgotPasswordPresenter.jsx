@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import ForgotPasswordView from '../View/ForgotPasswordView';
-import { ForgotPasswordFormModel, validateForgotPasswordForm, requestResetCode, resetPassword } from '../Model/ForgotPasswordModel';
+import {ForgotPasswordFormModel,validateForgotPasswordForm,requestResetCode,resetPassword} from '../Model/ForgotPasswordModel';
 
 const ForgotPasswordPresenter = () => {
+    // Form state for forgot password
     const [formData, setFormData] = useState(ForgotPasswordFormModel);
     const [requestError, setRequestError] = useState('');
     const [requestSuccess, setRequestSuccess] = useState('');
@@ -10,8 +11,13 @@ const ForgotPasswordPresenter = () => {
     const [resetError, setResetError] = useState('');
     const [resetSuccess, setResetSuccess] = useState('');
 
-    const handleRequestCode = async (e) => {
-        e.preventDefault();
+    /**
+     * Handles the event to request a reset code.
+     *
+     * @param {Object} event - The event object.
+     */
+    const handleRequestCode = async (event) => {
+        event.preventDefault();
         setRequestError('');
         setRequestSuccess('');
 
@@ -24,8 +30,13 @@ const ForgotPasswordPresenter = () => {
         }
     };
 
-    const handleResetPassword = async (e) => {
-        e.preventDefault();
+    /**
+     * Handles the event to reset the password.
+     *
+     * @param {Object} event - The event object.
+     */
+    const handleResetPassword = async (event) => {
+        event.preventDefault();
         setResetError('');
         setResetSuccess('');
 
@@ -55,7 +66,7 @@ const ForgotPasswordPresenter = () => {
             requestSuccess={requestSuccess}
             handleRequestCode={handleRequestCode}
             codeSent={codeSent}
-            resetEmail={formData.resetEmail}
+            resetEmail={formData.resetEmail}  // Note: Ensure that `resetEmail` is part of your model if needed.
             setResetEmail={(value) => setFormData({ ...formData, resetEmail: value })}
             username={formData.username}
             setUsername={(value) => setFormData({ ...formData, username: value })}

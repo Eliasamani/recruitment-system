@@ -1,3 +1,9 @@
+/**
+ * SignupView.jsx
+ *
+ * This component renders the user interface for the Sign Up form.
+ * It displays form fields for user registration along with validation messages.
+ */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Components/Header';

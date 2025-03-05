@@ -1,12 +1,37 @@
+/**
+ * AuthContext.jsx
+ *
+ * This module provides the authentication context for the application.
+ * It includes functionality for session checking, login, logout,
+ * as well as form validation and redirect logic.
+ * 
+ */
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // null means not authenticated
-  const [loading, setLoading] = useState(true);
 
-  const checkSession = async () => {
+/**
+ * AuthProvider component.
+ *
+ * Provides authentication state and functions (checkSession, login, logout)
+ * to its child components.
+ *
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode} props.children - Child components.
+ */
+export const AuthProvider = ({ children }) => {
+ // State indicating the current user (null means not authenticated)
+ const [user, setUser] = useState(null);
+ // State indicating whether a session check is in progress
+ const [loading, setLoading] = useState(true);
+
+ /**
+  * Checks the current user session from the back-end.
+  * Updates the user state based on the server response.
+  */
+   const checkSession = async () => {
     setLoading(true);
     try {
       const response = await fetch(
@@ -39,6 +64,13 @@ export const AuthProvider = ({ children }) => {
     checkSession();
   }, []);
 
+  /**
+     * Attempts to log in using the provided credentials.
+     *
+     * @param {string} username - The username.
+     * @param {string} password - The password.
+     * @returns {boolean} True if login is successful; otherwise, false.
+     */
   const login = async (username, password) => {
     try {
       const response = await fetch(
@@ -62,6 +94,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+   /**
+     * Logs out the current user.
+     */
   const logout = async () => {
     try {
       const response = await fetch(
@@ -82,5 +117,9 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
+/**
+ * Custom hook to access the authentication context.
+ *
+ * @returns {Object} The authentication context.
+ */
 export const useAuth = () => useContext(AuthContext);

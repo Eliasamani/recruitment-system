@@ -5,18 +5,23 @@ import LandingpageView from '../View/LandingpageView.jsx';
 export default function LandingpagePresenter() {
     const navigate = useNavigate();
 
-    // Navigate to the login page
+    /**
+     * Navigates to the Sign In page.
+     */
     const onLoginClick = () => {
         navigate('/signin');
     };
 
-    // Navigate to the signup page
+    /**
+     * Navigates to the Sign Up page.
+     */
     const onGetStartedClick = () => {
         navigate('/signup');
     };
 
-    // Navigate to the about page when the company name is clicked
-    const onCompanyClick = () => {
+    /**
+     * Navigates to the About page.
+     */    const onCompanyClick = () => {
         navigate('/about');
     };
 

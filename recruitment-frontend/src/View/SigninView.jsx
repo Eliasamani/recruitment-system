@@ -1,3 +1,10 @@
+/**
+ * SigninView.jsx
+ *
+ * This component renders the Sign In user interface.
+ * It presents a form for entering username and password, and includes links for
+ * password recovery and account registration.
+ */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Components/Header';

@@ -1,3 +1,11 @@
+/**
+ * AboutCompanyPresenter.jsx
+ *
+ * This component presents the "About HireMe" page.
+ * It uses a reusable Header component and displays static information about the company.
+ *
+ * Following Oracle’s Java coding conventions for naming, formatting, and documentation.
+ */
 import React from 'react';
 import Header from '../Components/Header'; // Import the reusable Header
 

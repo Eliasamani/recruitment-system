@@ -1,3 +1,10 @@
+/**
+ * ApplicantDashboardView.jsx
+ *
+ * This component renders the Applicant Dashboard user interface.
+ * It receives data and event handlers via props.
+ */
+
 import React from 'react';
 import '../App.css'; // Make sure you apply the updated CSS here
 import Header from '../Components/Header';
