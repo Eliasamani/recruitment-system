@@ -2,7 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Components/Header';
 
-export default function SignupView  ({ formData, errors, submissionError, loading, onChange, onSubmit }){
+const SignupView = ({ 
+    formData, 
+    errors, 
+    submissionError, 
+    loading, 
+    onChange, 
+    onSubmit,
+ }) => (
     <div>
         <Header />
         <form onSubmit={onSubmit}>
@@ -101,4 +108,6 @@ export default function SignupView  ({ formData, errors, submissionError, loadin
             </Link>
         </div>
     </div>
-};
+);
+
+export default SignupView;

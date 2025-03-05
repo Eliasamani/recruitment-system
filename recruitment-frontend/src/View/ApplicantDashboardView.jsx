@@ -2,7 +2,7 @@ import React from 'react';
 import '../App.css'; // Make sure you apply the updated CSS here
 import Header from '../Components/Header';
 
-export default function ApplicantDashboardView  ({
+const ApplicantDashboardView = ({
     user,
     competences,
     status,
@@ -21,8 +21,7 @@ export default function ApplicantDashboardView  ({
     onAddAvailability,
     onSubmit,
     onCancel,
-})  {
-    return (
+}) => (
         <div>
             <Header />
             <div className="applicant-page">
@@ -101,5 +100,6 @@ export default function ApplicantDashboardView  ({
                 </div>
             </div>
         </div>
-    );
-};
+  );
+
+export default ApplicantDashboardView;

@@ -1,8 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Header from '../Components/Header';
 
-export default function SigninView ({ formData, errors, submissionError, onChange, onSubmit }) {
+const SigninView = ({ 
+  formData, 
+  errors, 
+  submissionError, 
+  onChange, 
+  onSubmit,
+ }) => (
   <>
+  <Header />
+ 
+  <div>
     <form onSubmit={onSubmit}>
       <h2>Sign In</h2>
 
@@ -51,6 +61,8 @@ export default function SigninView ({ formData, errors, submissionError, onChang
         <button type="button">Sign Up</button>
       </Link>
     </div>
+  </div>
   </>
-};
+);
+export default SigninView;
 

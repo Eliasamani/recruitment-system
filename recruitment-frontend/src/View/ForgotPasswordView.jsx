@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Components/Header';
 
-export default function ForgotPasswordView ({
+const ForgotPasswordView =({
     email,
     setEmail,
     requestError,
@@ -19,8 +19,8 @@ export default function ForgotPasswordView ({
     setResetCode,
     resetError,
     resetSuccess,
-    handleResetPassword
-}) {
+    handleResetPassword,
+}) =>(
     <div>
         <Header />
         <div className="applicant-page">
@@ -110,5 +110,5 @@ export default function ForgotPasswordView ({
             </div>
         </div>
     </div>
-};
-
+);
+export default ForgotPasswordView;

@@ -2,12 +2,13 @@ import React from 'react';
 import Header from '../Components/Header.jsx'; // Import the reusable Header
 
 
-const LandingPageView = ({ onLoginClick, onGetStartedClick, onCompanyClick }) => {
-    return (
+const LandingPageView = ({ 
+    onLoginClick, 
+    onGetStartedClick, 
+    onCompanyClick,
+}) => (
         <div className="landing-page">
-            {/* Use the reusable Header component */}
             <Header />
-
             <main className="landing-body">
                 <h1>Stand out with an impressive resume</h1>
                 <p>
@@ -18,5 +19,4 @@ const LandingPageView = ({ onLoginClick, onGetStartedClick, onCompanyClick }) =>
             </main>
         </div>
     );
-};
 export default LandingPageView;

@@ -24,7 +24,7 @@ export const validateForgotPasswordForm = (formData) => {
 };
 
 export const requestResetCode = async (email) => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/reset/code`, {
+    const response = await fetch(process.env.REACT_APP_API_URL + '/api/reset/code', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -39,7 +39,7 @@ export const requestResetCode = async (email) => {
 };
 
 export const resetPassword = async (userData) => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/reset/password`, {
+    const response = await fetch(process.env.REACT_APP_API_URL + '/api/reset/password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import SignupView from '../View/SignupView.jsx';
-import { SignupFormModel } from '../Model/model.jsx';
-import Header from '../Components/Header.jsx';
+import { useNavigate } from 'react-router-dom';
+import SignupView from '../View/SignupView';
+import { SignupFormModel, validateSignupForm, registerUser } from '../Model/SignupModel';
 
 export default function SignupPresenter() {
     const [formData, setFormData] = useState(SignupFormModel);
@@ -19,55 +18,28 @@ export default function SignupPresenter() {
         }));
     };
 
-    const validate = () => {
-        const newErrors = {};
-        if (!formData.firstname.trim()) newErrors.firstName = 'First name is required.';
-        if (!formData.lastname.trim()) newErrors.lastName = 'Last name is required.';
-        if (!formData.personNumber.trim()) newErrors.personNumber = 'Personnumber is required.';
-        if (!formData.username.trim()) newErrors.username = 'Username is required.';
-        if (!formData.email.trim()) newErrors.email = 'Email is required.';
-        if (!formData.password.trim()) newErrors.password = 'Password is required.';
-
-        // Personnumber validation
-        const personNumberRegex = /^\d{8}-\d{4}$/;
-        if (formData.personNumber && !personNumberRegex.test(formData.personNumber.trim())) {
-            newErrors.personNumber = 'Invalid format (expected YYYYMMDD-XXXX)';
-        }
-
-        // Email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (formData.email && !emailRegex.test(formData.email)) {
-            newErrors.email = 'Invalid email format';
-        }
-
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
-
     const onSubmit = async (e) => {
         e.preventDefault();
-        if (!validate()) return;
-        setLoading(true); // Start loading
-        setSubmissionError(''); // Reset submission error
+        
+        // Validate the form
+        const { errors: validationErrors, isValid } = validateSignupForm(formData);
+        setErrors(validationErrors);
+        if (!isValid) return;
+        
+        // Process submission
+        setLoading(true);
+        setSubmissionError('');
+        
         try {
-            const response = await fetch(process.env.REACT_APP_API_URL + '/api/users/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    firstname: formData.firstname,
-                    lastname: formData.lastname,
-                    personNumber: formData.personNumber,
-                    username: formData.username,
-                    email: formData.email,
-                    password: formData.password,
-                }),
+            await registerUser({
+                firstname: formData.firstname,
+                lastname: formData.lastname,
+                personNumber: formData.personNumber,
+                username: formData.username,
+                email: formData.email,
+                password: formData.password,
             });
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Registration failed');
-            }
+            
             // Redirect to Signin page with username as a query parameter
             navigate(`/signin?username=${encodeURIComponent(formData.username)}`);
         } catch (error) {
@@ -76,21 +48,18 @@ export default function SignupPresenter() {
                 error instanceof Error ? error.message : 'An unexpected error occurred'
             );
         } finally {
-            setLoading(false); // Stop loading
+            setLoading(false);
         }
     };
 
     return (
-        <div>
-            <Header />
-            <SignupView
-                formData={formData}
-                errors={errors}
-                submissionError={submissionError}
-                loading={loading} // Pass loading state to the View
-                onChange={onChange}
-                onSubmit={onSubmit}
-            />
-        </div>
+        <SignupView
+            formData={formData}
+            errors={errors}
+            submissionError={submissionError}
+            loading={loading}
+            onChange={onChange}
+            onSubmit={onSubmit}
+        />
     );
 }
