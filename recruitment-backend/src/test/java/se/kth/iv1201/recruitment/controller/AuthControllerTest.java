@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import se.kth.iv1201.recruitment.RecruitmentBackendApplication;
 import se.kth.iv1201.recruitment.security.JwtProvider;
-import se.kth.iv1201.recruitment.service.UserService;
 
 @SpringBootTest(classes = RecruitmentBackendApplication.class)
 @AutoConfigureMockMvc
@@ -27,9 +26,6 @@ public class AuthControllerTest {
 
     @Autowired
     private JwtProvider jwtProvider;
-
-    @Autowired
-    private UserService userService;
 
     /**
      * Tests the login endpoint with valid credentials to ensure it returns a status
@@ -115,5 +111,62 @@ public class AuthControllerTest {
                 .andExpect(content().string(containsString("Logged out successfully")))
                 .andExpect(cookie().value("jwt", ""))
                 .andExpect(cookie().maxAge("jwt", 0));
+    }
+
+    /**
+     * Verifies that the login endpoint returns a 400 Bad Request status
+     * when the username field is left blank in the login request.
+     *
+     * It ensures that the response contains an appropriate error message.
+     *
+     * @throws Exception if the login request fails
+     */
+
+    @Test
+    void testLoginWithBlankUsername() throws Exception {
+        mockMvc
+                .perform(
+                        post("/api/auth/login")
+                                .header("Content-Type", "application/json")
+                                .content("{\"username\":\"\", \"password\":\"testpassword\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("Username is left empty")));
+    }
+
+    /**
+     * Verifies that the login endpoint returns a 400 Bad Request status
+     * when the password field is left blank in the login request.
+     * 
+     * It ensures that the response contains an appropriate error message.
+     * 
+     * @throws Exception if the login request fails
+     */
+    @Test
+    void testLoginWithBlankPassword() throws Exception {
+        mockMvc
+                .perform(
+                        post("/api/auth/login")
+                                .header("Content-Type", "application/json")
+                                .content("{\"username\":\"TestRecruiter\", \"password\":\"\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("Password field is empty")));
+    }
+
+    /**
+     * Verifies that the login endpoint returns a 400 Bad Request status when given
+     * empty username and password fields.
+     * 
+     * @throws Exception if the login request fails
+     */
+    @Test
+    void testLoginWithBlankUsernameAndPassword() throws Exception {
+        mockMvc
+                .perform(
+                        post("/api/auth/login")
+                                .header("Content-Type", "application/json")
+                                .content("{\"username\":\"\", \"password\":\"\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("Username is left empty")))
+                .andExpect(content().string(containsString("Password field is empty")));
     }
 }

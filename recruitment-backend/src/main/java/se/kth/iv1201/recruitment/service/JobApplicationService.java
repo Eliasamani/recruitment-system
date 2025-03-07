@@ -49,7 +49,7 @@ public class JobApplicationService {
      * @return
      */
     public JobApplication saveApplication(Person person, List<Competence> competences,
-            List<Availability> availabilities){
+            List<Availability> availabilities) {
         if (applicationRepository.findByPerson(person) != null) {
             throw new ApplicationAlreadyExistsException("Application Already Exist");
         }
@@ -70,7 +70,7 @@ public class JobApplicationService {
      */
     public JobApplicationDTO findApplicationById(long id) {
         return applicationRepository.findById(id)
-                .orElseThrow(() -> new ApplicationNotFoundException("Application "+id+" not found"));
+                .orElseThrow(() -> new ApplicationNotFoundException(id));
     }
 
     /**
@@ -82,10 +82,10 @@ public class JobApplicationService {
      */
     public void updateApplicationStatus(long applicationId, JobApplication.Status status) {
         JobApplication application = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new ApplicationNotFoundException("Application "+applicationId+" not found"));
+                .orElseThrow(() -> new ApplicationNotFoundException(applicationId));
 
         application.setStatus(status);
-        LOGGER.info("Set status "+status+" for application: "+ applicationId);
+        LOGGER.info("Set status " + status + " for application: " + applicationId);
         applicationRepository.save(application);
     }
 }

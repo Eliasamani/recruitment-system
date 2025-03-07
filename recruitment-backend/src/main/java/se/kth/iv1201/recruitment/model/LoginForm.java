@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LoginForm {
-    @NotBlank(message = "Username is left empty ")
+    @NotBlank(message = "Username is left empty")
     private String username;
 
     @NotBlank(message = "Password field is empty")

@@ -41,27 +41,30 @@ public class ResetServiceTest {
     private PasswordEncoder passwordEncoder;
     @Mock
     private JavaMailSender javaMailSender;
-/**
- * Tests that an exception is thrown if the email doesn't exist
- */
+
+    /**
+     * Tests that an exception is thrown if the email doesn't exist
+     */
     @Test
     void testGenerateTokenWithNonExistingEmail() {
         assertThrows(NonExistingEmailException.class,
                 () -> resetService.generateToken("nonexistingemail"));
 
     }
-/**
- * Tests that a valid code is returend if an existing code is given
- */
+
+    /**
+     * Tests that a valid code is returend if an existing code is given
+     */
     @Test
     void testGenerateCodeWithCorrectEmail() {
         ResetTokenDTO genratedToken = resetService.generateToken("appltest@example.com");
         assertNotNull(genratedToken);
         assertNotNull(resetTokenRepository.findResetTokenByPersonAndValidTrue(genratedToken.getPerson()));
     }
-/**
- * Tests that it is possible to reset both username and password
- */
+
+    /**
+     * Tests that it is possible to reset both username and password
+     */
     @Test
     void testResetUsernameAndPassword() {
         assertNotEquals(personRepository.findPersonByEmail("appltest@example.com").getUsername(), "resetUsername");
@@ -77,9 +80,10 @@ public class ResetServiceTest {
         assertTrue(passwordEncoder.matches("resetTestPass",
                 personRepository.findPersonByEmail("appltest@example.com").getPassword()));
     }
-/**
- * Tests that it is possible to reset only password
- */
+
+    /**
+     * Tests that it is possible to reset only password
+     */
     @Test
     void testResetUsernameAndPasswordWithOnlyPassword() {
         assertEquals(personRepository.findPersonByEmail("appltest@example.com").getUsername(), "TestApplicant");
@@ -95,9 +99,10 @@ public class ResetServiceTest {
         assertTrue(passwordEncoder.matches("resetTestPass",
                 personRepository.findPersonByEmail("appltest@example.com").getPassword()));
     }
-/**
- * Tests that it is possible to reset only username
- */
+
+    /**
+     * Tests that it is possible to reset only username
+     */
     @Test
     void testResetUsernameWithOnlyUsername() {
         assertNotEquals(personRepository.findPersonByEmail("appltest@example.com").getUsername(), "resetUsername");
@@ -113,9 +118,10 @@ public class ResetServiceTest {
         assertTrue(passwordEncoder.matches("testpassword",
                 personRepository.findPersonByEmail("appltest@example.com").getPassword()));
     }
-/**
- * Tests that an error is thrown if incorrect email
- */
+
+    /**
+     * Tests that an error is thrown if incorrect email
+     */
     @Test
     void testResetUsernameAndPasswordWithNonExistingEmail() {
         UserPassResetForm userPassResetForm = new UserPassResetForm();
@@ -126,9 +132,11 @@ public class ResetServiceTest {
 
         assertThrows(NonExistingEmailException.class, () -> resetService.resetUsernameAndPassword(userPassResetForm));
     }
-/**
- * Tests that an exception is thrown if the username that the user is trying to reset to already exists
- */
+
+    /**
+     * Tests that an exception is thrown if the username that the user is trying to
+     * reset to already exists
+     */
     @Test
     void testResetUsernameAndPasswordWithAlreadyExistingUserName() {
         UserPassResetForm userPassResetForm = new UserPassResetForm();
@@ -139,9 +147,10 @@ public class ResetServiceTest {
 
         assertThrows(UserAlreadyExistsException.class, () -> resetService.resetUsernameAndPassword(userPassResetForm));
     }
-/**
- * Tests that an exception is thrown if an incorrect token is used
- */
+
+    /**
+     * Tests that an exception is thrown if an incorrect token is used
+     */
     @Test
     void testResetUsernameAndPasswordWithIncorrectToken() {
         UserPassResetForm userPassResetForm = new UserPassResetForm();
@@ -152,9 +161,11 @@ public class ResetServiceTest {
 
         assertThrows(IncorrectResetCodeException.class, () -> resetService.resetUsernameAndPassword(userPassResetForm));
     }
-/**
- * Tests that an exception is thrown if token is invalid i.e. alredy used or a new one has been issued
- */
+
+    /**
+     * Tests that an exception is thrown if token is invalid i.e. alredy used or a
+     * new one has been issued
+     */
     @Test
     void testResetUsernameAndPasswordWithInvalidToken() {
         UserPassResetForm userPassResetForm = new UserPassResetForm();
@@ -170,9 +181,10 @@ public class ResetServiceTest {
 
         assertThrows(IncorrectResetCodeException.class, () -> resetService.resetUsernameAndPassword(userPassResetForm));
     }
-/**
- * Tests that an exception is thrown if token is expired
- */
+
+    /**
+     * Tests that an exception is thrown if token is expired
+     */
     @Test
     void testResetUsernameAndPasswordWithExpiredToken() {
         UserPassResetForm userPassResetForm = new UserPassResetForm();
