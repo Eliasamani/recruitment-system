@@ -5,7 +5,6 @@ import {
   ProfileFormModel,
   validateProfileForm,
   updateProfile,
-  getPersonNumberResetLink
 } from '../Model/ProfileModel';
 
 const ProfilePresenter = () => {
@@ -52,7 +51,8 @@ const ProfilePresenter = () => {
       setUpdateError(Object.values(validation.errors).join(' '));
       return;
     }
-
+    if (!personNumberEditable)
+      formData.personNumber = null;
     try {
       await updateProfile(formData);
       setUpdateSuccess('Profile updated successfully.');
@@ -76,7 +76,6 @@ const ProfilePresenter = () => {
       updateError={updateError}
       updateSuccess={updateSuccess}
       handleUpdateProfile={handleUpdateProfile}
-      personNumberResetLink={getPersonNumberResetLink(formData.email)}
     />
   );
 };

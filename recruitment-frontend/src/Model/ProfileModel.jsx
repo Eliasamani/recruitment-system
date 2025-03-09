@@ -61,7 +61,8 @@ export const ProfileFormModel = {
    * @throws {Error} If the update fails.
    */
   export const updateProfile = async (profileData) => {
-    const response = await fetch(process.env.REACT_APP_API_URL + '/api/users/edit', {
+    const response = await fetch(process.env.REACT_APP_API_URL + '/api/users/edit',
+      {credentials: "include",
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(profileData)
