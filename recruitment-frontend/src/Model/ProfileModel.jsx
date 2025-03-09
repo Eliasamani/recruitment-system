@@ -14,10 +14,11 @@
 export const ProfileFormModel = {
     firstName: '',
     lastName: '',
-    username: '',
     email: '',
-    password: ''
+    username:'',
+    personNumber:''
   };
+
   
   /**
    * Validates the profile form data.
@@ -34,9 +35,7 @@ export const ProfileFormModel = {
     if (!formData.lastName.trim()) {
       errors.lastName = 'Last name is required.';
     }
-    if (!formData.username.trim()) {
-      errors.username = 'Username is required.';
-    }
+  
     if (!formData.email.trim()) {
       errors.email = 'Email is required.';
     }
@@ -44,8 +43,8 @@ export const ProfileFormModel = {
     if (formData.email && !emailRegex.test(formData.email)) {
       errors.email = 'Invalid email format.';
     }
-    if (!formData.password.trim()) {
-      errors.password = 'Password is required.';
+    if (!formData.personNumber.trim()) {
+      errors.personNumber = 'PersonNumber is required.';
     }
   
     return {
@@ -62,7 +61,7 @@ export const ProfileFormModel = {
    * @throws {Error} If the update fails.
    */
   export const updateProfile = async (profileData) => {
-    const response = await fetch(process.env.REACT_APP_API_URL + '/api/reset/password', {
+    const response = await fetch(process.env.REACT_APP_API_URL + '/api/users/edit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(profileData)
@@ -74,15 +73,5 @@ export const ProfileFormModel = {
     }
   
     return await response.json();
-  };
-  
-  /**
-   * Generates a mailto link for requesting a person number reset.
-   *
-   * @param {string} email - The user's email address.
-   * @returns {string} A mailto link that opens the user's email client.
-   */
-  export const getPersonNumberResetLink = (email) => {
-    return `mailto:support@yourcompany.com?subject=PersonNumber Reset Request&body=Please reset my person number. My email: ${email}`;
   };
   

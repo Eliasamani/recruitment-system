@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProfileView from '../View/ProfileView';
+import { useAuth } from "../Model/AuthContext.jsx";
 import {
   ProfileFormModel,
   validateProfileForm,
@@ -7,19 +8,34 @@ import {
   getPersonNumberResetLink
 } from '../Model/ProfileModel';
 
-/**
- * ProfilePresenter component.
- *
- * This component manages the state and event handling for the Profile functionality.
- * It allows the user (applicant or recruiter) to update their first name, last name,
- * username, email, and password. For resetting the person number, it provides a mailto link.
- *
- * @component
- */
 const ProfilePresenter = () => {
+  const { user } = useAuth();
   const [formData, setFormData] = useState(ProfileFormModel);
   const [updateError, setUpdateError] = useState('');
   const [updateSuccess, setUpdateSuccess] = useState('');
+
+  // When the user data is available from useAuth, initialize formData.
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        ...ProfileFormModel,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        personNumber: user.personNumber,
+        email: user.email,
+      });
+    }
+  }, [user]);
+
+  
+  // If user.personNumber exists (from useAuth), then editing is disabled.
+  const personNumberEditable = !user?.personNumber;
+  const personNumberValue = user?.personNumber || formData.personNumber;
+  // Only update personNumber in state if the field is editable.
+  const setPersonNumberProp = personNumberEditable
+    ? (value) => setFormData({ ...formData, personNumber: value })
+    : () => {};
 
   /**
    * Handles the event to update the profile.
@@ -47,16 +63,16 @@ const ProfilePresenter = () => {
 
   return (
     <ProfileView
+      username={formData.username}
       firstName={formData.firstName}
       setFirstName={(value) => setFormData({ ...formData, firstName: value })}
       lastName={formData.lastName}
       setLastName={(value) => setFormData({ ...formData, lastName: value })}
-      username={formData.username}
-      setUsername={(value) => setFormData({ ...formData, username: value })}
       email={formData.email}
       setEmail={(value) => setFormData({ ...formData, email: value })}
-      password={formData.password}
-      setPassword={(value) => setFormData({ ...formData, password: value })}
+      personNumber={personNumberValue}
+      setPersonNumber={setPersonNumberProp}
+      personNumberEditable={personNumberEditable}
       updateError={updateError}
       updateSuccess={updateSuccess}
       handleUpdateProfile={handleUpdateProfile}
