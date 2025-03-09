@@ -1,3 +1,4 @@
+// src/Components/Header.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Model/AuthContext.jsx';
@@ -31,7 +32,7 @@ export default function Header() {
         }
     };
 
-    // Handle logout and redirect to landing page
+    // Handle logout and redirect to signin
     const onLogout = async () => {
         await logout();
         navigate('/signin');
@@ -58,6 +59,13 @@ export default function Header() {
                     <>
                         <button className="home-btn" onClick={onHomeClick} style={styles.button}>
                             Home
+                        </button>
+                        <button
+                            className="profile-btn"
+                            onClick={() => navigate('/profile')}
+                            style={styles.button}
+                        >
+                            Profile
                         </button>
                         <button className="logout-btn" onClick={onLogout} style={styles.logoutButton}>
                             Logout
@@ -86,9 +94,6 @@ const styles = {
         padding: '1rem 2rem',
         backgroundColor: '#f8f9fa',
         boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    },
-    logo: {
-        height: '40px',
     },
     headerRight: {
         display: 'flex',

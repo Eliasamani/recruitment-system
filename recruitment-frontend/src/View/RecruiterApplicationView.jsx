@@ -1,6 +1,23 @@
 import React from "react";
 
-export default function RecruiterApplicationView({
+/**
+ * RecruiterApplicationView component.
+ *
+ * This component renders the recruiter applications view. It displays a table of job applications,
+ * each with options to show/hide details, approve, or reject the application.
+ * It also handles loading and error states.
+ *
+ * @constant
+ * @param {Object[]} applications - Array of application objects.
+ * @param {boolean} loading - Indicates whether the applications are still loading.
+ * @param {string} error - Error message to display, if any.
+ * @param {function} fetchApplicationDetails - Callback to fetch detailed data for an application.
+ * @param {Object} expandedApplications - Map indicating which application details are expanded.
+ * @param {function} handleStatusChange - Callback to update the status of an application.
+ * @param {function} onBack - Callback for navigating back (if applicable).
+ * @returns {JSX.Element} The recruiter applications view.
+ */
+const RecruiterApplicationView = ({
     applications,
     loading,
     error,
@@ -8,7 +25,7 @@ export default function RecruiterApplicationView({
     expandedApplications,
     handleStatusChange,
     onBack,
-}) {
+}) => {
     if (loading) return <p style={styles.loadingContainer}>Loading applications...</p>;
     if (error) return <p style={styles.errorContainer}>{error}</p>;
 
@@ -98,7 +115,7 @@ export default function RecruiterApplicationView({
             </table>
         </div>
     );
-}
+};
 
 const styles = {
     container: {
@@ -208,3 +225,5 @@ const styles = {
         color: "#d00",
     },
 };
+
+export default RecruiterApplicationView;
