@@ -129,8 +129,7 @@ public class AuthControllerTest {
                         post("/api/auth/login")
                                 .header("Content-Type", "application/json")
                                 .content("{\"username\":\"\", \"password\":\"testpassword\"}"))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("Username is left empty")));
+                .andExpect(status().isBadRequest());
     }
 
     /**
@@ -148,8 +147,7 @@ public class AuthControllerTest {
                         post("/api/auth/login")
                                 .header("Content-Type", "application/json")
                                 .content("{\"username\":\"TestRecruiter\", \"password\":\"\"}"))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("Password field is empty")));
+                .andExpect(status().isBadRequest());
     }
 
     /**
@@ -165,8 +163,6 @@ public class AuthControllerTest {
                         post("/api/auth/login")
                                 .header("Content-Type", "application/json")
                                 .content("{\"username\":\"\", \"password\":\"\"}"))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("Username is left empty")))
-                .andExpect(content().string(containsString("Password field is empty")));
+                .andExpect(status().isBadRequest());
     }
 }

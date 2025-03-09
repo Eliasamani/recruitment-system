@@ -218,25 +218,6 @@ public class ExceptionController implements ErrorController {
     }
 
     /**
-     * Handles validation exceptions from @Valid annotated objects in the request
-     * body.
-     * 
-     * @param ex the exception to be handled
-     * @return a ResponseEntity containing a JSON object with a list of error
-     *         messages
-     *         indicating which fields were invalid
-     */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        List<String> errors = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(FieldError::getDefaultMessage)
-                .collect(Collectors.toList());
-        return ResponseEntity.badRequest().body(errors);
-    }
-
-    /**
      * Handles an InvalidStatusException, which is thrown when the user tries to
      * update an application with an invalid status.
      * 
