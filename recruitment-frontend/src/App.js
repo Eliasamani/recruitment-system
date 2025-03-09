@@ -42,6 +42,7 @@ function App() {
                         <Route path="/about" element={<AboutcompanyPresenter />} />
                         <Route path="/applicant/dashboard" element={<ApplicantDashboardPresenter />} />
                         <Route path="/recruiter/applications" element={<RecruiterApplicationPresenter />} />
+                        <Route path="/recruiter/dashboard" element={<RecruiterApplicationPresenter />} />
                         <Route path="/forgot-password" element={<ForgotPasswordPresenter />} />
                         <Route path="/profile" element={<ProfilePresenter />} /> {/* New Profile route */}
                         <Route path="/unauthorized" element={<h1>Unauthorized</h1>} />

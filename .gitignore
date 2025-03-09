@@ -1,3 +1,5 @@
 .vscode/
 logs/
 seleniumTests/__pycache__/*
+seleniumTests/venv/*
+
