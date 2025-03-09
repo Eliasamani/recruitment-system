@@ -30,7 +30,7 @@ public class Competence implements CompetenceDTO {
     private long id;
 
     @Column(name = "competence_id")
-    private int competenceType; // FIXME change to get either as enum or fetch directly from db
+    private int competenceType;
 
     @Column(name = "years_of_experience")
     private float experience;

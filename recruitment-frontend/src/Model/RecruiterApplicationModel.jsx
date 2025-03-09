@@ -1,4 +1,7 @@
-
+/**
+ * fetches the applications from the backend
+ * @returns 
+ */
 export const fetchApplications = async () => {
     const response = await fetch(process.env.REACT_APP_API_URL + '/api/applications');
     if (!response.ok) {
@@ -6,7 +9,11 @@ export const fetchApplications = async () => {
     }
     return await response.json();
 };
-
+/**
+ * fetches the details of a specific application
+ * @param {*} applicationId 
+ * @returns 
+ */
 export const fetchApplicationDetails = async (applicationId) => {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/api/applications/${applicationId}`);
     if (!response.ok) {
@@ -14,7 +21,11 @@ export const fetchApplicationDetails = async (applicationId) => {
     }
     return await response.json();
 };
-
+/**
+ * Sends the updated application status to the backend.
+ * @param {*} applicationId the application id
+ * @param {*} status the status of the application
+ */
 export const updateApplicationStatus = async (applicationId, status) => {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/api/applications/${applicationId}/status`, {
         method: 'PATCH',

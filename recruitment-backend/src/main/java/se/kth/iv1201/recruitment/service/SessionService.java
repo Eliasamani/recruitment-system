@@ -60,7 +60,6 @@ public class SessionService {
 
         Map<String, Object> userData = new HashMap<>();
 
-        // FIXME why dont we just return a person object here??
         userData.put("id", person.getId());
         userData.put("username", person.getUsername());
         userData.put("firstName", person.getFirstname() != null ? person.getFirstname() : "");
