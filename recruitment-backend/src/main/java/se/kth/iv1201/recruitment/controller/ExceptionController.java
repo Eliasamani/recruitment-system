@@ -1,12 +1,16 @@
 package se.kth.iv1201.recruitment.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +25,7 @@ import se.kth.iv1201.recruitment.model.exception.*;
 
 import se.kth.iv1201.recruitment.service.SessionService;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 
@@ -60,9 +65,9 @@ public class ExceptionController implements ErrorController {
      * @return
      */
     @ExceptionHandler(ApplicationNotFoundException.class)
-    public ResponseEntity<?> handleApplicationNotFoundException(Exception exception) {
-        LOGGER.warning(exception.getMessage());
-        return ResponseEntity.status(400).body(Map.of("error", "Application not found"));
+    public ResponseEntity<?> handleApplicationNotFoundException(ApplicationNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", ex.getMessage()));
     }
 
     /**
@@ -210,6 +215,20 @@ public class ExceptionController implements ErrorController {
      */
     private ResponseEntity<?> handleEmailAndCodeError() {
         return ResponseEntity.status(400).body(Map.of("error", "Email or code was incorrect"));
+    }
+
+    /**
+     * Handles an InvalidStatusException, which is thrown when the user tries to
+     * update an application with an invalid status.
+     * 
+     * @param ex the exception to be handled
+     * @return a ResponseEntity containing a JSON object with an "error" key, where
+     *         the value is a message explaining that the status is invalid
+     */
+    @ExceptionHandler(InvalidStatusException.class)
+    public ResponseEntity<?> handleInvalidStatusException(InvalidStatusException ex) {
+        return ResponseEntity.badRequest()
+                .body(Map.of("error", ex.getMessage()));
     }
 
     /**

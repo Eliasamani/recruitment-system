@@ -3,6 +3,7 @@ package se.kth.iv1201.recruitment.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import se.kth.iv1201.recruitment.model.exception.InvalidStatusException;
 import se.kth.iv1201.recruitment.model.jobApplication.JobApplicationDTO;
 import se.kth.iv1201.recruitment.service.JobApplicationService;
 import java.util.List;
@@ -20,6 +21,12 @@ public class JobApplicationController {
     public JobApplicationController(JobApplicationService jobApplicationService) {
         this.jobApplicationService = jobApplicationService;
     }
+
+    /**
+     * Retrieves all job applications from the system.
+     * 
+     * @return a ResponseEntity containing a list of all existing job applications
+     */
 
     @GetMapping
     public ResponseEntity<List<JobApplicationDTO>> getAllApplications() {
@@ -50,11 +57,17 @@ public class JobApplicationController {
     @PostMapping("/{id}/update-status")
     public ResponseEntity<?> updateApplicationStatus(@PathVariable long id,
             @RequestBody Map<String, String> requestBody) {
-            String statusString = requestBody.get("status");
+        String statusString = requestBody.get("status");
+        if (statusString == null || statusString.trim().isEmpty()) {
+            throw new InvalidStatusException("null or empty");
+        }
+        try {
             JobApplicationDTO.Status status = JobApplicationDTO.Status.valueOf(statusString.toUpperCase());
             jobApplicationService.updateApplicationStatus(id, status);
             return ResponseEntity.ok().body(Map.of("message", "Application status updated successfully"));
-
+        } catch (IllegalArgumentException e) {
+            throw new InvalidStatusException(statusString);
+        }
     }
 
 }

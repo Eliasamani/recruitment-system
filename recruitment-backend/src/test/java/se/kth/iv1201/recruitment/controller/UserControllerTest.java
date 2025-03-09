@@ -70,6 +70,7 @@ public class UserControllerTest {
      * 
      * Asserts that the response status is 400 and the response body contains
      * the error message indicating the username already exists.
+     * 
      * @throws Exception if the test fails.
      */
 
@@ -98,6 +99,7 @@ public class UserControllerTest {
      * 
      * It performs a mock HTTP POST request to the /api/users/edit endpoint
      * with user data that includes all fields.
+     * 
      * @throws Exception if the test fails.
      */
     @Test
@@ -114,8 +116,10 @@ public class UserControllerTest {
                 .andExpect(
                         content().string(containsString("User updated successfully")));
     }
+
     /**
-     * Tests that editing a user profile with no username returns a 400 Bad Request error.
+     * Tests that editing a user profile with no username returns a 400 Bad Request
+     * error.
      * 
      * @throws Exception if the test fails.
      */
@@ -132,11 +136,14 @@ public class UserControllerTest {
                 .andExpect(status().is(400));
 
     }
-/**
- * Tests that editing a user profile with an incorrect username returns a 400 Bad Request error.
- * So that a user can not try to edit an other users profile.
- * @throws Exception if the test fails.
- */
+
+    /**
+     * Tests that editing a user profile with an incorrect username returns a 400
+     * Bad Request error.
+     * So that a user can not try to edit an other users profile.
+     * 
+     * @throws Exception if the test fails.
+     */
     @Test
     void testEditProfileWithWrongUsername() throws Exception {
         String contentData = "{\"username\":\"AustinMueller\",\"email\":\"newEmail@example.com\",\"personNumber\":\"19991212-4444\",\"lastname\":\"newLastName\",\"firstname\":\"newFirstName\"}";
@@ -151,11 +158,14 @@ public class UserControllerTest {
                 .andExpect(content().string(containsString("Invalid session")));
 
     }
-/**
- * Tests that editing a user profile with a non existing session returns a 403 Forbidden error.
- * So a user can not edit a profile without being logged in.
- * @throws Exception if the test fails.
- */
+
+    /**
+     * Tests that editing a user profile with a non existing session returns a 403
+     * Forbidden error.
+     * So a user can not edit a profile without being logged in.
+     * 
+     * @throws Exception if the test fails.
+     */
     @Test
     void testEditProfileWithNonExistingSession() throws Exception {
         String contentData = "{\"username\":\"AustinMueller\",\"email\":\"newEmail@example.com\",\"personNumber\":\"19991212-4444\",\"lastname\":\"newLastName\",\"firstname\":\"newFirstName\"}";
@@ -167,10 +177,12 @@ public class UserControllerTest {
                 .andExpect(status().is(403));
 
     }
-/**
- * Tests that editing a user profile with only email returns a success message.
- * @throws Exception if the test fails.
- */
+
+    /**
+     * Tests that editing a user profile with only email returns a success message.
+     * 
+     * @throws Exception if the test fails.
+     */
     @Test
     void testEditProfileWithOnlyEmail() throws Exception {
         String contentData = "{\"username\":\"TestRecruiter\",\"email\":\"newEmail@example.com\"}";
@@ -185,11 +197,14 @@ public class UserControllerTest {
                 .andExpect(
                         content().string(containsString("User updated successfully")));
     }
-/**
- * Tests that editing a user profile with only person number returns a success message.
- * As long as the user does not already have a person number.
- * @throws Exception if the test fails.
- */
+
+    /**
+     * Tests that editing a user profile with only person number returns a success
+     * message.
+     * As long as the user does not already have a person number.
+     * 
+     * @throws Exception if the test fails.
+     */
     @Test
     void testEditProfileWithOnlyPersonNumber() throws Exception {
         String contentData = "{\"username\":\"TestRecruiter\",\"personNumber\":\"19991212-4444\"}";
@@ -204,10 +219,13 @@ public class UserControllerTest {
                 .andExpect(
                         content().string(containsString("User updated successfully")));
     }
-/**
- * Tests that editing a user profile with only last name returns a success message.
- * @throws Exception if the test fails.
- */
+
+    /**
+     * Tests that editing a user profile with only last name returns a success
+     * message.
+     * 
+     * @throws Exception if the test fails.
+     */
     @Test
     void testEditProfileWithOnlyLastName() throws Exception {
         String contentData = "{\"username\":\"TestRecruiter\",\"lastname\":\"newLastName\"}";
@@ -222,10 +240,13 @@ public class UserControllerTest {
                 .andExpect(
                         content().string(containsString("User updated successfully")));
     }
-/**
- * Tests that editing a user profile with only first name returns a success message.
- * @throws Exception if the test fails.
- */
+
+    /**
+     * Tests that editing a user profile with only first name returns a success
+     * message.
+     * 
+     * @throws Exception if the test fails.
+     */
     @Test
     void testEditProfileWithOnlyFirstName() throws Exception {
         String contentData = "{\"username\":\"TestRecruiter\",\"firstname\":\"newFirstName\"}";
@@ -240,11 +261,14 @@ public class UserControllerTest {
                 .andExpect(
                         content().string(containsString("User updated successfully")));
     }
-/**
- * Tests that editing a user profile with already filled person number returns a 400 Bad Request error.
- * As the user should only be able to fill in the person number once.
- * @throws Exception if the test fails.
- */
+
+    /**
+     * Tests that editing a user profile with already filled person number returns a
+     * 400 Bad Request error.
+     * As the user should only be able to fill in the person number once.
+     * 
+     * @throws Exception if the test fails.
+     */
     @Test
     void testEditProfileWithAlreadyFilledPersonNumber() throws Exception {
         String contentData = "{\"username\":\"TestApplicant\",\"personNumber\":\"19991212-4444\"}";
