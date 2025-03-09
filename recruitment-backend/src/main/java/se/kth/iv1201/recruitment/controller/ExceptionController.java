@@ -40,6 +40,19 @@ public class ExceptionController implements ErrorController {
     }
 
     /**
+     * Handles a FieldAlreadyFilledException, which is thrown when the user tries to
+     * change a field that is already filled.
+     * 
+     * @param exception the exception to be handled
+     * @return
+     */
+    @ExceptionHandler(FieldAlreadyFilledException.class)
+    public ResponseEntity<?> handleFieldAlreadyFilledException(Exception exception) {
+        LOGGER.warning(exception.getMessage());
+        return ResponseEntity.status(400).body(Map.of("error", "Field already filled"));
+    }
+
+    /**
      * Handles an ApplicationNotFoundException, which is thrown when the user tries
      * to access an application that does not exist.
      * 

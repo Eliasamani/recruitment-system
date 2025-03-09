@@ -5,13 +5,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.servlet.http.Cookie;
+import se.kth.iv1201.recruitment.model.EditProfileForm;
+import se.kth.iv1201.recruitment.model.exception.FieldAlreadyFilledException;
+import se.kth.iv1201.recruitment.model.exception.InvalidSessionException;
+import se.kth.iv1201.recruitment.model.exception.NoCookiesInRequestException;
 import se.kth.iv1201.recruitment.model.exception.UserAlreadyExistsException;
 import se.kth.iv1201.recruitment.model.person.Person;
 import se.kth.iv1201.recruitment.model.person.PersonDTO;
 import se.kth.iv1201.recruitment.repository.PersonRepository;
+import se.kth.iv1201.recruitment.security.JwtProvider;
 
 /**
- * Implements login/register related business logic.
+ * Implements user related business logic.
  */
 @Service
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
@@ -21,9 +27,12 @@ public class UserService {
             UserService.class.getName());
 
     private final PersonRepository repository;
+    private final JwtProvider jwtProvider;
 
-    public UserService(PersonRepository repository) {
+    public UserService(PersonRepository repository, JwtProvider jwtProvider) {
         this.repository = repository;
+        this.jwtProvider = jwtProvider;
+
     }
 
     /**
@@ -79,5 +88,55 @@ public class UserService {
             LOGGER.info("User found: " + username);
         }
         return person;
+    }
+
+
+    /**
+     * Edits the selected person with the information provided in the {@link EditProfileForm}.
+     * @param editProfileForm The form containing the information to edit.
+     * @param cookies The cookies from the request used to validate the user is the same as the edited user.
+     * @return the updated person info
+     */
+    public PersonDTO editSelectedPerson(EditProfileForm editProfileForm, Cookie[] cookies) {
+        if (cookies == null) {
+            throw new NoCookiesInRequestException("User edit failed - No token found");
+        }
+
+        String token = null;
+        for (Cookie cookie : cookies) {
+            if ("jwt".equals(cookie.getName())) {
+                token = cookie.getValue();
+                break;
+            }
+        }
+        if (token == null) {
+            throw new InvalidSessionException("User edit failed - No token found");
+        }
+        String usernameToEdit = editProfileForm.getUsername();
+        if (usernameToEdit == null || !usernameToEdit.equals(jwtProvider.validateToken(token))) {
+            throw new InvalidSessionException("User edit failed - Logged in user did not match edited user");
+        }
+        Person personToEdit = repository.findPersonByUsername(usernameToEdit);
+        if (!(editProfileForm.getFirstname() == null || editProfileForm.getFirstname() == "")) {
+            personToEdit.setFirstname(editProfileForm.getFirstname());
+            LOGGER.info("Changed " + personToEdit + " first name");
+        }
+        if (!(editProfileForm.getLastname() == null || editProfileForm.getLastname() == "")) {
+            personToEdit.setLastname(editProfileForm.getLastname());
+            LOGGER.info("Changed " + personToEdit + " last name");
+        }
+        if (!(editProfileForm.getPersonNumber() == null || editProfileForm.getPersonNumber() == "")) {
+            if (personToEdit.getPersonNumber() != null) {
+                throw new FieldAlreadyFilledException("Person:" + personToEdit + " already has a person number");
+            }
+            personToEdit.setPersonNumber(editProfileForm.getPersonNumber());
+
+        }
+        if (!(editProfileForm.getEmail() == null || editProfileForm.getEmail() == "")) {
+            personToEdit.setEmail(editProfileForm.getEmail());
+            LOGGER.info("Changed " + personToEdit + " email");
+        }
+        PersonDTO savedPerson = repository.save(personToEdit);
+        return savedPerson;
     }
 }
