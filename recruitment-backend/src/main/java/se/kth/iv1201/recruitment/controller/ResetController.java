@@ -11,9 +11,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import se.kth.iv1201.recruitment.model.UserPassResetForm;
-import se.kth.iv1201.recruitment.model.exception.IncorrectResetCodeException;
-import se.kth.iv1201.recruitment.model.exception.NonExistingEmailException;
-import se.kth.iv1201.recruitment.model.exception.UserAlreadyExistsException;
 import se.kth.iv1201.recruitment.model.person.PersonDTO;
 import se.kth.iv1201.recruitment.model.resettoken.ResetTokenDTO;
 import se.kth.iv1201.recruitment.service.ResetService;
@@ -21,6 +18,9 @@ import se.kth.iv1201.recruitment.service.ResetService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+/**
+ * Controller for user info reset/change related API operations
+ */
 @RestController
 @RequestMapping("/api/reset")
 public class ResetController {

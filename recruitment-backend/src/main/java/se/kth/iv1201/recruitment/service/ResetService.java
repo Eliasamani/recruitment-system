@@ -46,6 +46,15 @@ public class ResetService {
 
     }
 
+    /**
+     * generates resetToken to be used in chaning account information.
+     * Note that all previous resetTokens vill be invalidated when a new resetTokens
+     * is generated.
+     * 
+     * @param email the email of the person that will have its account information
+     *              changed
+     * @return a new valid resetToken for this account
+     */
     public ResetTokenDTO generateToken(String email) {
 
         Person emailPerson = personRepository.findPersonByEmail(email);
@@ -70,6 +79,13 @@ public class ResetService {
 
     }
 
+    /**
+     * changes the username and/or password by the values given in the
+     * {@link UserPassResetForm}
+     * 
+     * @param userPassResetForm the form required for password reset
+     * @return the updated person info
+     */
     public PersonDTO resetUsernameAndPassword(UserPassResetForm userPassResetForm) {
         Person personToEdit = personRepository.findPersonByEmail(userPassResetForm.getEmail());
         if (personToEdit == null) {

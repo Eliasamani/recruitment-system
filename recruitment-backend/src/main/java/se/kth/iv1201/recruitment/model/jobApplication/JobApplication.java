@@ -27,6 +27,10 @@ import se.kth.iv1201.recruitment.model.competence.CompetenceDTO;
 import se.kth.iv1201.recruitment.model.person.Person;
 import se.kth.iv1201.recruitment.model.person.PersonDTO;
 
+/**
+ * represents the job application information of an applicant in the
+ * recruitment system
+ */
 @Getter
 @Setter
 @ToString
@@ -45,10 +49,7 @@ public class JobApplication implements JobApplicationDTO {
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
     private Person person;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true) // deletions of a
-                                                                                        // jobapplications should also
-                                                                                        // delete
-    // competences & avalibilies
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
     private List<Competence> competences = new ArrayList();
 
@@ -60,22 +61,47 @@ public class JobApplication implements JobApplicationDTO {
     @Column(name = "application_status")
     private Status status;
 
+    /**
+     * @return the {@link PersonDTO} associated with this job application
+     */
     public PersonDTO getPerson() {
         return this.person;
     }
 
+    /**
+     * @return the {@link CompetenceDTO} competences associated with this job
+     *         application
+     */
     public List<CompetenceDTO> getCompetences() {
         return (List<CompetenceDTO>) (List) this.competences;
     }
 
+    /**
+     * @return the {@link AvailabilityDTO} availabilities associated with this job
+     *         application
+     */
     public List<AvailabilityDTO> getAvailabilities() {
         return (List<AvailabilityDTO>) (List) this.availabilities;
     }
 
+    /**
+     * Adds the specified availabilities to this jobApplication
+     * 
+     * @param availabilities the {@link List} of {@link Availability} objects
+     *                       to add to this jobApplication
+     */
     public void addAllAvailabilities(List<Availability> availabilities) {
         this.availabilities.addAll(availabilities);
     }
 
+    /**
+     * Adds the specified Competences to this jobApplication.
+     * There are no checks for if multiple competence within the has been
+     * added to the application.
+     * 
+     * @param competences the {@link List} of {@link competences} objects
+     *                    to add to this jobApplication
+     */
     public void addAllCompetences(List<Competence> competences) {
         this.competences.addAll(competences);
     }

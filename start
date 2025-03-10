@@ -1,0 +1,3 @@
+#!/bin/sh
+cd recruitment-backend && ./mvnw spring-boot:run &
+cd recruitment-frontend && npm install && npm start

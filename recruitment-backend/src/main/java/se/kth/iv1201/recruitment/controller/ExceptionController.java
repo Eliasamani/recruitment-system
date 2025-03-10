@@ -1,12 +1,16 @@
 package se.kth.iv1201.recruitment.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +21,11 @@ import io.jsonwebtoken.JwtException;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import se.kth.iv1201.recruitment.model.exception.IncorrectResetCodeException;
-import se.kth.iv1201.recruitment.model.exception.InvalidSessionException;
-import se.kth.iv1201.recruitment.model.exception.NonExistingEmailException;
-import se.kth.iv1201.recruitment.model.exception.UserAlreadyExistsException;
-import se.kth.iv1201.recruitment.model.exception.UserServiceException;
+import se.kth.iv1201.recruitment.model.exception.*;
+
 import se.kth.iv1201.recruitment.service.SessionService;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 
@@ -40,6 +42,60 @@ public class ExceptionController implements ErrorController {
 
     public ExceptionController(SessionService sessionService) {
         this.sessionService = sessionService;
+    }
+
+    /**
+     * Handles a FieldAlreadyFilledException, which is thrown when the user tries to
+     * change a field that is already filled.
+     * 
+     * @param exception the exception to be handled
+     * @return
+     */
+    @ExceptionHandler(FieldAlreadyFilledException.class)
+    public ResponseEntity<?> handleFieldAlreadyFilledException(Exception exception) {
+        LOGGER.warning(exception.getMessage());
+        return ResponseEntity.status(400).body(Map.of("error", "Field already filled"));
+    }
+
+    /**
+     * Handles an ApplicationNotFoundException, which is thrown when the user tries
+     * to access an application that does not exist.
+     * 
+     * @param exception the exception to be handled
+     * @return
+     */
+    @ExceptionHandler(ApplicationNotFoundException.class)
+    public ResponseEntity<?> handleApplicationNotFoundException(ApplicationNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", ex.getMessage()));
+    }
+
+    /**
+     * Handles an ApplicationAlreadyExistsException, which is thrown when the user
+     * already has an application.
+     * 
+     * @param exception the exception to be handled
+     * @return a ResponseEntity containing a JSON object with an "error" key, where
+     *         the value is a message explaining that the application already exists
+     */
+    @ExceptionHandler(ApplicationAlreadyExistsException.class)
+    public ResponseEntity<?> handleApplicationAlreadyExistsException(Exception exception) {
+        LOGGER.warning(exception.getMessage());
+        return ResponseEntity.status(400).body(Map.of("error", "Application already exists"));
+    }
+
+    /**
+     * Handles a NoCookiesInRequestException, which is thrown when the user tries to
+     * access an endpoint without a JWT token.
+     * 
+     * @param exception the exception to be handled
+     * @return a ResponseEntity containing a JSON object with an "error" key, where
+     *         the value is a message explaining that the user is not authenticated
+     */
+    @ExceptionHandler(NoCookiesInRequestException.class)
+    public ResponseEntity<?> handleNoCookiesInRequestException(Exception exception) {
+        LOGGER.warning(exception.getMessage());
+        return ResponseEntity.status(400).body(Map.of("error", "Not authenticated"));
     }
 
     /**
@@ -106,23 +162,6 @@ public class ExceptionController implements ErrorController {
     }
 
     /**
-     * Handles a UserServiceException, which is thrown when there is an unexpected
-     * error in the user service layer.
-     * 
-     * @param exception the exception to be handled
-     * @return a ResponseEntity containing a JSON object with an "error" key,
-     *         indicating that an unexpected error occurred and the user should
-     *         try again later
-     */
-
-    @ExceptionHandler(UserServiceException.class)
-    public ResponseEntity<?> handleUserServiceException(
-            Exception exception) {
-        LOGGER.severe(exception.getMessage());
-        return ResponseEntity.internalServerError().body(Map.of("error", "Unexpected error occured try again later"));
-    }
-
-    /**
      * Handles a UserAlreadyExistsException, which is thrown when the user tries
      * to register with a username that already exists.
      * 
@@ -139,6 +178,13 @@ public class ExceptionController implements ErrorController {
                 .body(Map.of("error", "Username already exists"));
     }
 
+    /**
+     * Handles a NonExistingEmailException, which is thrown when the user tries to
+     * reset their password with an email that does not exist in the database.
+     * 
+     * @param exception the exception to be handled
+     * @return
+     */
     @ExceptionHandler(NonExistingEmailException.class)
     public ResponseEntity<?> handleNonExisitingEmailException(Exception exception) {
         LOGGER.warning(exception.getMessage());
@@ -149,16 +195,51 @@ public class ExceptionController implements ErrorController {
         }
     }
 
+    /**
+     * Handles an IncorrectResetCodeException, which is thrown when the user tries
+     * to reset their password with an incorrect code.
+     * 
+     * @param exception
+     * @return
+     */
     @ExceptionHandler(IncorrectResetCodeException.class)
     public ResponseEntity<?> handleIncorrectResetCodeException(Exception exception) {
         LOGGER.warning(exception.getMessage());
         return handleEmailAndCodeError();
     }
 
+    /**
+     * Handles when the email or code is incorrect
+     * 
+     * @return
+     */
     private ResponseEntity<?> handleEmailAndCodeError() {
         return ResponseEntity.status(400).body(Map.of("error", "Email or code was incorrect"));
     }
 
+    /**
+     * Handles an InvalidStatusException, which is thrown when the user tries to
+     * update an application with an invalid status.
+     * 
+     * @param ex the exception to be handled
+     * @return a ResponseEntity containing a JSON object with an "error" key, where
+     *         the value is a message explaining that the status is invalid
+     */
+    @ExceptionHandler(InvalidStatusException.class)
+    public ResponseEntity<?> handleInvalidStatusException(InvalidStatusException ex) {
+        return ResponseEntity.badRequest()
+                .body(Map.of("error", ex.getMessage()));
+    }
+
+    /**
+     * Handles the generic error page for postmappings which is shown when an
+     * internal error happens
+     * If simple error return 400 otherwise return original status code
+     * 
+     * @param request
+     * @param response
+     * @return
+     */
     @PostMapping("/error")
     @ResponseBody
     public ResponseEntity<?> handlePostMessage(HttpServletRequest request, HttpServletResponse response) {
@@ -181,6 +262,15 @@ public class ExceptionController implements ErrorController {
 
     }
 
+    /**
+     * Handles the generic error page for getmappings which is shown when an
+     * internal error happens
+     * If simple error redirect to home page otherwise return errorPage
+     * 
+     * @param request
+     * @param model
+     * @return
+     */
     @GetMapping("/error")
     public String handleError(HttpServletRequest request, Model model) {
         int statusCode = Integer.valueOf(request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE).toString());

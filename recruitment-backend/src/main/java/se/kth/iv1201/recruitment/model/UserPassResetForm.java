@@ -8,6 +8,14 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * form for user password reset
+ * backend validation of the form's fields are done here
+ * 
+ * only obligatory fields are email and code
+ * 
+ * the username and password are filled when updating them
+ */
 @Getter
 @Setter
 public class UserPassResetForm {

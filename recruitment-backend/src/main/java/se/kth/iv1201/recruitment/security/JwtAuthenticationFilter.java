@@ -37,6 +37,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.userService = userService;
     }
 
+    /**
+     * Checks the request path against a list of public endpoints to determine if
+     * the request should be filtered.
+     * @param request The request being processed
+     * @return true if the request should not be filtered, false otherwise
+     * @throws ServletException
+     */
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();

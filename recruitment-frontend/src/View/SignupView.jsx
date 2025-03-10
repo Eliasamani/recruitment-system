@@ -1,8 +1,23 @@
+/**
+ * SignupView.jsx
+ *
+ * This component renders the user interface for the Sign Up form.
+ * It displays form fields for user registration along with validation messages.
+ */
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Header from '../Components/Header';
 
-const SignupView = ({ formData, errors, submissionError, loading, onChange, onSubmit }) => (
-    <>
+const SignupView = ({ 
+    formData, 
+    errors, 
+    submissionError, 
+    loading, 
+    onChange, 
+    onSubmit,
+ }) => (
+    <div>
+        <Header />
         <form onSubmit={onSubmit}>
             <h2>Sign Up</h2>
             {submissionError && <div style={{ color: 'red' }}>{submissionError}</div>}
@@ -24,7 +39,7 @@ const SignupView = ({ formData, errors, submissionError, loading, onChange, onSu
                     name="lastname"
                     value={formData.lastname}
                     onChange={onChange}
-                    placeholder="First Name"
+                    placeholder="Last Name"
                 />
                 {errors.lastname && <p style={{ color: 'red' }}>{errors.lastname}</p>}
             </div>
@@ -98,6 +113,7 @@ const SignupView = ({ formData, errors, submissionError, loading, onChange, onSu
                 <button type="button">Sign In</button>
             </Link>
         </div>
-    </>);
+    </div>
+);
 
 export default SignupView;

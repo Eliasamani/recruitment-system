@@ -1,6 +1,21 @@
 import React from 'react';
 
-export default function RecruiterDashboardView({ recruiter, loading, error, onLogout, onManageApplications }) {
+/**
+ * RecruiterDashboardView component.
+ *
+ * This component renders the dashboard for a recruiter. It displays the recruiter's account details,
+ * a dashboard overview, and provides a button for managing applications. It also handles loading
+ * and error states.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.recruiter - The recruiter information.
+ * @param {boolean} props.loading - Indicates whether the dashboard data is still loading.
+ * @param {string} props.error - The error message to display, if any.
+ * @param {function} props.onLogout - Callback function to handle the logout action.
+ * @param {function} props.onManageApplications - Callback function to navigate to the applications management view.
+ * @returns {JSX.Element} The recruiter dashboard view.
+ */
+const RecruiterDashboardView = ({ recruiter, loading, error, onLogout, onManageApplications }) => {
     if (loading) {
         return (
             <div className="loading-container">
@@ -64,6 +79,8 @@ export default function RecruiterDashboardView({ recruiter, loading, error, onLo
                     </button>
                 </section>
             </main>
-        </div >
+        </div>
     );
-}
+};
+
+export default RecruiterDashboardView;

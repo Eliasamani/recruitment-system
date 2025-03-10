@@ -14,6 +14,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Represents the users' personal information in the system
+ */
 @Getter
 @Setter
 @NoArgsConstructor

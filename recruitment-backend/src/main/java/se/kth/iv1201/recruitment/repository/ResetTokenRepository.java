@@ -10,10 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import se.kth.iv1201.recruitment.model.person.Person;
 import se.kth.iv1201.recruitment.model.resettoken.ResetToken;
 
-
-
+/**
+ * Contains all database access operations for ResetToken
+ */
 @Repository
-@Transactional(propagation = Propagation.MANDATORY,rollbackFor = Exception.class)
+@Transactional(propagation = Propagation.MANDATORY, rollbackFor = Exception.class)
 public interface ResetTokenRepository extends JpaRepository<ResetToken, Long> {
 
     /**
