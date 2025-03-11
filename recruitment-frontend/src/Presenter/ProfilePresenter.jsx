@@ -61,6 +61,7 @@ export default function ProfilePresenter() {
     if (formData.firstName.trim() === '' && formData.lastName.trim() === '') {
       errors.blankNames = 'First name and last name cannot be blank';
     }
+    
 
     // If any errors, display them and exit (do not update)
     if (Object.keys(errors).length > 0) {
@@ -69,7 +70,7 @@ export default function ProfilePresenter() {
     }
 
     // If personNumber is not editable, we either nullify it or leave it
-    if (!personNumberEditable) {
+    if (!personNumberEditable || formData.personNumber.trim() === '') {
       formData.personNumber = null;
     }
 
