@@ -334,7 +334,7 @@ def test_applicant_flow(browser, base_url):
     # Scenario 10: reload => set email + firstName correct => 'Successfully, thanks!'
     reload_page(browser)
     go_to_profile(browser)
-    fill_profile_form(browser, first_name="John", email="john.doe@example.com")
+    fill_profile_form(browser, first_name="John", email="deoe@example.com")
     click_update_profile(browser)
     # We'll look for "Successfully, thanks!" or "Profile updated successfully."
     if not ("successfully" in browser.page_source.lower() or "thanks" in browser.page_source.lower()):
