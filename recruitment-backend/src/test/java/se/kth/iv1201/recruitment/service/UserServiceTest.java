@@ -96,8 +96,8 @@ public class UserServiceTest {
     @Test
     void testEditSelectedPersonWithAllFields() {
         EditProfileForm editProfileForm = new EditProfileForm();
-        editProfileForm.setFirstname("newFirstName");
-        editProfileForm.setLastname("newLastName");
+        editProfileForm.setFirstName("newFirstName");
+        editProfileForm.setLastName("newLastName");
         editProfileForm.setPersonNumber("19991212-4444");
         editProfileForm.setEmail("newEmail@example.com");
         editProfileForm.setUsername("TestRecruiter");
@@ -116,8 +116,8 @@ public class UserServiceTest {
     @Test
     void testEditSelectedPersonWithNoUserName() {
         EditProfileForm editProfileForm = new EditProfileForm();
-        editProfileForm.setFirstname("newFirstName");
-        editProfileForm.setLastname("newLastName");
+        editProfileForm.setFirstName("newFirstName");
+        editProfileForm.setLastName("newLastName");
         editProfileForm.setPersonNumber("19991212-4444");
         editProfileForm.setEmail("newEmail@example.com");
         Cookie[] cookies = { new Cookie("jwt", jwtProvider.generateToken("TestRecruiter")) };
@@ -133,8 +133,8 @@ public class UserServiceTest {
     @Test
     void testEditSelectedPersonWithNoCookies() {
         EditProfileForm editProfileForm = new EditProfileForm();
-        editProfileForm.setFirstname("newFirstName");
-        editProfileForm.setLastname("newLastName");
+        editProfileForm.setFirstName("newFirstName");
+        editProfileForm.setLastName("newLastName");
         editProfileForm.setPersonNumber("19991212-4444");
         editProfileForm.setEmail("newEmail@example.com");
         editProfileForm.setUsername("TestRecruiter");
@@ -151,8 +151,8 @@ public class UserServiceTest {
     void testEditSelectedPersonWithNoToken() {
         EditProfileForm editProfileForm = new EditProfileForm();
 
-        editProfileForm.setFirstname("newFirstName");
-        editProfileForm.setLastname("newLastName");
+        editProfileForm.setFirstName("newFirstName");
+        editProfileForm.setLastName("newLastName");
         editProfileForm.setPersonNumber("19991212-4444");
         editProfileForm.setEmail("newEmail@example.com");
         editProfileForm.setUsername("TestRecruiter");
@@ -168,8 +168,8 @@ public class UserServiceTest {
     @Test
     void testEditSelectedPersonWithInvalidUsername() {
         EditProfileForm editProfileForm = new EditProfileForm();
-        editProfileForm.setFirstname("newFirstName");
-        editProfileForm.setLastname("newLastName");
+        editProfileForm.setFirstName("newFirstName");
+        editProfileForm.setLastName("newLastName");
         editProfileForm.setPersonNumber("19991212-4444");
         editProfileForm.setEmail("newEmail@example.com");
         editProfileForm.setUsername("TestRecruiter");
@@ -185,7 +185,7 @@ public class UserServiceTest {
     @Test
     void testEditSelectedPersonWithOnlyFirstName() {
         EditProfileForm editProfileForm = new EditProfileForm();
-        editProfileForm.setFirstname("newFirstName");
+        editProfileForm.setFirstName("newFirstName");
         editProfileForm.setUsername("TestRecruiter");
         Cookie[] cookies = { new Cookie("jwt", jwtProvider.generateToken("TestRecruiter")) };
         PersonDTO person = userService.editSelectedPerson(editProfileForm, cookies);
@@ -201,7 +201,7 @@ public class UserServiceTest {
     @Test
     void testEditSelectedPersonWithOnlyLastName() {
         EditProfileForm editProfileForm = new EditProfileForm();
-        editProfileForm.setLastname("newLastName");
+        editProfileForm.setLastName("newLastName");
         editProfileForm.setUsername("TestRecruiter");
         Cookie[] cookies = { new Cookie("jwt", jwtProvider.generateToken("TestRecruiter")) };
         PersonDTO person = userService.editSelectedPerson(editProfileForm, cookies);

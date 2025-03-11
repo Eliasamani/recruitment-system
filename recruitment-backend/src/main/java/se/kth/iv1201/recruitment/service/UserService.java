@@ -117,12 +117,12 @@ public class UserService {
             throw new InvalidSessionException("User edit failed - Logged in user did not match edited user");
         }
         Person personToEdit = repository.findPersonByUsername(usernameToEdit);
-        if (!(editProfileForm.getFirstname() == null || editProfileForm.getFirstname() == "")) {
-            personToEdit.setFirstname(editProfileForm.getFirstname());
+        if (!(editProfileForm.getFirstName() == null || editProfileForm.getFirstName() == "")) {
+            personToEdit.setFirstname(editProfileForm.getFirstName());
             LOGGER.info("Changed " + personToEdit + " first name");
         }
-        if (!(editProfileForm.getLastname() == null || editProfileForm.getLastname() == "")) {
-            personToEdit.setLastname(editProfileForm.getLastname());
+        if (!(editProfileForm.getLastName() == null || editProfileForm.getLastName() == "")) {
+            personToEdit.setLastname(editProfileForm.getLastName());
             LOGGER.info("Changed " + personToEdit + " last name");
         }
         if (!(editProfileForm.getPersonNumber() == null || editProfileForm.getPersonNumber() == "")) {

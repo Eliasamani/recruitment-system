@@ -53,15 +53,15 @@ export const requestResetCode = async (email) => {
     const response = await fetch(process.env.REACT_APP_API_URL + '/api/reset/code', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email })
+        body:email
     });
 
     if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to send reset code.');
+        const errorData = await response.text();
+        throw new Error(errorData || 'Failed to send reset code.');
     }
 
-    return await response.json();
+    return await response.text();
 };
 
 /**
@@ -83,5 +83,5 @@ export const resetPassword = async (userData) => {
         throw new Error(errorData.message || 'Reset failed.');
     }
 
-    return await response.json();
+    return response;
 };
