@@ -1,58 +1,48 @@
-
-import selenium.webdriver as webDriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.chrome.options import Options as chromeOptions
-from selenium.webdriver.firefox.options import Options as firefoxOptions
-from selenium.webdriver.edge.options import Options as edgeOptions
-from selenium.webdriver.safari.options import Options as safariOptions
-from signinTests import *
-
 import sys
 import time
+import subprocess
 
+def run_test(test_script, browser, base_url):
+    """
+    Runs a test script as a subprocess and captures its output.
+    """
+    print(f"Running {test_script}...")
 
+    result = subprocess.run(
+        ["python3", test_script, browser, base_url],
+        capture_output=True,
+        text=True
+    )
 
+    # Print the standard output
+    print(result.stdout)
 
-#for windows: 
-#
-#python.exe .\seleniumTests.py chrome http://localhost:3000
-#for linux:
-#
-#python3 ./seleniumTests.py chrome http://localhost:3000
-#
-#Remeber to remove added things to db after tests to be able to test again
-#
-#Runs acceptance testing for the application
-#arg 1 = browser to test 
-#arg 2 = url to frontend
-
-def main():
-    if len(sys.argv) != 3:
-        print("Incorrect arguement length use only url",file=sys.stderr,flush=True)
-        sys.exit(1) 
-    browser = sys.argv[1]
-
-    if browser == "chrome":
-        opts = chromeOptions()
-        browser = webDriver.Chrome(options=opts)
-    elif browser == "firefox":
-        opts = firefoxOptions()
-        browser = webDriver.Firefox(options=opts)
-    elif browser == "edge":
-        opts = edgeOptions()
-        browser = webDriver.Edge(options=opts)
-    elif browser == "safari":
-        opts = safariOptions
-        browser = webDriver.Safari(options=opts)
-    else:
-        browser = None
-        print("Invalid browser",file=sys.stderr,flush=True)
+    # Print and handle errors
+    if result.returncode != 0:
+        print(f"ERROR in {test_script}:")
+        print(result.stderr)
         sys.exit(1)
-    url = sys.argv[2]
-    browser.get(url=url)
-    testSignin(browser=browser)
-    
-    print("TESTS COMPLETED WITHOUT ERROR",file=sys.stdout,flush=True)
+
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) != 3:
+        print("Usage: python3 seleniumTests.py <browser> <base_url>", file=sys.stderr)
+        sys.exit(1)
+
+    browser_type = sys.argv[1]
+    base_url = sys.argv[2]
+
+    # Define test scripts
+    test_scripts = [
+        "signupTests.py",
+        "signinTests.py",
+        "applicantTests.py",
+        "recruiterTests.py",
+        "forgotPasswordTests.py",
+    ]
+
+    # Run each test
+    for script in test_scripts:
+        run_test(script, browser_type, base_url)
+        time.sleep(2)  # Allow a small delay between tests to prevent rate limits or session issues
+
+    print("ALL TESTS COMPLETED SUCCESSFULLY")

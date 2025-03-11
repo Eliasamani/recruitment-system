@@ -1,19 +1,3 @@
-"""
-Scenarios:
-1:  Login with applicant credentials (wait a bit), check redirected to /applicant/dashboard
-2:  Add years of experience with no competence => 'please select competence'
-3:  Add competence with no experience years => 'provide years of experience'
-5:  Add availability with blank from or to => 'At least one availability period is required.'
-6:  Add availability with from>to => 'At least one availability period is required.'
-7:  Reload page, then add competence, years of experience, correct availability (from < to), submit => 'Application submitted, thanks!'
-9:  Reload page, then go to profile
-10: Make first name and last name blank => 'First name and last name cannot be blank'
-11: Reload page => if personNumber is editable => set it incorrectly => some error
-12: Reload page => if personNumber is editable => set it correctly => no error
-13: Reload page => set email incorrectly => error
-14: Reload page => set email + firstname correct => 'Successfully, thanks!'
-"""
-
 import time
 import sys
 from selenium.webdriver.common.by import By
