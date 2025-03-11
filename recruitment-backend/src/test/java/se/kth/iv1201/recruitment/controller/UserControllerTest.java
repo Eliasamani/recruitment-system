@@ -102,7 +102,7 @@ public class UserControllerTest {
      */
     @Test
     void testEditProfileWithAllFields() throws Exception {
-        String contentData = "{\"username\":\"TestRecruiter\",\"email\":\"newEmail@example.com\",\"personNumber\":\"19991212-4444\",\"lastname\":\"newLastName\",\"firstname\":\"newFirstName\"}";
+        String contentData = "{\"username\":\"TestRecruiter\",\"email\":\"newEmail@example.com\",\"personNumber\":\"19991212-4444\",\"lastName\":\"newLastName\",\"firstName\":\"newFirstName\"}";
         String token = jwtProvider.generateToken("TestRecruiter");
         MockCookie jwtCookie = new MockCookie("jwt", token);
         mockMvc
@@ -121,7 +121,7 @@ public class UserControllerTest {
      */
     @Test
     void testEditProfileWithNoUsername() throws Exception {
-        String contentData = "{\"email\":\"newEmail@example.com\",\"personNumber\":\"19991212-4444\",\"lastname\":\"newLastName\",\"firstname\":\"newFirstName\"}";
+        String contentData = "{\"email\":\"newEmail@example.com\",\"personNumber\":\"19991212-4444\",\"lastName\":\"newLastName\",\"firstName\":\"newFirstName\"}";
         String token = jwtProvider.generateToken("TestRecruiter");
         MockCookie jwtCookie = new MockCookie("jwt", token);
         mockMvc
@@ -139,7 +139,7 @@ public class UserControllerTest {
  */
     @Test
     void testEditProfileWithWrongUsername() throws Exception {
-        String contentData = "{\"username\":\"AustinMueller\",\"email\":\"newEmail@example.com\",\"personNumber\":\"19991212-4444\",\"lastname\":\"newLastName\",\"firstname\":\"newFirstName\"}";
+        String contentData = "{\"username\":\"AustinMueller\",\"email\":\"newEmail@example.com\",\"personNumber\":\"19991212-4444\",\"lastName\":\"newLastName\",\"firstName\":\"newFirstName\"}";
         String token = jwtProvider.generateToken("TestRecruiter");
         MockCookie jwtCookie = new MockCookie("jwt", token);
         mockMvc
@@ -158,7 +158,7 @@ public class UserControllerTest {
  */
     @Test
     void testEditProfileWithNonExistingSession() throws Exception {
-        String contentData = "{\"username\":\"AustinMueller\",\"email\":\"newEmail@example.com\",\"personNumber\":\"19991212-4444\",\"lastname\":\"newLastName\",\"firstname\":\"newFirstName\"}";
+        String contentData = "{\"username\":\"AustinMueller\",\"email\":\"newEmail@example.com\",\"personNumber\":\"19991212-4444\",\"lastName\":\"newLastName\",\"firstName\":\"newFirstName\"}";
         mockMvc
                 .perform(
                         post("/api/users/edit")
@@ -210,7 +210,7 @@ public class UserControllerTest {
  */
     @Test
     void testEditProfileWithOnlyLastName() throws Exception {
-        String contentData = "{\"username\":\"TestRecruiter\",\"lastname\":\"newLastName\"}";
+        String contentData = "{\"username\":\"TestRecruiter\",\"lastName\":\"newLastName\"}";
         String token = jwtProvider.generateToken("TestRecruiter");
         MockCookie jwtCookie = new MockCookie("jwt", token);
         mockMvc
@@ -228,7 +228,7 @@ public class UserControllerTest {
  */
     @Test
     void testEditProfileWithOnlyFirstName() throws Exception {
-        String contentData = "{\"username\":\"TestRecruiter\",\"firstname\":\"newFirstName\"}";
+        String contentData = "{\"username\":\"TestRecruiter\",\"firstame\":\"newFirstName\"}";
         String token = jwtProvider.generateToken("TestRecruiter");
         MockCookie jwtCookie = new MockCookie("jwt", token);
         mockMvc

@@ -8,7 +8,7 @@ import {
 } from '../Model/ProfileModel';
 
 export default function ProfilePresenter() {
-  const { user } = useAuth();
+  const { user,checkSession } = useAuth();
   const [formData, setFormData] = useState(ProfileFormModel);
   const [updateErrors, setUpdateErrors] = useState([]);
   const [updateSuccess, setUpdateSuccess] = useState('');
@@ -76,6 +76,7 @@ export default function ProfilePresenter() {
     // 3) Attempt to updateProfile
     try {
       await updateProfile(formData);
+      await checkSession();
       setUpdateSuccess('Profile updated successfully.');
     } catch (error) {
       setUpdateErrors([error.message]);
