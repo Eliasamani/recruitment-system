@@ -1,26 +1,160 @@
-/* =========================
-   GLOBAL & LANDING PAGE
-========================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-/* Global Styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Poppins', Arial, sans-serif;
-    background-color: #f4f6f8;
-    color: #333;
+/* Define some custom CSS variables for easy theming */
+:root {
+    --primary-color: #007bff;
+    --primary-dark: #0056b3;
+    --danger-color: #dc3545;
+    --success-color: #28a745;
+    --gray-light: #f4f6f8;
+    --gray-medium: #777;
+    --gray-dark: #333;
+    --white: #fff;
+    --box-shadow-light: 0 4px 6px rgba(0,0,0,0.1);
+    --box-shadow-hover: 0 6px 10px rgba(0,0,0,0.15);
+    --transition-speed: 0.3s;
+    --border-radius: 5px;
+    --font-family: 'Poppins', Arial, sans-serif;
+    --heading-font-size: 2.2rem;
+}
+
+html, body {
+    height: 100%;
+    font-family: var(--font-family);
+    background-color: var(--gray-light);
+    color: var(--gray-dark);
     line-height: 1.6;
 }
 
-.App {
-    text-align: center;
+img, picture, video, canvas {
+    display: block;
+    max-width: 100%;
 }
 
-/* Landing Page Styles */
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+/* Utility margin classes for quick layout adjustments */
+.mr-10 { margin-right: 10px; }
+.mr-20 { margin-right: 20px; }
+.mt-20 { margin-top: 20px; }
+.clickable { cursor: pointer; }
+
+/* Buttons: Reusable .btn class plus color variants */
+.btn {
+    display: inline-block;
+    cursor: pointer;
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--border-radius);
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: background-color var(--transition-speed),
+                transform var(--transition-speed),
+                box-shadow var(--transition-speed);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.btn-outline-primary {
+    background: none;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: var(--white);
+}
+
+.btn-danger:hover {
+    filter: brightness(0.9);
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    color: var(--white);
+}
+
+.btn-success:hover {
+    filter: brightness(0.9);
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow-hover);
+}
+
+/* Container of the Header */
+.header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* The right side container of the header */
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+/* Common button styling */
+.header-btn {
+  margin-right: 10px;
+  padding: 8px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.header-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Logout button should have red background */
+.header-logout-btn {
+  background-color: #ff0000;
+}
+
+.company-name.clickable {
+  cursor: pointer;
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+
 .landing-page {
     display: flex;
     flex-direction: column;
@@ -28,34 +162,21 @@ body {
     background: linear-gradient(135deg, #ffffff, #f7f7f7);
 }
 
+/* HEADER */
 .landing-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 1rem 2rem;
-    background-color: #ffffff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     position: relative;
     z-index: 10;
-    transition: all 0.3s ease;
+    transition: all var(--transition-speed) ease;
 }
 
 .landing-header:hover {
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-}
-
-.header-left {
-    flex: 1;
-}
-
-.logo {
-    height: 40px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.logo:hover {
-    transform: scale(1.1) rotate(-5deg);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
 }
 
 .header-right {
@@ -64,53 +185,20 @@ body {
     gap: 1rem;
 }
 
+/* Brand text or clickable "logo" */
 .company-name {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: bold;
-    color: #007bff;
-    cursor: pointer;
-    transition: color 0.3s ease, transform 0.3s ease;
+    color: var(--primary-color);
+    transition: color var(--transition-speed), transform var(--transition-speed);
 }
 
 .company-name:hover {
-    color: #0056b3;
+    color: var(--primary-dark);
     transform: translateY(-2px);
 }
 
-.login-btn,
-.get-started-btn {
-    padding: 0.6rem 1.2rem;
-    border-radius: 25px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.login-btn {
-    background: none;
-    border: 2px solid #007bff;
-    color: #007bff;
-}
-
-.login-btn:hover {
-    background-color: #007bff;
-    color: #ffffff;
-    border-color: #0056b3;
-}
-
-.get-started-btn {
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.get-started-btn:hover {
-    background-color: #0056b3;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
-}
-
+/* LANDING BODY */
 .landing-body {
     flex: 1;
     padding: 2rem;
@@ -118,285 +206,351 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
 }
 
 .landing-body h1 {
     font-size: 2.8rem;
-    color: #333;
+    color: var(--gray-dark);
     margin-bottom: 1rem;
     animation: fadeIn 1s ease-in-out;
 }
 
 .landing-body p {
     font-size: 1.2rem;
-    color: #555;
+    color: var(--gray-medium);
     max-width: 600px;
-    text-align: center;
     margin-bottom: 2rem;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 
-/* =========================
-    FORMS (e.g. login)
-========================= */
+.login-btn {
+    composes: btn;
+    composes: btn-outline-primary;
+}
+
+.get-started-btn {
+    composes: btn;
+    composes: btn-primary;
+    box-shadow: var(--box-shadow-light);
+}
+
+.get-started-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.header-btn {
+    composes: btn;
+    composes: btn-primary;
+}
+
+.header-logout-btn {
+    composes: btn;
+    background-color: #ff0000;
+    color: var(--white);
+}
 
 form {
     max-width: 400px;
     width: 100%;
-    margin: 0 auto;
-    background-color: #ffffff;
+    margin: 2rem auto;
+    background-color: var(--white);
     padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-light);
+    transition: all var(--transition-speed) ease;
 }
 
 form:hover {
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--box-shadow-hover);
+}
+
+/* Label + input fields */
+form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--gray-dark);
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="email"],
+input[type="number"],
+select {
     width: 100%;
     padding: 0.8rem 1rem;
     margin-bottom: 1rem;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     font-size: 1rem;
-    transition: all 0.3s ease;
+    transition: all var(--transition-speed) ease;
 }
 
 input[type="text"]:focus,
-input[type="password"]:focus {
-    border-color: #007bff;
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+select:focus {
+    border-color: var(--primary-color);
     outline: none;
-    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
 }
 
+/* Submit / secondary buttons inside forms */
 button[type="submit"] {
+    composes: btn;
+    composes: btn-primary;
     width: 100%;
-    padding: 0.8rem 1rem;
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    margin-top: 0.5rem;
 }
 
 button[type="submit"]:hover {
-    background-color: #0056b3;
     transform: translateY(-2px);
 }
 
 button[type="button"] {
-    padding: 0.6rem 1rem;
-    background-color: transparent;
-    border: 1px solid #007bff;
-    color: #007bff;
-    border-radius: 5px;
+    composes: btn;
+    composes: btn-outline-primary;
+    margin-top: 0.5rem;
+    width: 100%;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.auth-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: var(--gray-dark);
+}
+
+.auth-alternate {
+    text-align: center;
+    margin-top: 1rem;
     font-size: 0.9rem;
+}
+
+.auth-alternate a {
+    color: var(--primary-dark);
     font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    text-decoration: underline;
 }
 
-button[type="button"]:hover {
-    background-color: #007bff;
-    color: #ffffff;
-    border-color: #0056b3;
+.aboutus-container {
+    max-width: 800px;
+    margin: 3rem auto;
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-light);
+    text-align: left;
+    transition: all var(--transition-speed) ease;
 }
 
-/* =========================
-   APPLICANT PAGE
-========================= */
+.aboutus-container:hover {
+    box-shadow: var(--box-shadow-hover);
+}
+
+.aboutus-header {
+    font-size: var(--heading-font-size);
+    color: var(--gray-dark);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.aboutus-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--gray-dark);
+    margin-bottom: 1rem;
+}
+
+.profile-page {
+    max-width: 600px;
+    margin: 3rem auto;
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-light);
+    padding: 2rem;
+    transition: all var(--transition-speed) ease;
+    text-align: center;
+}
+
+.profile-page:hover {
+    box-shadow: var(--box-shadow-hover);
+}
+
+.profile-header {
+    margin-bottom: 1.5rem;
+}
+
+.profile-header h2 {
+    font-size: 1.8rem;
+    color: var(--gray-dark);
+}
+
+.profile-info {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: var(--gray-medium);
+}
+
+/* If you have an avatar or photo */
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary-color);
+    margin-bottom: 1rem;
+}
 
 .applicant-page {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 0 1rem;
 }
 
 .applicant-header {
-  text-align: center;
-  margin-bottom: 1.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
 }
 
 .applicant-header h1 {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
 }
 
 .applicant-header p {
-  font-size: 1rem;
-  color: #555;
+    font-size: 1rem;
+    color: var(--gray-medium);
 }
 
 /* Card-like container for the form */
 .applicant-body {
-  background-color: #ffffff;
-  border-radius: 8px;
-  padding: 2rem;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--box-shadow-light);
+    transition: all var(--transition-speed) ease;
 }
 
 .applicant-body:hover {
-  box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+    box-shadow: var(--box-shadow-hover);
 }
 
 /* Error container for form errors */
 .error-container {
-  background-color: #ffe5e5;
-  color: #d00;
-  border: 1px solid #d00;
-  border-radius: 5px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  text-align: center;
+    background-color: #ffe5e5;
+    color: var(--danger-color);
+    border: 1px solid var(--danger-color);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    text-align: center;
 }
 
-/* Form sections inside applicant form */
+/* For sections inside applicant form */
 .form-section {
-  margin-bottom: 2rem;
+    margin-bottom: 2rem;
 }
 
 .form-section h2 {
-  margin-bottom: 0.5rem;
-  font-size: 1.2rem;
-  color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    color: var(--gray-dark);
 }
 
 .section-info {
-  font-size: 0.95rem;
-  color: #666;
-  margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: var(--gray-medium);
+    margin-bottom: 1rem;
 }
 
 /* Horizontal layout for input rows */
 .form-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
 /* Each label/input pair is a form-group */
 .form-group {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 120px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 120px;
 }
 
 .form-group label {
-  font-weight: 600;
-  margin-bottom: 0.4rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
 }
 
 .add-button-group {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: flex-end;
-}
-
-/* Inputs, selects, etc. */
-.form-control {
-  padding: 0.6rem;
-  font-size: 1rem;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  transition: border-color 0.3s ease;
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: #007bff;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: flex-end;
 }
 
 /* The "Add" buttons */
 .add-button {
-  padding: 0.6rem 1rem;
-  margin-bottom: 0.1rem;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.add-button:hover {
-  background-color: #0056b3;
+    composes: btn;
+    composes: btn-primary;
+    margin-bottom: 0.1rem;
 }
 
 /* Lists for expertise and availability */
 .expertise-list,
 .availability-list {
-  margin-top: 1rem;
+    margin-top: 1rem;
 }
 
 .expertise-list ul,
 .availability-list ul {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
 }
 
 .expertise-list li,
 .availability-list li {
-  padding: 0.4rem 0;
-  border-bottom: 1px solid #eee;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #eee;
 }
 
-/* Submit/Cancel buttons at the bottom of the form */
+/* Submit/Cancel at bottom of form */
 .button-group {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 2rem;
-}
-
-.submit-button,
-.cancel-button {
-  padding: 0.8rem 1.2rem;
-  border: none;
-  border-radius: 5px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
 }
 
 .submit-button {
-  background-color: #007bff;
-  color: #fff;
-}
-
-.submit-button:hover {
-  background-color: #0056b3;
+    composes: btn;
+    composes: btn-primary;
+    width: 48%;
 }
 
 .cancel-button {
-  background-color: #ccc;
-  color: #333;
+    composes: btn;
+    background-color: #ccc;
+    color: var(--gray-dark);
+    width: 48%;
 }
 
 .cancel-button:hover {
-  background-color: #aaa;
+    background-color: #aaa;
 }
-
-/* =========================
-   LOADING & ERROR STATES
-========================= */
 
 .loading-container,
 .error-container,
@@ -404,63 +558,201 @@ button[type="button"]:hover {
 .no-recruiter-container {
   text-align: center;
   padding: 2rem;
-  border-radius: 8px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius);
+  background-color: var(--white);
+  box-shadow: var(--box-shadow-light);
 }
 
 .loading-container h2 {
   font-size: 1.5rem;
-  color: #666;
+  color: var(--gray-medium);
 }
 
 .error-container h2,
 .no-user-container h2,
 .no-recruiter-container h2 {
   font-size: 1.5rem;
-  color: #d00;
+  color: var(--danger-color);
 }
 
 .error-container p,
 .no-user-container p,
 .no-recruiter-container p {
-  color: #d00;
+  color: var(--danger-color);
   font-size: 1rem;
 }
 
-/* =========================
-   RESPONSIVE DESIGN
-========================= */
+/* RECRUITER DASHBOARD */
+.recruiter-page {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.recruiter-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.recruiter-body {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--box-shadow-light);
+    transition: all var(--transition-speed) ease;
+}
+
+.recruiter-body:hover {
+    box-shadow: var(--box-shadow-hover);
+}
+
+.recruiter-info {
+    margin-bottom: 2rem;
+}
+
+.dashboard-content {
+    margin-bottom: 2rem;
+}
+
+.manage-applications-btn {
+    composes: btn;
+    background-color: #2196F3;
+    color: var(--white);
+    margin-top: 16px;
+}
+
+.manage-applications-btn:hover {
+    filter: brightness(0.9);
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.recruiter-dashboard-error {
+    color: var(--danger-color);
+    text-align: center;
+}
+
+/* RECRUITER APPLICATION LIST */
+.recruiter-app-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: var(--box-shadow-light);
+    transition: all var(--transition-speed) ease;
+}
+
+.recruiter-app-container:hover {
+    box-shadow: var(--box-shadow-hover);
+}
+
+.recruiter-app-heading {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--gray-dark);
+}
+
+.recruiter-app-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: var(--white);
+}
+
+.recruiter-app-th {
+    background-color: var(--primary-color);
+    color: var(--white);
+    font-size: 1rem;
+    padding: 12px;
+}
+
+.recruiter-app-td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.recruiter-app-actions {
+    display: flex;
+    gap: 0.5rem;
+    padding: 12px;
+}
+
+/* Show Details, Approve, Reject => .btn classes + color overrides */
+.show-details-btn {
+    composes: btn;
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.approve-btn {
+    composes: btn;
+    background-color: var(--success-color);
+    color: var(--white);
+}
+
+.reject-btn {
+    composes: btn;
+    background-color: var(--danger-color);
+    color: var(--white);
+}
+
+.recruiter-app-details {
+    background-color: #f9f9f9;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    margin-top: 5px;
+}
+
+/* Additional list styling inside expanded details */
+.recruiter-details-list {
+    list-style: none;
+    padding: 0;
+}
+
+.recruiter-details-item {
+    background: #e9ecef;
+    margin: 5px 0;
+    padding: 8px;
+    border-radius: var(--border-radius);
+}
+
+.recruiter-loading {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.5rem;
+    color: var(--gray-medium);
+}
+
+.recruiter-error {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.5rem;
+    color: var(--danger-color);
+}
+
 @media (max-width: 768px) {
   .landing-header {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
   }
-
-  .logo {
-    height: 30px;
-  }
-
   .company-name {
     font-size: 1.2rem;
   }
-
   .login-btn,
   .get-started-btn {
     padding: 0.5rem 1rem;
     font-size: 0.8rem;
   }
-
   .landing-body h1 {
     font-size: 2rem;
   }
-
   .landing-body p {
     font-size: 1rem;
   }
 
-  /* For narrower screens, stack form inputs */
   .form-row {
     flex-direction: column;
   }

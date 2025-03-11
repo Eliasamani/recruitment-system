@@ -1,4 +1,6 @@
 import React from 'react';
+import '../App.css';
+
 
 /**
  * RecruiterDashboardView component.
@@ -15,7 +17,14 @@ import React from 'react';
  * @param {function} props.onManageApplications - Callback function to navigate to the applications management view.
  * @returns {JSX.Element} The recruiter dashboard view.
  */
-const RecruiterDashboardView = ({ recruiter, loading, error, onLogout, onManageApplications }) => {
+
+const RecruiterDashboardView = ({
+    recruiter,
+    loading,
+    error,
+    onLogout,
+    onManageApplications
+}) => {
     if (loading) {
         return (
             <div className="loading-container">
@@ -26,7 +35,7 @@ const RecruiterDashboardView = ({ recruiter, loading, error, onLogout, onManageA
 
     if (error) {
         return (
-            <div className="error-container" style={{ color: 'red', textAlign: 'center' }}>
+            <div className="error-container recruiter-dashboard-error">
                 <h2>Error</h2>
                 <p>{error}</p>
             </div>
@@ -35,7 +44,7 @@ const RecruiterDashboardView = ({ recruiter, loading, error, onLogout, onManageA
 
     if (!recruiter) {
         return (
-            <div className="no-recruiter-container" style={{ textAlign: 'center' }}>
+            <div className="no-recruiter-container">
                 <h2>No Recruiter Information Available</h2>
                 <p>Please log in again to access your account.</p>
             </div>
@@ -55,7 +64,6 @@ const RecruiterDashboardView = ({ recruiter, loading, error, onLogout, onManageA
                     <p>
                         <strong>Email:</strong> {recruiter.email}
                     </p>
-                    {/* Add more recruiter-specific information here */}
                 </section>
 
                 <section className="dashboard-content">
@@ -65,15 +73,7 @@ const RecruiterDashboardView = ({ recruiter, loading, error, onLogout, onManageA
                     </p>
                     <button
                         onClick={onManageApplications}
-                        style={{
-                            padding: '8px 16px',
-                            marginTop: '16px',
-                            cursor: 'pointer',
-                            backgroundColor: '#2196F3',
-                            color: '#fff',
-                            border: 'none',
-                            borderRadius: '4px'
-                        }}
+                        className="manage-applications-btn"
                     >
                         Manage Applications
                     </button>

@@ -1,23 +1,32 @@
-// src/Components/Header.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Model/AuthContext.jsx';
+import '../App.css'; // Import the main CSS file for styling
 
 export default function Header() {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
 
-    // Navigate to the landing page
+    /** 
+     * Navigates to the landing page when the logo is clicked.
+     */
     const onLogoClick = () => {
         navigate('/');
     };
 
-    // Navigate to the About page
+    /** 
+     * Navigates to the About Us page.
+     */
     const onCompanyClick = () => {
         navigate('/about');
     };
 
-    // Navigate to the appropriate home/dashboard based on user role
+    /** 
+     * Navigates to the appropriate home/dashboard page based on the user's role.
+     * - Role 1: Recruiter dashboard
+     * - Role 2: Applicant dashboard
+     * - Default: Landing page
+     */
     const onHomeClick = () => {
         if (user) {
             if (user.role === 1) {
@@ -32,51 +41,66 @@ export default function Header() {
         }
     };
 
-    // Handle logout and redirect to signin
+    /** 
+     * Logs out the user and redirects to the Sign-In page.
+     * Uses asynchronous handling since logout() might be an async operation.
+     */
     const onLogout = async () => {
         await logout();
         navigate('/signin');
     };
 
     return (
-        <header className="landing-header" style={styles.header}>
+        <header className="landing-header header-flex">
+            {/* Company logo with a clickable action to navigate home */}
             <div
-                className="company-name"
+                className="company-name clickable mr-20"
                 onClick={onLogoClick}
-                style={{ cursor: 'pointer', marginRight: '20px' }}
             >
                 HireMe
             </div>
-            <div className="header-right" style={styles.headerRight}>
+
+            {/* Right-side section of the header with navigation and authentication options */}
+            <div className="header-right">
+                
+                {/* About Us navigation link */}
                 <div
-                    className="company-name"
+                    className="company-name clickable mr-20"
                     onClick={onCompanyClick}
-                    style={{ cursor: 'pointer', marginRight: '20px' }}
                 >
                     About Us
                 </div>
+
+                {/* Conditional rendering based on user authentication */}
                 {user ? (
                     <>
-                        <button className="home-btn" onClick={onHomeClick} style={styles.button}>
+                        {/* Navigation buttons for authenticated users */}
+                        <button className="home-btn header-btn" onClick={onHomeClick}>
                             Home
                         </button>
                         <button
-                            className="profile-btn"
+                            className="profile-btn header-btn"
                             onClick={() => navigate('/profile')}
-                            style={styles.button}
                         >
                             Profile
                         </button>
-                        <button className="logout-btn" onClick={onLogout} style={styles.logoutButton}>
+                        <button className="logout-btn header-logout-btn" onClick={onLogout}>
                             Logout
                         </button>
                     </>
                 ) : (
                     <>
-                        <button className="login-btn" onClick={() => navigate('/signin')} style={styles.button}>
+                        {/* Login and Sign-up buttons for non-authenticated users */}
+                        <button
+                            className="login-btn header-btn"
+                            onClick={() => navigate('/signin')}
+                        >
                             Login
                         </button>
-                        <button className="get-started-btn" onClick={() => navigate('/signup')} style={styles.button}>
+                        <button
+                            className="get-started-btn header-btn"
+                            onClick={() => navigate('/signup')}
+                        >
                             Sign up
                         </button>
                     </>
@@ -85,38 +109,3 @@ export default function Header() {
         </header>
     );
 }
-
-const styles = {
-    header: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '1rem 2rem',
-        backgroundColor: '#f8f9fa',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    },
-    headerRight: {
-        display: 'flex',
-        alignItems: 'center',
-    },
-    button: {
-        marginRight: '10px',
-        padding: '8px 16px',
-        fontSize: '1rem',
-        cursor: 'pointer',
-        border: 'none',
-        borderRadius: '4px',
-        backgroundColor: '#007bff',
-        color: '#fff',
-    },
-    logoutButton: {
-        marginRight: '10px',
-        padding: '8px 16px',
-        fontSize: '1rem',
-        cursor: 'pointer',
-        border: 'none',
-        borderRadius: '4px',
-        backgroundColor: '#ff0000',
-        color: '#fff',
-    }
-};

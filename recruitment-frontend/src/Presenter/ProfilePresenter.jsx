@@ -1,83 +1,101 @@
 import React, { useState, useEffect } from 'react';
 import ProfileView from '../View/ProfileView';
-import { useAuth } from "../Model/AuthContext.jsx";
+import { useAuth } from '../Model/AuthContext.jsx';
 import {
   ProfileFormModel,
   validateProfileForm,
-  updateProfile,
+  updateProfile
 } from '../Model/ProfileModel';
 
-const ProfilePresenter = () => {
+export default function ProfilePresenter() {
   const { user } = useAuth();
   const [formData, setFormData] = useState(ProfileFormModel);
-  const [updateError, setUpdateError] = useState('');
+  const [updateErrors, setUpdateErrors] = useState([]);
   const [updateSuccess, setUpdateSuccess] = useState('');
 
-  // When the user data is available from useAuth, initialize formData.
+  // Prefill the form once user data is available
   useEffect(() => {
     if (user) {
       setFormData({
         ...ProfileFormModel,
-        username: user.username,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        personNumber: user.personNumber,
-        email: user.email,
+        username: user.username || '',
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        personNumber: user.personNumber || '',
+        email: user.email || '',
       });
     }
   }, [user]);
 
-  
-  // If user.personNumber exists (from useAuth), then editing is disabled.
+  // personNumber is only editable if the user doesn’t already have one
   const personNumberEditable = !user?.personNumber;
   const personNumberValue = user?.personNumber || formData.personNumber;
-  // Only update personNumber in state if the field is editable.
   const setPersonNumberProp = personNumberEditable
     ? (value) => setFormData({ ...formData, personNumber: value })
     : () => {};
 
   /**
-   * Handles the event to update the profile.
-   *
-   * @param {Object} event - The event object.
+   * Handles the form submission to update the profile.
+   * Validates email format, checks for blank first/last names, 
+   * and only calls updateProfile if no errors.
    */
   const handleUpdateProfile = async (event) => {
     event.preventDefault();
-    setUpdateError('');
+    setUpdateErrors([]);
     setUpdateSuccess('');
 
-    const validation = validateProfileForm(formData);
-    if (!validation.isValid) {
-      setUpdateError(Object.values(validation.errors).join(' '));
+    // 1) Validate email if provided
+    const { errors } = validateProfileForm(formData);
+
+    // 2) If user originally had a first name but now clearing it out
+    if (user?.firstName?.trim() && formData.firstName.trim() === '') {
+      errors.firstName = 'First name cannot be blank if you had one already.';
+    }
+
+    // If user originally had a last name but now clearing it out
+    if (user?.lastName?.trim() && formData.lastName.trim() === '') {
+      errors.lastName = 'Last name cannot be blank if you had one already.';
+    }
+
+    // If both first and last name are blank now
+    if (formData.firstName.trim() === '' && formData.lastName.trim() === '') {
+      errors.blankNames = 'First name and last name cannot be blank';
+    }
+
+    // If any errors, display them and exit (do not update)
+    if (Object.keys(errors).length > 0) {
+      setUpdateErrors(Object.values(errors));
       return;
     }
-    if (!personNumberEditable)
+
+    // If personNumber is not editable, we either nullify it or leave it
+    if (!personNumberEditable) {
       formData.personNumber = null;
+    }
+
+    // 3) Attempt to updateProfile
     try {
       await updateProfile(formData);
       setUpdateSuccess('Profile updated successfully.');
     } catch (error) {
-      setUpdateError(error.message);
+      setUpdateErrors([error.message]);
     }
   };
 
   return (
     <ProfileView
-      username={formData.username}
       firstName={formData.firstName}
-      setFirstName={(value) => setFormData({ ...formData, firstName: value })}
+      setFirstName={(val) => setFormData({ ...formData, firstName: val })}
       lastName={formData.lastName}
-      setLastName={(value) => setFormData({ ...formData, lastName: value })}
+      setLastName={(val) => setFormData({ ...formData, lastName: val })}
       email={formData.email}
-      setEmail={(value) => setFormData({ ...formData, email: value })}
+      setEmail={(val) => setFormData({ ...formData, email: val })}
       personNumber={personNumberValue}
       setPersonNumber={setPersonNumberProp}
       personNumberEditable={personNumberEditable}
-      updateError={updateError}
+      updateErrors={updateErrors}
       updateSuccess={updateSuccess}
       handleUpdateProfile={handleUpdateProfile}
     />
   );
-};
-
-export default ProfilePresenter;
+}

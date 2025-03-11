@@ -4,6 +4,7 @@ import Header from "../Components/Header";
 import RecruiterDashboardView from "../View/RecruiterDashboardView";
 import RecruiterApplicationView from "../View/RecruiterApplicationView";
 import { useAuth } from "../Model/AuthContext.jsx";
+import * as RecruiterApplicationModel from "../Model/RecruiterApplicationModel";
 
 /**
  * RecruiterPresenter component.
@@ -45,26 +46,18 @@ export default function RecruiterApplicationPresenter() {
    */
   useEffect(() => {
     if (!loading && user && user.role === 1 && activeView === "applications") {
-      const fetchApplications = async () => {
+      const loadApplications = async () => {
         try {
           setAppLoading(true);
-          const response = await fetch(
-            `${process.env.REACT_APP_API_URL}/api/recruiter/applications`,
-            { credentials: "include" }
-          );
-          if (!response.ok) {
-            throw new Error("Unable to retrieve applications.");
-          }
-          const data = await response.json();
+          const data = await RecruiterApplicationModel.fetchApplications();
           setApplications(data);
         } catch (err) {
-          console.error("Error fetching applications:", err);
-          setAppError("Could not fetch applications. Please try again later.");
+          setAppError(err.message);
         } finally {
           setAppLoading(false);
         }
       };
-      fetchApplications();
+      loadApplications();
     }
   }, [loading, user, activeView]);
 
@@ -73,20 +66,13 @@ export default function RecruiterApplicationPresenter() {
    *
    * @param {number} applicationId - The ID of the application to toggle.
    */
-  const fetchApplicationDetails = async (applicationId) => {
+  const handleFetchApplicationDetails = async (applicationId) => {
     if (expandedApplications[applicationId]) {
       setExpandedApplications(prev => ({ ...prev, [applicationId]: false }));
       return;
     }
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/recruiter/applications/${applicationId}`,
-        { credentials: "include" }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch application details.");
-      }
-      const detailedApp = await response.json();
+      const detailedApp = await RecruiterApplicationModel.fetchApplicationDetails(applicationId);
       setApplications(prev =>
         prev.map(app =>
           app.applicationId === applicationId ? { ...app, ...detailedApp } : app
@@ -94,7 +80,7 @@ export default function RecruiterApplicationPresenter() {
       );
       setExpandedApplications(prev => ({ ...prev, [applicationId]: true }));
     } catch (error) {
-      console.error("Error fetching application details:", error);
+      setAppError("Failed to fetch application details.");
     }
   };
 
@@ -106,24 +92,11 @@ export default function RecruiterApplicationPresenter() {
    */
   const handleStatusChange = async (id, status) => {
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/recruiter/applications/${id}/update-status`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ status }),
-          credentials: "include",
-        }
-      );
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to update status");
-      }
+      await RecruiterApplicationModel.updateApplicationStatus(id, status);
       setApplications(prev =>
         prev.map(app => (app.applicationId === id ? { ...app, status } : app))
       );
     } catch (error) {
-      console.error("Error updating application status:", error);
       setAppError("Failed to update application status.");
     }
   };
@@ -170,7 +143,7 @@ export default function RecruiterApplicationPresenter() {
           applications={applications}
           loading={loading || appLoading}
           error={appError}
-          fetchApplicationDetails={fetchApplicationDetails}
+          fetchApplicationDetails={handleFetchApplicationDetails}
           expandedApplications={expandedApplications}
           handleStatusChange={handleStatusChange}
         />

@@ -7,6 +7,7 @@ from selenium.webdriver.firefox.options import Options as firefoxOptions
 from selenium.webdriver.edge.options import Options as edgeOptions
 from selenium.webdriver.safari.options import Options as safariOptions
 from signinTests import *
+
 import sys
 import time
 
