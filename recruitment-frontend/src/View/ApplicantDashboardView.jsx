@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import '../App.css'; // Make sure you apply the updated CSS here
+import '../App.css';
 import Header from '../Components/Header';
 
 const ApplicantDashboardView = ({
@@ -47,7 +47,7 @@ const ApplicantDashboardView = ({
                                 <label>Competence</label>
                                 <select value={selectedCompetence} onChange={onCompetenceChange}>
                                     <option value="">Select an Expertise</option>
-                                    {competences.map((comp) => (
+                                    {competences && competences.map((comp) => (
                                         <option key={comp.competence_id} value={comp.competence_id}>
                                             {comp.name}
                                         </option>
@@ -81,12 +81,22 @@ const ApplicantDashboardView = ({
                         <section className="form-section">
                             <h2>Availability</h2>
                             <div className="form-group">
-                                <label>From</label>
-                                <input type="date" value={fromDate} onChange={onFromDateChange} />
+                            <label>From</label>
+                                <input
+                                type="date"
+                                name="fromDate"
+                                value={fromDate}
+                                onChange={onFromDateChange}
+                                />
                             </div>
                             <div className="form-group">
-                                <label>To</label>
-                                <input type="date" value={toDate} onChange={onToDateChange} />
+                            <label>To</label>
+                                <input
+                                type="date"
+                                name="toDate"
+                                value={toDate}
+                                onChange={onToDateChange}
+                                />
                             </div>
                             <button type="button" onClick={onAddAvailability}>Add Availability</button>
 

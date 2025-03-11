@@ -25,8 +25,8 @@ public class EditProfileForm {
     @Pattern(regexp = "^\\d{8}-\\d{4}$", message = "invalid person number format, Expected:YYYYMMDD-NNNN")
     private String personNumber;
 
-    private String lastname;
+    private String lastName;
 
-    private String firstname;
+    private String firstName;
 
 }
